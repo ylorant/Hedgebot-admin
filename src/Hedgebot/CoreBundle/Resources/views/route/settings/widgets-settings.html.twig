@@ -1,0 +1,163 @@
+{% extends 'HedgebotCoreBundle::base.html.twig' %}
+{% block title %}Widgets - Hedgebot settings{% endblock %}
+
+{# Main body override, to add the global form (englobing the sidebar too). #}
+{% block main_section %}
+    <form id="widget-settings-form" method="post" action="#">
+        {{ parent() }}
+    </form>
+{% endblock %}
+
+{% block content %}
+    <div class="block-header">
+        <h1>Widgets - Hedgebot settings</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="block-header">
+                <h2>Workspace</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Layout -->
+        <div class="col-lg-12 widget-layout-container">
+            <div id="widget-layout-workspace" class="clearfix">
+                <!-- Layout will be added there by the Javascript -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4">
+            <button class="btn btn-primary btn-lg btn-block waves-effect" type="submit">
+                Save layout
+            </button>
+        </div>
+    </div>
+
+
+    <div id="widget-toolbox" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modal-col-blue">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add a widget</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        {% set colCount = 3 %}
+                        {% set colSize = 12 // colCount %}
+                        {% set widgetModulo = (widgets|length) % colCount %}
+                        {% set rowCount = (widgets|length) // colCount %}
+
+                        {% for widget in widgets %}
+                            <div class="col-lg-{{ colSize }} {{ loop.index0 == (rowCount * colCount) ? "col-lg-offset-" ~ ((colCount - widgetModulo) * (colSize / 2)) : "" }}">
+                                <div class="waves-effect widget card" data-type="{{ widget.id }}" data-dismiss="modal">
+                                    <div class="header clearfix">
+                                        <h2 class="pull-left">{{ widget.name }}</h2>
+                                    </div>
+                                    <div class="body">
+                                        {{ widget.description }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="preloader hidden">
+        <div class="spinner-layer pl-indigo">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{# Layout settings sidebar #}
+{% block right_sidebar %}
+    <ul class="nav nav-tabs tab-nav-right" role="tablist">
+        <li role="presentation" class="active only-child"><a href="#settings" data-toggle="tab" aria-expanded="true">SETTINGS</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade active in settings" id="settings">
+            <p>Layout style</p>
+            <ul class="setting-list">
+                <li>
+                    <select class="form-control" id="layout-selector" name="layout-style"></select>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{# Additional stylesheets #}
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/settings/widget-settings.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{# Scripts, load additional scripts needed for this route, and initialize main module #}
+{% block scripts %}
+    <script src="{{ asset('js/modules/mouse-monitor.js') }}"></script>
+    <script src="{{ asset('js/modules/widgets-layout-builder.js') }}"></script>
+    <script type="text/javascript">
+        $(function()
+        {
+            {# Layouts are given using a Twig variable #}
+            var layouts = {{ layouts|json_encode()|raw }};
+
+            {# Layout builder options #}
+            var options = {
+                layouts: layouts,
+                layoutWorkspace: "#widget-layout-workspace",
+                layoutSelector: "#layout-selector",
+                widgetList: "#widget-toolbox",
+                parametersFormRoute: "settings_widget_param_form",
+                saveRoute: "settings_widgets_save",
+                form: "form#widget-settings-form"
+            };
+
+            //On focus event, reproduce class changes on inputs
+            $(options.layoutWorkspace).on('focus', '.form-control', function () {
+                $(this).parent().addClass('focused');
+            });
+
+            //On focusout event, reproduce class changes on inputs
+            $(options.layoutWorkspace).on('focusout', '.form-control', function () {
+                var $this = $(this);
+                if ($this.parents('.form-group').hasClass('form-float')) {
+                    if ($this.val() == '') { $this.parents('.form-line').removeClass('focused'); }
+                }
+                else {
+                    $this.parents('.form-line').removeClass('focused');
+                }
+            });
+
+            $('.form-control', options.layoutWorkspace).trigger('focus').trigger('focusout');
+
+            MouseMonitor.init();
+            WidgetsLayoutBuilder.init(options);
+
+            {# Load layout if present #}
+            {% if savedLayout is not empty %}
+                WidgetsLayoutBuilder.changeLayoutType("{{ savedLayout.type }}");
+                WidgetsLayoutBuilder.fillLayout({{ savedLayout.widgets|json_encode()|raw }});
+            {% endif %}
+        });
+    </script>
+{% endblock %}

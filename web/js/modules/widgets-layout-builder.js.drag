@@ -1,0 +1,278 @@
+var WidgetsLayoutBuilder = {
+    
+    defaultOptions: {
+        layouts: [],
+        layoutWorkspace: "",
+        layoutSelector: "",
+        widgetList: "",
+        moveIcon: null
+    },
+    
+    // Constant: drag type
+    WidgetDragType: {
+        TOOLBOX: 1,
+        LAYOUT: 2
+    },
+    
+    options: null,
+    draggedWidget: null,
+    moveImage: null,
+    dragCounter: 0,
+    dropTarget: null,
+    dragType: null,
+    
+    /**
+     * Module initialization.
+     */
+    init: function(options)
+    {
+        this.options = $.extend(this.defaultOptions, options);
+        
+        if(this.options.moveIcon)
+        {
+            this.moveImage = new Image();
+            this.moveImage.src = this.options.moveIcon;
+        }
+        
+        this.initElements();
+        this.bindUIActions();
+        
+        $(this.options.layoutSelector).trigger('change');
+    },
+    
+    /**
+     * Initializes elements
+     */
+    initElements: function()
+    {
+        var layoutSelectorElement = $(this.options.layoutSelector);
+        
+        // Remove all options in the selector
+        layoutSelectorElement.children('option').remove();
+        
+        for(var i in this.options.layouts)
+        {
+            var currentLayout = this.options.layouts[i];
+            var option = document.createElement('option');
+            option.setAttribute('value', i);
+            option.innerText = currentLayout.name;
+            
+            layoutSelectorElement.append(option);
+        }
+        
+        // Refresh the select if it has bootstrap selectpicker
+        if(layoutSelectorElement.parent('.bootstrap-select').length > 0)
+            layoutSelectorElement.selectpicker('refresh');
+    },
+    
+    /**
+     * Binds events to UI elements.
+     */
+    bindUIActions: function()
+    {
+        var widgetListElement = $(this.options.widgetList);
+        var layoutSelectorElement = $(this.options.layoutSelector);
+        var layoutWorkspaceElement = $(this.options.layoutWorkspace);
+        var widgetElements = widgetListElement.children('.widget');
+        
+        // Unbind previously bound events
+        widgetElements.off('dragstart');
+        layoutSelectorElement.off('change');
+        layoutWorkspaceElement.off('dragenter');
+        layoutWorkspaceElement.off('dragover');
+        layoutWorkspaceElement.off('dragleave');
+        layoutWorkspaceElement.off('drop');
+        
+        // Bind events
+        widgetElements.on('dragstart', this.onToolboxWidgetDrag.bind(this));
+        layoutSelectorElement.on('change', this.onLayoutChange.bind(this));
+        layoutWorkspaceElement.on('dragenter', '.widget-block', this.onWidgetBlockEnter.bind(this));
+        layoutWorkspaceElement.on('dragover', '.widget-block', this.onWidgetBlockOver.bind(this));
+        layoutWorkspaceElement.on('dragleave', '.widget-block', this.onToolboxWidgetBlockLeave.bind(this));
+        layoutWorkspaceElement.on('drop', '.widget-block', this.onToolboxWidgetDrop.bind(this));
+        layoutWorkspaceElement.on('dragstart', this.onLayoutWidgetDrag.bind(this));
+    },
+    
+    /**
+     * Event: A new layout has been selected, we update the layout zone to reflect the selected layout
+     */
+    onLayoutChange: function()
+    {
+        // TODO: Handle change on an already populated layout
+        
+        var layoutWorkspaceElement = $(this.options.layoutWorkspace);
+        var layoutSelectorElement = $(this.options.layoutSelector);
+        var selectedLayout = layoutSelectorElement.val();
+        
+        // Clean the layout elements
+        layoutWorkspaceElement.children('.widget-block-container').remove();
+        
+        if(typeof this.options.layouts[selectedLayout] == "undefined")
+            return false;
+        
+        for(var blockId in this.options.layouts[selectedLayout].blocks)
+        {
+            var block = this.options.layouts[selectedLayout].blocks[blockId];
+            
+            var blockSpaceElement = document.createElement('div');
+            blockSpaceElement.dataset.id = blockId;
+            blockSpaceElement.classList.add('widget-block-container');
+            blockSpaceElement.classList.add('col-lg-' + block.width.toString(), 'col-xs-12');
+            
+            var blockElement = document.createElement('div');
+            blockElement.classList.add('widget-block');
+            blockElement.classList.add(...(block.class.split(' ')));
+            
+            var blockTitle = document.createElement('span');
+            blockTitle.classList.add('widget-block-title');
+            blockTitle.innerText = block.title;
+            
+            blockElement.appendChild(blockTitle);
+            blockSpaceElement.appendChild(blockElement);
+            layoutWorkspaceElement.append(blockSpaceElement);
+        }
+        
+    },
+    
+    /**
+     * Event: A widget has been picked up from the toolbox.
+     **/
+    onToolboxWidgetDrag: function(ev)
+    {
+        var widget = ev.target;
+        this.dragType = this.WidgetDragType.TOOLBOX;
+        this.draggedWidget = widget;
+        
+        // Set dragIcon if specified
+        if(this.moveImage)
+            ev.originalEvent.dataTransfer.setDragImage(this.moveImage, (this.moveImage.width / 2),(this.moveImage.height / 2));
+    },
+    
+    
+    /**
+     * Event: A widget that's elready been placed on the layout is being moved
+     */
+    onLayoutWidgetDrag: function(ev)
+    {
+        var widget = ev.target;
+        this.dragType = this.WidgetDragType.LAYOUT;
+        this.draggedWidget = widget;
+    },
+    
+    /**
+     * Event: A widget is over a block. Prevent the default behavior to make it a valid drop zone.
+     */
+    onWidgetBlockOver: function(ev)
+    {
+    	ev.preventDefault();
+    },
+    
+    /**
+     * Event: A widget enters a block: route the event to the correct function depending on which case we're in
+     */
+    onWidgetBlockEnter: function(ev)
+    {
+        switch(this.dragType)
+        {
+            case this.WidgetDragType.TOOLBOX:
+                return this.onToolboxWidgetBlockEnter(ev);
+            case this.WidgetDragType.LAYOUT:
+                return this.onLayoutWidgetBlockEnter(ev);
+        }
+        
+        return null;
+    },
+    
+    /**
+     * Event: A widget dragged from the layout enters a block. 
+     */
+    
+    onLayoutWidgetBlockEnter: function(ev)
+    {
+        // Prevent default widget drag & drop behaviors
+        ev.preventDefault();
+        
+        var blockElement = ev.currentTarget;
+        
+        // Use a counter to handle child element event calls
+        this.dragCounter++;
+        
+        // If we're entering the first drop zone (account for embedded elements)
+        if(this.dragCounter !== 1)
+            return;
+    },
+    
+    /**
+     * Event: A widget dragged from the toolbox is over a block
+     **/
+    onToolboxWidgetBlockEnter: function(ev)
+    {
+        // Prevent default widget drag & drop behaviors
+        ev.preventDefault();
+        
+        var blockElement = ev.currentTarget;
+        
+        // Use a counter to handle child element event calls
+        this.dragCounter++;
+        
+        // If we're entering the first drop zone (account for embedded elements)
+        if(this.dragCounter !== 1)
+            return;
+        
+        // Remove append icons from previous drop zones
+        $(this.dropTarget).find('.widget-append').remove();
+        
+        this.dropTarget = blockElement;
+        var blockAppendElement = document.createElement('div');
+        blockAppendElement.classList.add('widget-append');
+        blockAppendElement.innerText = "+";
+        
+        this.dropTarget.appendChild(blockAppendElement);
+    },
+    
+    /**
+     * Event: A widget quits a block
+     */
+    onToolboxWidgetBlockLeave: function(ev)
+    {
+        var blockElement = ev.currentTarget;
+        
+        // Use a counter to handle child element event calls
+        this.dragCounter--;
+        
+        // If we're not leaving the topmost drop zone, stop here
+        if(this.dragCounter > 0)
+            return;
+        
+        // Check if on an actual widget block & not dropping the widget
+        // if(!$(blockElement).hasClass('widget-block') && ev.type != "drop")
+            // return;
+        
+        this.dragCounter = 0;
+        $(this.dropTarget).find('.widget-append').remove();
+    },
+    
+    /**
+     * Event: A widget has been dropped
+     */
+    onToolboxWidgetDrop: function(ev)
+    {
+        var blockElement = ev.target;
+        
+        // Only account if we'ere in a valid drop zone
+        if(this.dropTarget)
+        {
+        	this.onToolboxWidgetBlockLeave(ev);
+            
+            var widgetClone = this.draggedWidget.cloneNode(true);
+            this.dropTarget.appendChild(widgetClone);
+            
+            // Reload events for the new widgets
+            this.bindUIActions();
+        }
+        
+        ev.preventDefault();
+        this.dropTarget = null;
+        this.dragCounter = null;
+    }
+};

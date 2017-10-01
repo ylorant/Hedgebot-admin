@@ -1,0 +1,3 @@
+custom_commands_routes:
+    resource: "@HedgebotCustomCommandsBundle/Controller/"
+    type:     annotation

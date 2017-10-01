@@ -1,0 +1,138 @@
+
+/* Widgets settings */
+
+.widget-layout-container
+{
+    position: relative;
+    padding: 0px;
+    margin-bottom: 1em;
+
+    /*border: 1px rgba(255, 255, 255, .7) dashed;*/
+}
+
+#widget-layout-workspace
+{
+    padding:  0px;
+
+    border: 1px rgba(0, 0, 0, .3) dashed;
+}
+
+
+.widget-block
+{
+    padding: 15px;
+    margin: 15px 0px;
+
+    border: 1px rgba(0, 0, 0, .3) dashed;
+}
+
+.widget-block .widget-block-title
+{
+    position: absolute;
+    top: 7px;
+    padding: 0px 5px;
+
+    color: #888;
+    background: #E9E9E9;
+    /*text-shadow: 0px -1px 0px #fff;*/
+
+    font-size: 12px;
+}
+
+.widget-block .widget
+{
+    position: relative;
+}
+
+.widget-block .widget .header .widget-actions
+{
+    position: relative;
+    left: -10px;
+    line-height: 0em;
+
+    border-right: 1px solid #eee;
+}
+
+.widget-block .widget .header .widget-actions span
+{
+    margin: 0px 5px;
+    cursor: pointer;
+    transition:all .5s;
+    background-color: rgba(255, 255, 255, 0);
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+}
+
+.widget-block .widget .header .widget-actions span:hover
+{
+    background-color: rgba(204, 204, 204, 1);
+}
+
+.widget-block .widget .body .disabled
+{
+    color: #aaa;
+    font-style: italic;
+    text-align: center;
+}
+
+#widget-toolbox .widget .body
+{
+    background-color: white;
+}
+
+#widget-toolbox .widget
+{
+    cursor: pointer
+}
+
+#widget-toolbox .widget.bg-green .header h2
+{
+    color: white;
+}
+
+#widget-toolbox .widget,
+#widget-toolbox .widget .body,
+#widget-toolbox .widget .header h2
+{
+    transition: all .3s;
+}
+
+.widget-block .widget-block-add
+{
+    font-size: 32px !important;
+    font-weight: bold;
+    line-height: 38px;
+    margin: auto;
+    margin-top: 15px;
+    display: block;
+}
+
+.widget-block .widget-block-title + .widget-block-add
+{
+    margin-top: 0px;
+}
+
+.widget-block .widget-append
+{
+    border: 2px dashed #888;
+    background-color: #ddd;
+    color: #444;
+
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.widget-block .widget.card
+{
+    margin-bottom: 5px;
+}
+
+.widget-block .widget.card .body .preloader
+{
+    display: block;
+    margin: auto;
+}

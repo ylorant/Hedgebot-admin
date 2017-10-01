@@ -1,0 +1,21 @@
+{% use 'form_div_layout.html.twig' with form_label as base_form_label %}
+
+{% block form_row -%}
+    <div class="form-group form-float {% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        <div class="form-line">
+            {{- form_widget(form) -}}
+            {{- form_label(form) -}}
+        </div>
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock form_row %}
+
+{% block form_label -%}
+    {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form-label')|trim}) -%}
+    {{- block('base_form_label') -}}
+{%- endblock form_label %}
+
+{%- block form_widget_simple -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
+    {{- parent() -}}
+{%- endblock form_widget_simple -%}

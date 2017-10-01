@@ -1,0 +1,18 @@
+core_routes:
+    resource: "@HedgebotCoreBundle/Controller/"
+    type:     annotation
+
+root:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /dashboard
+        permanent: true
+
+plugins_routes:
+    prefix: /plugin
+    resource: .
+    type: plugin_routes
+
+logout:
+    path: /logout

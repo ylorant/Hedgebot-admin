@@ -1,0 +1,30 @@
+{% extends 'HedgebotCoreBundle::base.html.twig' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="block-header">
+        <h1>Dashboard</h1>
+    </div>
+
+    <div class="layout">
+        {% for blockName, blockData in layout.blocks %}
+            <div class="block col-xs-12 col-lg-{{ blockData.width }} {{ blockData.class }}">
+                {% for blockWidget in userLayout.getBlockWidgets(blockName) %}
+                    <div class="widget" data-type="{{ blockWidget.type }}" data-id="{{ blockWidget.id }}">
+                        {% include widgets[blockWidget.type].viewName with widgets[blockWidget.type].update(blockWidget.settings) %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('js/modules/widgets.js') }}"></script>
+    <script type="text/javascript">
+        $(function()
+        {
+            Widgets.init();
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,43 @@
+parameters:
+    hedgebot_core.service.api.class: Hedgebot\CoreBundle\Service\ApiClientService
+    hedgebot_core.service.plugin_discoverer.class: Hedgebot\CoreBundle\Service\PluginDiscovererService
+    hedgebot_core.service.menu_generator.class: Hedgebot\CoreBundle\Service\MenuGeneratorService
+    hedgebot_core.service.dashboard_widgets.class: Hedgebot\CoreBundle\Service\DashboardWidgetsManagerService
+    hedgebot_core.routing.plugins.class: Hedgebot\CoreBundle\Routing\PluginRouteLoader
+    hedgebot_core.twig.utilities.class: Hedgebot\CoreBundle\Twig\UtilitiesExtension
+
+services:
+    hedgebot_api:
+        class: "%hedgebot_core.service.api.class%"
+        arguments: ["%hedgebot_core.api.uri%", "%hedgebot_core.api.token%"]
+    
+    plugin_routing_loader:
+        class: "%hedgebot_core.routing.plugins.class%"
+        arguments: [ '@kernel', '%kernel.bundles%' ]
+        tags:
+            - { name: routing.loader }
+    
+    twig_utilities:
+        class: "%hedgebot_core.twig.utilities.class%"
+        tags:
+            - { name: twig.extension }
+    
+    plugin_discoverer:
+        class: "%hedgebot_core.service.plugin_discoverer.class%"
+        arguments: [ '@hedgebot_api', '%hedgebot_core.config_path%' ]
+        calls:
+            - [ setContainer,[ '@service_container' ] ]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onLoginSuccess }
+    
+    menu_generator:
+        class: "%hedgebot_core.service.menu_generator.class%"
+        arguments: [ '%hedgebot_core.config_path%' ]
+        calls:
+            - [ setContainer,[ '@service_container' ] ]
+    
+    dashboard_widgets:
+        class: "%hedgebot_core.service.dashboard_widgets.class%"
+        arguments: [ '%hedgebot_core.layout_path%' ]
+        calls:
+            - [ setContainer,[ '@service_container' ] ]

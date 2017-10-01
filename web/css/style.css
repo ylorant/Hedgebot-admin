@@ -1,0 +1,109 @@
+/* Global layout */
+
+.sidebar .user-info
+{
+    background-repeat: repeat;
+}
+
+.sidebar .user-info
+{
+    height: auto;
+}
+
+.sidebar .user-info .info-container
+{
+    top: 0px;
+}
+
+.sidebar .user-info .info-container .user-helper-dropdown
+{
+    bottom: -6px;
+}
+
+.sidebar .user-info .info-container .user-helper-dropdown a
+{
+    color: white;
+}
+
+.block-header h1
+{
+    margin: 0 !important;
+    color: #666 !important;
+    font-weight: normal;
+    font-size: 24px;
+    text-shadow: 0px -1px 0px #fff;
+}
+
+.block-header
+{
+    text-transform: uppercase;
+}
+
+/* Settings right sidebar */
+
+.right-sidebar .nav-tabs li:only-child
+{
+    width: 100%;
+}
+
+.right-sidebar p 
+{
+    margin: 20px 15px 15px 15px;
+    font-weight: bold;
+    
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.right-sidebar .settings .setting-list
+{
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+.right-sidebar .settings .setting-list li
+{
+    padding: 15px;
+    position: relative;
+    border-top: 1px solid #eee;
+}
+
+.right-sidebar .settings .setting-list li .switch
+{
+    position: absolute;
+    top: 15px;
+    right: 5px;
+}
+
+/* Web 2.0 thingy */
+
+#options-indicator
+{
+    position: absolute;
+    right: 30px;
+    top: 100px;
+    
+    color: #555;
+    
+    font-family: 'Indie Flower', cursive;
+    font-size: 1.75em;
+}
+
+
+#options-indicator img
+{
+    position: relative;
+    top: -20px;
+    opacity: 0.65;
+}
+
+#options-indicator img.arrow-shadow
+{
+    position: relative;
+    left: -57px;
+    top: -21px;
+    z-index: -1;
+    filter: invert(100%);
+    opacity: 1;
+}
