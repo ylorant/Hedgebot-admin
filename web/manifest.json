@@ -1,5 +1,6 @@
 {
   "name": "Hedgebot",
+  "theme_color": "#3f51b5",
   "icons": [
     {
       "src": "launcher-icon.png",
