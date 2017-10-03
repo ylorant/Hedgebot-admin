@@ -7,6 +7,8 @@
         <title>{% block title %}{% endblock %} - HedgeBot Administration Interface</title>
         <!-- Favicon-->
         <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="launcher-icon.png" />
+        <link rel="manifest" href="manifest.json">
 
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -63,14 +65,19 @@
                 <!-- Top Bar -->
                 <nav class="navbar">
                     <div class="container-fluid">
-                        <div class="navbar-header">
-                            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                        <div class="navbar-header navbar-left">
                             <a href="javascript:void(0);" class="bars"></a>
-                            <a class="navbar-brand" href="{{ path('dashboard') }}">Hedge<strong>Bot</strong></a>
+                            <a class="navbar-brand" href="{{ path('dashboard') }}">
+                            	<picture>
+								    <source srcset="{{ asset('images/logo_big.png') }}" media="(max-width: 768px)">
+								    <source srcset="{{ asset('images/logo_mini.png') }}">
+	                            	<img src="{{ asset('images/logo_mini.png') }}" />
+                            	</picture>
+                        	</a>
                         </div>
 
                         {% if rightSidebarBlock is not empty %}
-                            <div class="collapse navbar-collapse" id="navbar-collapse">
+                            <div class="pull-right">
                                 <ul class="nav navbar-nav navbar-right">
                                     <li class="pull-right">
                                         <a href="javascript:void(0);" class="js-right-sidebar" data-close="true">
@@ -153,7 +160,7 @@
 
                     <section class="content">
                         {% if rightSidebarBlock is not empty %}
-                            <div id="options-indicator">
+                            <div id="options-indicator" class="hidden-xs">
                                 Settings menu
                                 <img src="{{ asset('images/options-arrow.png') }}" />
                             </div>

@@ -1,5 +1,40 @@
 /* Global layout */
 
+/* Navbar behavior overriding */
+
+.navbar-brand picture
+{
+    display: block;
+    position: absolute;
+    top: 5px;
+}
+
+.navbar .navbar-nav.navbar-right {
+        margin-right: 0;
+    }
+
+
+@media (max-width: 768px) {
+	.navbar-brand img {
+		max-height: 60px;
+	}
+	
+	.navbar .navbar-header {
+		width: auto;
+	    margin-bottom: -5px;
+	}
+	
+    .navbar .navbar-nav {
+        margin: 0;
+    }
+    
+    .navbar .js-right-sidebar {
+        margin-top: 17px;
+    }
+}
+
+
+
 .sidebar .user-info
 {
     background-repeat: repeat;
