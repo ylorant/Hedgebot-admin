@@ -33,7 +33,8 @@ class PluginDiscovererService
         
         foreach($files as $file)
         {
-            $pathParts = explode(DIRECTORY_SEPARATOR, trim($file->getPath(), DIRECTORY_SEPARATOR));
+            $filePath = str_replace(DIRECTORY_SEPARATOR, "/", $file->getPath());
+            $pathParts = explode("/", trim($filePath, "/"));
             $bundleName = end($pathParts);
             
             $class = PluginRouteLoader::PLUGINS_NAMESPACE. '\\'. $bundleName. '\\'. $file->getBasename('.php');
