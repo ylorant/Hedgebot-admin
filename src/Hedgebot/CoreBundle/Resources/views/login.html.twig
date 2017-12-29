@@ -13,8 +13,14 @@
 {% block body %}
     <div class="login-box">
         <div class="logo">
-            <a href="javascript:void(0);"><img src="{{ asset('images/logo.png') }}" alt="Hedgebot" /></a>
-            
+            <a href="javascript:void(0);">
+                <picture>
+                    <source srcset="{{ asset('images/logo-2x.png') }}" media="(min-resolution: 144dpi)">
+                    <source srcset="{{ asset('images/logo.png') }}">
+                    <img src="{{ asset('images/logo.png') }}" />
+                </picture>
+            </a>
+
         </div>
         <div class="card">
             <div class="body">

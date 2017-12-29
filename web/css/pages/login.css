@@ -10,12 +10,17 @@
     margin-left: -50%;
 }
 
-@media (max-width: 575px) {
+.login-page .logo img
+{
+    max-width: 600px;
+}
+
+@media (max-width: 768px) {
 	.login-page .logo img
 	{
 		max-width: 90%;
 	}
-	
+
 	.login-page .logo
 	{
 		position: relative;
