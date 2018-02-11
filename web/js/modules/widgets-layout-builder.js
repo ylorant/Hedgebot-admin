@@ -103,8 +103,6 @@ var WidgetsLayoutBuilder = {
      */
     bindUIActions: function()
     {
-        var widgetElements = this.widgetListElement.children('.widget');
-
         // Unbind previously bound events
         this.layoutSelectorElement.off('change');
         this.widgetListElement.off('click');

@@ -11,7 +11,11 @@
             <div class="block col-xs-12 col-lg-{{ blockData.width }} {{ blockData.class }}">
                 {% for blockWidget in userLayout.getBlockWidgets(blockName) %}
                     <div class="widget" data-type="{{ blockWidget.type }}" data-id="{{ blockWidget.id }}">
-                        {% include widgets[blockWidget.type].viewName with widgets[blockWidget.type].update(blockWidget.settings) %}
+                        {% if widgets[blockWidget.type] is not empty %}
+                            {% include widgets[blockWidget.type].viewName with widgets[blockWidget.type].update(blockWidget.settings) %}
+                        {% else %}
+                            <i class="text-danger">No template available for this widget.</i>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>

@@ -261,12 +261,12 @@ $.AdminBSB.navbar = {
 $.AdminBSB.input = {
     activate: function () {
         //On focus event
-        $('.form-control').focus(function () {
+        $('body').on('focus', '.form-control', function () {
             $(this).parent().addClass('focused');
         });
 
         //On focusout event
-        $('.form-control').focusout(function () {
+        $('body').on('focusout', '.form-control', function () {
             var $this = $(this);
             if ($this.parents('.form-group').hasClass('form-float')) {
                 if ($this.val() == '') { $this.parents('.form-line').removeClass('focused'); }

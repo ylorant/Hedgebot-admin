@@ -59,6 +59,10 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+# Breadcrumbs 
+white_october_breadcrumbs:
+    separator:          ''
+
 # Hedgebot core configuration (basically API)
 hedgebot_core:
     config_path: "%kernel.root_dir%/config/hedgebot.yml"

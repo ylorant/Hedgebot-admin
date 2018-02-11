@@ -114,7 +114,7 @@
                             {# Recursive menu generation macro #}
                             {% macro showRecursiveMenu(item) %}
                                 {% import _self as self %}
-                                <li class="{{ app.request.get('_route') == item.route ? "active" }}">
+                                <li class="{{ app.request.get('_route') == item.route or (item.route and app.request.requestUri starts with path(item.route)) ? "active" }}">
                                     <a {{ item.route ? 'href=' ~ path(item.route) : "" }} class="waves-effect {{ item.submenu is not empty ? "menu-toggle" : "" }}">
                                         {% if item.icon is not empty %}
                                             <i class="material-icons">{{ item.icon }}</i>
@@ -137,12 +137,6 @@
                             <div class="menu">
                                 <ul class="list">
                                     <li class="header">MAIN NAVIGATION</li>
-                                    <li class="{{ app.request.get('_route') == 'dashboard' ? "active" }}">
-                                        <a href="{{ path('dashboard') }}">
-                                            <i class="material-icons">dashboard</i>
-                                            <span>Dashboard</span>
-                                        </a>
-                                    </li>
                                     {% for item in menuGenerator.generate() %}
                                         {{ self.showRecursiveMenu(item) }}
                                     {% endfor %}
@@ -159,6 +153,14 @@
                     </section>
 
                     <section class="content">
+                        {% for label, messages in app.flashes %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ label }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+
                         {% if rightSidebarBlock is not empty %}
                             <div id="options-indicator" class="hidden-xs">
                                 Settings menu
@@ -167,6 +169,12 @@
                         {% endif %}
 
                         <div class="container-fluid">
+                            {% block main_title %}{% endblock %}
+
+                            {% block breadcrumbs %}
+                                {{ wo_render_breadcrumbs() }}
+                            {% endblock %}
+
                             {% block content %}{% endblock %}
                         </div>
                     </section>

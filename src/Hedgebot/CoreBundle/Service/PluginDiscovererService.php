@@ -6,6 +6,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Hedgebot\CoreBundle\Routing\PluginRouteLoader;
 use Hedgebot\CoreBundle\Interfaces\PluginBundleInterface;
+use Hedgebot\CoreBundle\Exception\RPCException;
 
 class PluginDiscovererService
 {
@@ -48,7 +49,7 @@ class PluginDiscovererService
         // Getting plugin list from the bot
         $endpoint = $this->apiClient->endpoint('/plugin');
         $loadedPlugins = $endpoint->getList();
-        
+
         // Filtering plugin classes to keep only the enabled ones to load
         $filterFunction = function($plugin) use($loadedPlugins)
         {

@@ -16,6 +16,8 @@ class HedgebotCoreBundle extends Bundle implements MenuProviderInterface
         
         // Sub-menu
         $baseItem
+            ->item('Dashboard', 'dashboard', 'dashboard')->end()
+            ->item('Permissions', 'security_index', 'lock')->end()
             ->item('Settings', null, 'settings')
                 ->children()
                     ->item('Widgets', 'settings_widgets')->end()

@@ -1,21 +1,60 @@
-{% use 'form_div_layout.html.twig' with form_label as base_form_label %}
+{% use 'bootstrap_3_layout.html.twig' %}
 
-{% block form_row -%}
+{%- block form_row -%}
     <div class="form-group form-float {% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
-        <div class="form-line">
+        <div class="form-line{{ form.vars.disabled ? " disabled" : "" }}">
             {{- form_widget(form) -}}
             {{- form_label(form) -}}
         </div>
         {{- form_errors(form) -}}
     </div>
-{%- endblock form_row %}
+{%- endblock form_row -%}
 
-{% block form_label -%}
+{%- block form_label -%}
     {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' form-label')|trim}) -%}
-    {{- block('base_form_label') -}}
-{%- endblock form_label %}
+    {{- parent() -}}
+{%- endblock form_label -%}
 
 {%- block form_widget_simple -%}
     {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
     {{- parent() -}}
 {%- endblock form_widget_simple -%}
+
+{%- block button_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('btn-default') ~ ' btn waves-effect')|trim}) -%}
+    {{- parent() -}}
+{%- endblock button_widget -%}
+
+{%- block submit_widget -%}
+    {%- set attr = attr|merge({class: attr.class|default('btn-primary')}) -%}
+    {{- parent() -}}
+{%- endblock submit_widget -%}
+
+{%- block checkbox_widget -%}
+    {%- set parent_label_class = parent_label_class|default(label_attr.class|default('')) -%}
+    {%- if 'checkbox-inline' not in parent_label_class -%}
+        <div class="checkbox">
+    {%- endif -%}
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            <label for="{{ id }}">{{ label }}</label>
+    {%- if 'checkbox-inline' not in parent_label_class -%}
+        </div>
+    {%- endif -%}
+{%- endblock checkbox_widget -%}
+
+{%- block choice_row -%}
+    <div class="form-group form-float {% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock choice_row -%}
+
+{% block switch_widget %}
+<div class="switch switch-inline">
+    <label>
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
+        <span class="lever"></span>
+    </label>
+</div>
+{% endblock switch_widget %}

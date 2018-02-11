@@ -8,11 +8,18 @@
     </form>
 {% endblock %}
 
-{% block content %}
+{% block main_title %}
     <div class="block-header">
         <h1>Widgets - Hedgebot settings</h1>
     </div>
+    <div class="form-main-action pull-right">
+            <button class="btn btn-primary btn-lg waves-effect" type="submit">
+                Save layout
+            </button>
+    </div>
+{% endblock %}
 
+{% block content %}
     <div class="row">
         <div class="col-lg-12">
             <div class="block-header">
@@ -32,9 +39,7 @@
 
     <div class="row">
         <div class="col-lg-4 col-lg-offset-4">
-            <button class="btn btn-primary btn-lg btn-block waves-effect" type="submit">
-                Save layout
-            </button>
+
         </div>
     </div>
 

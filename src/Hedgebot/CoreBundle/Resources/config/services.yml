@@ -5,6 +5,7 @@ parameters:
     hedgebot_core.service.dashboard_widgets.class: Hedgebot\CoreBundle\Service\DashboardWidgetsManagerService
     hedgebot_core.routing.plugins.class: Hedgebot\CoreBundle\Routing\PluginRouteLoader
     hedgebot_core.twig.utilities.class: Hedgebot\CoreBundle\Twig\UtilitiesExtension
+    hedgebot_core.event_subscriber.controller_hooks.class: Hedgebot\CoreBundle\EventSubscriber\ControllerHooksSubscriber
 
 services:
     hedgebot_api:
@@ -41,3 +42,8 @@ services:
         arguments: [ '%hedgebot_core.layout_path%' ]
         calls:
             - [ setContainer,[ '@service_container' ] ]
+    
+    controller_hooks:
+        class: "%hedgebot_core.event_subscriber.controller_hooks.class%"
+        tags:
+            - { name: kernel.event_subscriber }

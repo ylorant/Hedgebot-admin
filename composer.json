@@ -32,7 +32,8 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "twig/twig": "^1.0||^2.0",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "php-curl-class/php-curl-class": "^8.0"
+        "php-curl-class/php-curl-class": "^8.0",
+        "whiteoctober/breadcrumbs-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

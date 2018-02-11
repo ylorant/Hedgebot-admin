@@ -10,12 +10,24 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class SettingsController extends BaseController
 {
+    public function beforeActionHook()
+    {
+        parent::beforeActionHook();
+
+        $breadcrumbs = $this->get('white_october_breadcrumbs');
+        $breadcrumbs->addItem("Settings");
+    }
+
     /** Widget settings page.
      * @Route("/settings/widgets", name="settings_widgets")
      */
     public function widgetSettingsAction()
     {
         $widgetsContainer = $this->get('dashboard_widgets');
+        $breadcrumbs = $this->get('white_october_breadcrumbs');
+        $router = $this->get("router");
+        
+        $breadcrumbs->addItem("Widgets", $router->generate("settings_widgets"));
 
         $templateVars = [];
         $templateVars['widgets'] = $widgetsContainer->getAvailableWidgets();
