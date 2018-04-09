@@ -44,7 +44,7 @@ class DashboardWidgetsManagerService
         {
             // Keep only bundles that are plugin bundles
             if($bundle instanceof DashboardWidgetsProviderInterface)
-            	$availableWidgets += $bundle->getDashboardWidgets();
+            	$availableWidgets = array_merge($availableWidgets, $bundle->getDashboardWidgets());
         }
 
         return $availableWidgets;

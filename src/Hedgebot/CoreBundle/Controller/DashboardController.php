@@ -56,4 +56,14 @@ class DashboardController extends Controller
 
         return new JsonResponse($updatedData);
     }
+
+    /**
+     * Gotta go fast ;)
+     * 
+     * @Route("/gotta-go-fast", name="gotta-go-fast")
+     */
+    public function gottaGoFastAction()
+    {
+        return $this->render("HedgebotCoreBundle::route/gotta-go-fast.html.twig");
+    }
 }

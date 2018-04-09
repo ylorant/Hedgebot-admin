@@ -33,7 +33,9 @@
         "twig/twig": "^1.0||^2.0",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "php-curl-class/php-curl-class": "^8.0",
-        "whiteoctober/breadcrumbs-bundle": "^1.2"
+        "whiteoctober/breadcrumbs-bundle": "^1.2",
+        "nicklaw5/twitch-api-php": "^1.1",
+        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

@@ -4,7 +4,9 @@ var SymfonyCollections =
         collectionSelector: '[data-prototype]', // Default collection selector will use the tags that have a prototype data attribute
         itemSelector: '[data-item]', // Default selector for the items in the collection
         addButtonSelector: '[data-action="collection-add"]', // Selector pointing to where the add button is located inside the location
-        deleteButtonSelector: '[data-action="collection-delete"]' // Selector pointing to where the delete button is located inside 
+        deleteButtonSelector: '[data-action="collection-delete"]', // Selector pointing to where the delete button is located inside a row
+        newItemInsertSelector: null, // Selector pointing to where the new elements will be inserted. Is optional, if not given, new elements
+                                     // will be inserted before the add button. If given, they'll be inserted before that element.
     },
 
     collectionElements: null,
@@ -64,7 +66,7 @@ var SymfonyCollections =
 
         // If we can't find the stored item counter, we compute it from the actual elements
         if (!counter)
-            collection.children(':not(' + this.options.addButtonSelector + ')').length;
+            counter = collection.children(':not(' + this.options.addButtonSelector + ')').length;
         
         // Generate the new element
         var newElement = collection.attr('data-prototype');
@@ -75,7 +77,12 @@ var SymfonyCollections =
 
         // add the new element just before the add button
         var newElementDOM = $(newElement);
-        $(ev.currentTarget).before(newElementDOM);
+        var insertTarget = ev.currentTarget;
+
+        if(this.options.newItemInsertSelector)
+            insertTarget = collection.find(this.options.newItemInsertSelector);
+
+        $(insertTarget).before(newElementDOM);
 
         this.bindDeleteEvent(counter, newElementDOM);
     },

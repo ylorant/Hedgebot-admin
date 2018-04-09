@@ -1,0 +1,15 @@
+.chat-widget .body
+{
+    position: relative;
+    padding: 0px;
+}
+
+.chat-widget .body iframe
+{
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 600px;
+    border:0px;
+}

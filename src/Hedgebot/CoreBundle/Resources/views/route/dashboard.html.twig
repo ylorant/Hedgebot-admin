@@ -1,6 +1,10 @@
 {% extends 'HedgebotCoreBundle::base.html.twig' %}
 {% block title %}Dashboard{% endblock %}
 
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/dashboard.css') }}" rel="stylesheet" />
+{% endblock %}
+
 {% block content %}
     <div class="block-header">
         <h1>Dashboard</h1>

@@ -87,7 +87,10 @@ class SecurityController extends BaseController
             {
                 $roleCreated = $securityEndpoint->createRole($roleData->id);
                 if(!$roleCreated)
+                {
                     $this->addFlash('danger', 'Role cannot be created.');
+                    return $this->redirect($router->generate('security_index'));
+                }
                 
                 $roleId = $roleData->id;
             }
@@ -97,7 +100,9 @@ class SecurityController extends BaseController
                 $roleSaved = $securityEndpoint->saveRole($roleId, $roleData);
 
                 if($roleSaved)
-                    $this->addFlash('info', 'Role saved.');
+                    $this->addFlash('success', 'Role saved.');
+                else
+                    $this->addFlash('danger', 'Cannot save role.');
             }
 
             return $this->redirect($router->generate("security_role_edit", ['roleId' => $roleId]));
@@ -111,5 +116,24 @@ class SecurityController extends BaseController
         ];
 
         return $this->render('HedgebotCoreBundle::route/security/role.html.twig', $templateVars);
+    }
+
+    /** Delete role action.
+     * Deletes a role by its ID.
+     * 
+     * @Route ("/security/role/delete/{roleId}", name="security_role_delete")
+     */
+    public function deleteRoleAction($roleId)
+    {
+        $router = $this->get("router");
+        $securityEndpoint = $this->get('hedgebot_api')->endpoint('/security');
+        $roleDeleted = $securityEndpoint->deleteRole($roleId);
+        
+        if($roleDeleted)
+            $this->addFlash('success', "Role deleted.");
+        else
+            $this->addFlash('danger', 'Failed to delete role.');
+        
+        return $this->redirect($router->generate("security_index"));
     }
 }

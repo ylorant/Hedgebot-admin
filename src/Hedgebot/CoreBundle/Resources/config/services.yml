@@ -3,6 +3,7 @@ parameters:
     hedgebot_core.service.plugin_discoverer.class: Hedgebot\CoreBundle\Service\PluginDiscovererService
     hedgebot_core.service.menu_generator.class: Hedgebot\CoreBundle\Service\MenuGeneratorService
     hedgebot_core.service.dashboard_widgets.class: Hedgebot\CoreBundle\Service\DashboardWidgetsManagerService
+    hedgebot_core.service.twitch_client.class: Hedgebot\CoreBundle\Service\TwitchClientService
     hedgebot_core.routing.plugins.class: Hedgebot\CoreBundle\Routing\PluginRouteLoader
     hedgebot_core.twig.utilities.class: Hedgebot\CoreBundle\Twig\UtilitiesExtension
     hedgebot_core.event_subscriber.controller_hooks.class: Hedgebot\CoreBundle\EventSubscriber\ControllerHooksSubscriber
@@ -42,6 +43,13 @@ services:
         arguments: [ '%hedgebot_core.layout_path%' ]
         calls:
             - [ setContainer,[ '@service_container' ] ]
+    
+    twitch_client:
+        class: "%hedgebot_core.service.twitch_client.class%"
+        arguments: [ '@router', 'twitch_oauth_redirect' ]
+        calls:
+            - [ setScope, [ ['channel_editor', 'channel_read'] ] ]
+            - [ initFromHedgebotApiClient, ['@hedgebot_api'] ]
     
     controller_hooks:
         class: "%hedgebot_core.event_subscriber.controller_hooks.class%"

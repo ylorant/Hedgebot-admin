@@ -13,6 +13,8 @@ class CustomCommandsController extends Controller
      */
     public function customCommandsMainAction(Request $request)
     {
+        
+
         return new Response("Hello world!");
     }
 }

@@ -93,7 +93,9 @@
 
             RoleActions.init(roleOptions);
 
-            var collectionOptions = {};
+            var collectionOptions = {
+                newItemInsertSelector: '.role-collection-add-container'
+            };
             SymfonyCollections.init(collectionOptions);
         });
     </script>

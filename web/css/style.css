@@ -180,3 +180,9 @@
     -webkit-transform: scaleX(0);
     transform: scaleX(0);
 }
+
+/* Table tweaks */
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}

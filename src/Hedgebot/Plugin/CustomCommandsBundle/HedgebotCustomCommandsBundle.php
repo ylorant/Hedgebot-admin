@@ -25,14 +25,7 @@ class HedgebotCustomCommandsBundle extends Bundle implements PluginBundleInterfa
      */
     public function getMenu()
     {
-        $baseItem = new MenuItem('Custom commands', null, 'list');
-        
-        // Sub-menu
-        $baseItem
-            ->children()
-                ->item('Sub-item 1', 'custom_commands_list', null)->end()
-                ->item('Sub-item 2')->end()
-            ->end();
+        $baseItem = new MenuItem('Custom commands', 'custom_commands_list', 'list');
         
         return $baseItem;
     }
@@ -42,9 +35,6 @@ class HedgebotCustomCommandsBundle extends Bundle implements PluginBundleInterfa
      */
     public function getDashboardWidgets()
     {
-        return [
-            new SampleWidget(),
-            new SecondSampleWidget()
-        ];
+        return [];
     }
 }
