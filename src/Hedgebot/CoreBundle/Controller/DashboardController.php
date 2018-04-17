@@ -35,8 +35,9 @@ class DashboardController extends Controller
         // If the layout can't be loaded, then we set a default one that warns him to create one to his likings.
         if(!$layoutLoaded)
         {
+            $defaultWidget = new DefaultWidget();
             $userLayout->setType($widgetsContainer::DEFAULT_LAYOUT);
-            $userLayout->addWidget('main', DefaultWidget::getId());
+            $userLayout->addWidget('main', $defaultWidget->getId());
         }
 
         $templateVars = [];
