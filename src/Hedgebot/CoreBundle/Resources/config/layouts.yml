@@ -1,4 +1,11 @@
 layouts:
+  default:
+    name: 1 block
+    blocks:
+      main:
+        title: Main block
+        width: 12
+        class: main-zone
   4-8:
     name: 2 blocks 25/75
     blocks:

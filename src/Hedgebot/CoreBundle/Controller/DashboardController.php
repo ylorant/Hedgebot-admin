@@ -5,6 +5,7 @@ use Hedgebot\CoreBundle\Entity\DashboardLayout;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Hedgebot\CoreBundle\Widget\DefaultWidget\DefaultWidget;
 
 class DashboardController extends Controller
 {
@@ -21,10 +22,22 @@ class DashboardController extends Controller
         foreach($widgetList as $widget)
             $widgetMap[$widget->getId()] = $widget;
 
+        $userLayoutArray = [];
+        $userSettings = $this->getUser()->getSettings();
+
+        if(!empty($userSettings->dashboardLayout))
+            $userLayoutArray = $userSettings->dashboardLayout;
+        
         // Restore dashboard layout from db
         $userLayout = new DashboardLayout($widgetsContainer);
-        $userLayoutArray = $this->getUser()->getSettings()->dashboardLayout;
-        $userLayout->fromArray($userLayoutArray);
+        $layoutLoaded = $userLayout->fromArray($userLayoutArray);
+
+        // If the layout can't be loaded, then we set a default one that warns him to create one to his likings.
+        if(!$layoutLoaded)
+        {
+            $userLayout->setType($widgetsContainer::DEFAULT_LAYOUT);
+            $userLayout->addWidget('main', DefaultWidget::getId());
+        }
 
         $templateVars = [];
         $templateVars['layout'] = $layouts[$userLayout->getType()];

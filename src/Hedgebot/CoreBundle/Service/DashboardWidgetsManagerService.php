@@ -21,6 +21,8 @@ class DashboardWidgetsManagerService
     /** @var Layouts cache, to avoid reading them more than once per page load */
     protected $layoutCache;
 
+    const DEFAULT_LAYOUT = "default";
+
     /**
      * Constructor.
      *

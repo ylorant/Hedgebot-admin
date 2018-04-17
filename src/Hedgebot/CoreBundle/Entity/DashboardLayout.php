@@ -40,6 +40,7 @@ class DashboardLayout
      * Adds a widget to the layout.
      * @param  string   $block          The block the widget belongs to.
      * @param  string   $widgetType     The widget type.
+     * @param  string   $id             The widget's ID. If omitted, a random one will be generated.
      * @param  int      $position       The position of the widget in its block. If omitted, it will be put at the end.
      * @param  array    $widgetSettings The widget particular settings. Defaults to an empty array.
      * @return string                   The new widget's UUID.

@@ -6,6 +6,7 @@ use Hedgebot\CoreBundle\Interfaces\MenuProviderInterface;
 use Hedgebot\CoreBundle\Plugin\Menu\MenuItemList;
 use Hedgebot\CoreBundle\Interfaces\DashboardWidgetsProviderInterface;
 use Hedgebot\CoreBundle\Widget\ChatWidget\ChatWidget;
+use Hedgebot\CoreBundle\Widget\DefaultWidget\DefaultWidget;
 
 class HedgebotCoreBundle extends Bundle implements MenuProviderInterface, DashboardWidgetsProviderInterface
 {
@@ -41,7 +42,8 @@ class HedgebotCoreBundle extends Bundle implements MenuProviderInterface, Dashbo
     public function getDashboardWidgets()
     {
         return [
-            new ChatWidget()
+            new ChatWidget(),
+            new DefaultWidget()
         ];
     }
     
