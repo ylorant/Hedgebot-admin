@@ -7,11 +7,13 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Hedgebot\CoreBundle\Routing\PluginRouteLoader;
 use Hedgebot\CoreBundle\Interfaces\PluginBundleInterface;
 use Hedgebot\CoreBundle\Exception\RPCException;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 
 class PluginDiscovererService
 {
     protected $apiClient;
     protected $configPath;
+    protected $clearCache;
     
     use ContainerAwareTrait;
     
@@ -19,6 +21,7 @@ class PluginDiscovererService
     {
         $this->apiClient = $apiClient;
         $this->configPath = $configPath;
+        $this->clearCache = false;
     }
     
     public function discoverPlugins()
@@ -55,6 +58,7 @@ class PluginDiscovererService
         {
             return in_array($plugin, $loadedPlugins);
         };
+
         
         $bundlesPluginsToLoad = array_filter($pluginsBundles, $filterFunction, ARRAY_FILTER_USE_KEY);
         
@@ -62,9 +66,9 @@ class PluginDiscovererService
         if(is_file($this->configPath))
             $config = Yaml::parse(file_get_contents($this->configPath));
         else
-            $config = ['bundles' => [], 'settings' => []];
+            $config = ['bundles' => []];
         
-        $config['bundles'] = $pluginsBundles;
+        $config['bundles'] = $bundlesPluginsToLoad;
         $yaml = Yaml::dump($config);
         file_put_contents($this->configPath, $yaml);
         
@@ -72,12 +76,24 @@ class PluginDiscovererService
     }
     
     /**
-     * Clears up the cache to force routes reloading.
+     * Schedules a cache clear at page execution end to force route reloading.
      */
-    public function clearCache()
+    public function scheduleCacheClear()
     {
-        $fs = $this->container->get('filesystem');
-        $fs->remove($this->container->getParameter('kernel.cache_dir'));
+        $this->clearCache = true;
+    }
+
+    /**
+     * Event called on kernel termination, will clear the cache if asked by someone (controller, another event listener...).
+     * 
+     * @param PostResponseEvent $event The event given by the controller.
+     */
+    public function onKernelTerminate(PostResponseEvent $event)
+    {
+        if ($this->clearCache) {
+            $fs = $this->container->get('filesystem');
+            $fs->remove($this->container->getParameter('kernel.cache_dir'));
+        }
     }
     
     /**
@@ -86,6 +102,6 @@ class PluginDiscovererService
     public function onLoginSuccess()
     {
         $this->discoverPlugins();
-        $this->clearCache();
+        $this->scheduleCacheClear();
     }
 }
