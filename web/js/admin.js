@@ -268,8 +268,16 @@ $.AdminBSB.input = {
         //On focusout event
         $('body').on('focusout', '.form-control', function () {
             var $this = $(this);
+
+            // Bootstrap select: we need to get the child
+            if($this.hasClass('bootstrap-select')) {
+                $this = $this.find('select.form-control');
+            }
+
             if ($this.parents('.form-group').hasClass('form-float')) {
-                if ($this.val() == '') { $this.parents('.form-line').removeClass('focused'); }
+                if ($this.val() == '' || $this.val() instanceof Array && $this.val().length == 0 || $this.val() === null) {
+                    $this.parents('.form-line').removeClass('focused');
+                }
             }
             else {
                 $this.parents('.form-line').removeClass('focused');

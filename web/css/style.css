@@ -181,6 +181,26 @@
     transform: scaleX(0);
 }
 
+.form-float .input-group .form-control
+{
+    z-index: 0;
+}
+
+.form-float .bootstrap-select > .dropdown-toggle
+{
+    z-index: 0;
+}
+
+.form-float .bootstrap-select > .dropdown-toggle .filter-option
+{
+    opacity: 0;
+}
+
+.form-float .focused .bootstrap-select > .dropdown-toggle .filter-option
+{
+    opacity: 1;
+}
+
 /* Table tweaks */
 
 .table > tbody > tr > td {

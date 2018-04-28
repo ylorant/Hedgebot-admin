@@ -2,6 +2,7 @@
 {
     position: relative;
     padding: 0px;
+    line-height: 0px;
 }
 
 .chat-widget .body iframe
