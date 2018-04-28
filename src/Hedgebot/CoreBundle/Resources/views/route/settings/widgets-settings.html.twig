@@ -123,10 +123,10 @@
     <script type="text/javascript">
         $(function()
         {
-            {# Layouts are given using a Twig variable #}
+            // Layout list
             var layouts = {{ layouts|json_encode()|raw }};
 
-            {# Layout builder options #}
+            // Layout builder options
             var options = {
                 layouts: layouts,
                 layoutWorkspace: "#widget-layout-workspace",
