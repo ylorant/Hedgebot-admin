@@ -2,7 +2,7 @@
 {% block title %}Custom commands - Hedgebot{% endblock %}
 
 {% block stylesheets %}
-    <link href="{{ asset('css/pages/dashboard.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/pages/plugin/customcommands.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block main_title %}
@@ -25,55 +25,16 @@
                 <div class="header">
                     <h2>Commands</h2>
                 </div>
+                    <div class="hidden" id="block-command-template">
+                        {% set command = {'name': '', 'text': '', 'channels': []} %}
+                        {% include 'HedgebotCustomCommandsBundle::route/command.html.twig' with {'isTemplate': true, 'command': command, 'availableChannels': availableChannels} %}
+                    </div>
 
-                <div class="body clearfix" id="commands">
-                    {% for command in commands %}
-                        <div class="row clearfix command" id="command-{{ command.name }}" data-name="{{ command.name }}" data-saved="true">
-                            <div class="col-lg-2 col-xs-12">
-                                <div class="form-group form-float">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">!</span>
-                                        <div class="form-line">
-                                            <input type="text" name="name" class="form-control" value="{{ command.name }}" />
-                                            <label class="form-label">Command</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6 col-xs-12">
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" name="text" class="form-control" value="{{ command.text }}" />
-                                        <label class="form-label">Reply text</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3 col-xs-12">
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <select name="channels" class="form-control" multiple>
-                                            {% for channel in availableChannels %}
-                                                <option value="{{ channel }}" {{ channel in command.channels ? "selected" : "" }}>{{ channel }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <label class="form-label">Channels</label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-lg-1 col-xs-12 text-right">
-                                <a data-action="save" data-target="#command-{{ command.name }}" title="Update" class="btn btn-success">
-                                    <i class="material-icons md-18">done</i>
-                                </a>
-        
-                                <a data-action="delete" data-target="#command-{{ command.name }}" title="Delete" class="btn btn-danger">
-                                    <i class="material-icons md-18">clear</i>
-                                </a>
-                            </div>
-                        </div>
-                    {% endfor %}
+                    <div id="commands">
+                        {% for command in commands %}
+                            {% include 'HedgebotCustomCommandsBundle::route/command.html.twig' with {'isTemplate': false, 'command': command, 'availableChannels': availableChannels} %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -88,6 +49,7 @@
         {
             var options = {
                 commandContainerSelector: "#commands",
+                commandTemplateSelector: "#block-command-template > div",
                 commandSelector: ".command",
                 addSelector: '[data-action="new-command"]',
                 deleteRoute: "custom_commands_delete",

@@ -41,7 +41,13 @@ class CustomCommandsController extends BaseController
      */
     public function deleteCommandAction($name)
     {
-        return null;
+        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/custom-commands');
+        $deleted = $endpoint->deleteCommand($name);
+
+        $response = new JsonResponse();
+        $response->setData($deleted);
+
+        return $response;
     }
 
     /**
