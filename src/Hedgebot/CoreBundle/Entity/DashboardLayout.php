@@ -66,10 +66,8 @@ class DashboardLayout
      */
     public function removeWidget($widgetId)
     {
-        foreach($this->widgets as $index => $widget)
-        {
-            if($widget->id == $widgetId)
-            {
+        foreach ($this->widgets as $index => $widget) {
+            if ($widget->id == $widgetId) {
                 unset($this->widgets[$index]);
                 return true;
             }
@@ -93,10 +91,10 @@ class DashboardLayout
      */
     public function getWidgetById($widgetId)
     {
-        foreach($this->widgets as $widget)
-        {
-            if($widget->id == $widgetId)
+        foreach ($this->widgets as $widget) {
+            if ($widget->id == $widgetId) {
                 return $widget;
+            }
         }
 
         return null;
@@ -120,10 +118,10 @@ class DashboardLayout
     {
         $widgets = [];
 
-        foreach($this->widgets as $widget)
-        {
-            if($widget->block == $blockId)
+        foreach ($this->widgets as $widget) {
+            if ($widget->block == $blockId) {
                 $widgets[] = $widget;
+            }
         }
 
         return $widgets;
@@ -148,8 +146,9 @@ class DashboardLayout
      */
     public function fromArray($data)
     {
-        if(empty($data['type']) || empty($data['widgets']))
+        if (empty($data['type']) || empty($data['widgets'])) {
             return false;
+        }
 
         $this->type = $data['type'];
         $this->widgets = $data['widgets'];

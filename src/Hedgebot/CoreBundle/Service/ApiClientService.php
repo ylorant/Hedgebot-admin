@@ -15,8 +15,9 @@ class ApiClientService
         $this->client = new Client();
         $this->client->setBaseUrl($uri);
         
-        if(!empty($token))
+        if (!empty($token)) {
             $this->client->setAccessToken($token);
+        }
     }
     
     /**

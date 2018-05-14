@@ -29,7 +29,6 @@ class MenuItemList implements Iterator
     
     public function add(MenuItem $item)
     {
-        
         $this->items[] = $item;
         return $item;
     }
@@ -38,17 +37,16 @@ class MenuItemList implements Iterator
     {
         $foundIndex = null;
         
-        foreach($this->items as $index => $item)
-        {
-            if($item->getTitle() === $title)
-            {
+        foreach ($this->items as $index => $item) {
+            if ($item->getTitle() === $title) {
                 $foundIndex = $index;
                 break;
             }
         }
         
-        if(!empty($foundIndex))
+        if (!empty($foundIndex)) {
             unset($this->items[$foundIndex]);
+        }
         
         return $this;
     }

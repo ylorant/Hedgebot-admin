@@ -42,10 +42,10 @@ class SetupCommand extends ContainerAwareCommand
         
         
         $output->write("Checking extensions...");
-        foreach(self::REQUIRED_EXTENSIONS as $extension)
-        {
-            if(!extension_loaded($extension))
+        foreach (self::REQUIRED_EXTENSIONS as $extension) {
+            if (!extension_loaded($extension)) {
                 return $this->error($input, $output, "Extension ". $extension. " isn't loaded.");
+            }
         }
         
         $output->writeln(["OK", ""]);
@@ -110,38 +110,36 @@ class SetupCommand extends ContainerAwareCommand
         ]);
         
         // Loop until a valid database file is set
-        while(true)
-        {
+        while (true) {
             $dbLocation = $helper->ask($input, $output, $dbLocQuestion);
             $dbTestLocation = null;
             
             // Set the basedir for the location if it isn't an absolute location
-            if((PHP_OS == 'WINNT' && !preg_match('#^[a-zA-Z]:\\\\#', $dbLocation)) || $dbLocation[0] != '/')
-            {
+            if ((PHP_OS == 'WINNT' && !preg_match('#^[a-zA-Z]:\\\\#', $dbLocation)) || $dbLocation[0] != '/') {
                 $dbTestLocation = $kernel->getRootDir(). DIRECTORY_SEPARATOR. $dbLocation;
                 $dbLocation = '%kernel.root_dir%'. DIRECTORY_SEPARATOR. $dbLocation;
-            }
-            else
+            } else {
                 $dbTestLocation = $dbLocation;
+            }
             
             // Check if file exists
-            if(file_exists($dbTestLocation))
-            {
+            if (file_exists($dbTestLocation)) {
                 // Ask if the user want to erase the db file, and go back to asking a new location if not
                 $eraseDb = $helper->ask($input, $output, $dbExistsQuestion);
                 
-                if(!$eraseDb)
+                if (!$eraseDb) {
                     continue;
+                }
             }
             
             // Check if directory for the entered file exists, and ask to create it if needed
             $enteredDir = pathinfo($dbTestLocation, PATHINFO_DIRNAME);
-            if(!is_dir($enteredDir))
-            {
+            if (!is_dir($enteredDir)) {
                 $createDirectory = $helper->ask($input, $output, $dbDirectoryQuestion);
                 
-                if(!$createDirectory)
+                if (!$createDirectory) {
                     continue;
+                }
                 
                 mkdir($enteredDir, 0777, true);
             }
@@ -169,8 +167,7 @@ class SetupCommand extends ContainerAwareCommand
             "Ensure that the bot is started before validating settings."
         ]);
         
-        while(true)
-        {
+        while (true) {
             $output->writeln("");
             
             // Ask credentials
@@ -178,30 +175,28 @@ class SetupCommand extends ContainerAwareCommand
             $botToken = null;
             
             // Remove http URN
-            if(substr($botAddress, 0, 7) == "http://")
+            if (substr($botAddress, 0, 7) == "http://") {
                 $botAddress = substr($botAddress, 7);
+            }
             
-            if($helper->ask($input, $output, $hasTokenQuestion))
+            if ($helper->ask($input, $output, $hasTokenQuestion)) {
                 $botToken = $helper->ask($input, $output, $botTokenQuestion);
+            }
             
             // Test bot connection
             $output->writeln("");
             $output->write("Testing bot connection...");
             
-            try
-            {
+            try {
                 $apiService = new ApiClientService($botAddress, $botToken);
                 $endpoint = $apiService->endpoint("/");
                 $pingResult = $endpoint->ping();
                 
-                if($pingResult)
-                {
+                if ($pingResult) {
                     $output->writeln("OK");
                     break;
                 }
-            }
-            catch(RPCException $e)
-            {
+            } catch (RPCException $e) {
                 $this->error($input, $output, $e->getMessage());
                 continue;
             }

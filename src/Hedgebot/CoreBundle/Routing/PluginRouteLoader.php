@@ -23,18 +23,15 @@ class PluginRouteLoader extends Loader
         $collection = new RouteCollection();
         
         // Checking each class namespace
-        foreach($this->bundles as $bundle)
-        {
-            if(is_subclass_of($bundle, PluginBundleInterface::class))
-            {
+        foreach ($this->bundles as $bundle) {
+            if (is_subclass_of($bundle, PluginBundleInterface::class)) {
                 $bundleParts = explode('\\', $bundle);
                 $class = end($bundleParts);
                 $resource = '@'. $class. '/Resources/config/routing.yml';
                 $resourceFile = $this->kernel->locateResource($resource);
                 $type = 'yaml';
                 
-                if(is_file($resourceFile))
-                {
+                if (is_file($resourceFile)) {
                     $importedRoutes = $this->import($resource, $type);
                     $collection->addCollection($importedRoutes);
                 }

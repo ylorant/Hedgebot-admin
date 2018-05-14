@@ -27,8 +27,9 @@ class RoleType extends AbstractType
     {
         // Build parent roles choice list
         $rolesChoiceList = [];
-        foreach($options['roles'] as $role)
+        foreach ($options['roles'] as $role) {
             $rolesChoiceList[$role->name] = $role->id;
+        }
 
         $builder
             ->add('id', TextType::class, ['label' => 'Role ID', 'disabled' => !$options['allowIdEdit']])

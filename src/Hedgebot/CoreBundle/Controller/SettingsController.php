@@ -35,8 +35,7 @@ class SettingsController extends BaseController
         $templateVars['savedLayout'] = null;
 
         $userSettings = $this->getUser()->getSettings();
-        if(!empty($userSettings->dashboardLayout))
-        {
+        if (!empty($userSettings->dashboardLayout)) {
             $userLayout = new DashboardLayout($widgetsContainer);
             $userLayout->fromArray($userSettings->dashboardLayout);
             $templateVars['savedLayout'] = $userLayout;
@@ -57,10 +56,11 @@ class SettingsController extends BaseController
         $widget = $widgetsContainer->getWidgetByName($widgetName);
         $formTypeClass = $widget->getSettingsFormType();
 
-        if(!empty($formTypeClass))
+        if (!empty($formTypeClass)) {
             $viewParams['form'] = $this->createForm($formTypeClass)->createView();
-        else
+        } else {
             $viewParams['form'] = null;
+        }
 
         return $this->render('HedgebotCoreBundle::route/settings/widget-settings-param-form.html.twig', $viewParams);
     }
@@ -80,8 +80,7 @@ class SettingsController extends BaseController
         $widgetsContainer = $this->get('dashboard_widgets');
 
         // Checking if there is data set in the request body
-        if($request->request->has('layout') && $request->request->has('widgets'))
-        {
+        if ($request->request->has('layout') && $request->request->has('widgets')) {
             $em = $this->get('doctrine')->getManager();
 
             // Getting POST data
@@ -92,19 +91,19 @@ class SettingsController extends BaseController
             $layoutModel = $widgetsContainer->getLayoutById($layoutModelId);
             $userLayout = new DashboardLayout($widgetsContainer);
 
-            if(!empty($layoutModel))
-            {
+            if (!empty($layoutModel)) {
                 $userLayout->setType($layoutModelId);
 
-                foreach($widgets as $widget)
-                {
+                foreach ($widgets as $widget) {
                     // Avoid errors because data being sent as form values, empty elements aren't sent.
-                    if(empty($widget['id']))
+                    if (empty($widget['id'])) {
                         $widget['id'] = null;
+                    }
 
                     // ditto
-                    if(empty($widget['settings']))
+                    if (empty($widget['settings'])) {
                         $widget['settings'] = [];
+                    }
 
                     $userLayout->addWidget($widget['block'], $widget['type'], $widget['id'], $widget['position'], $widget['settings']);
                 }
@@ -116,7 +115,7 @@ class SettingsController extends BaseController
                 $userSettings->dashboardLayout = $userLayout->toArray();
                 $user->setSettings($userSettings);
 
-    			$em->persist($user);
+                $em->persist($user);
                 $em->flush();
 
                 $success = true;

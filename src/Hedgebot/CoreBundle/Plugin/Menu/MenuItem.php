@@ -15,7 +15,7 @@ class MenuItem
     /** @var MenuItemList Submenu item list */
     protected $submenu;
     
-    /** @var MenuItemList Parent menu item list */ 
+    /** @var MenuItemList Parent menu item list */
     protected $parent;
     
     public function __construct($title, $route = null, $icon = null, $parent = null)

@@ -21,7 +21,7 @@ class User implements UserInterface
     
     /**
      * @ORM\Column(type="string", length=255)
-     * 
+     *
      */
     private $username;
     
@@ -42,12 +42,12 @@ class User implements UserInterface
     
     public function __construct()
     {
-    	$this->settings = new stdClass();
+        $this->settings = new stdClass();
     }
     
     public function getId()
     {
-    	return $this->id;
+        return $this->id;
     }
     
     public function getUsername()
@@ -74,13 +74,13 @@ class User implements UserInterface
     
     public function getSettings()
     {
-    	return $this->settings;
+        return $this->settings;
     }
     
     public function setSettings($settings)
     {
-    	$this->settings = $settings;
-    	return $this;
+        $this->settings = $settings;
+        return $this;
     }
     
     public function getRoles()
@@ -91,7 +91,7 @@ class User implements UserInterface
     
     public function setRoles($roles)
     {
-    	$this->roles = $roles;
+        $this->roles = $roles;
     }
     
     public function getSalt()
@@ -101,7 +101,6 @@ class User implements UserInterface
     
     public function eraseCredentials()
     {
-        
     }
     
     /** @see \Serializable::serialize() */

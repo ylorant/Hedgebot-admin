@@ -25,7 +25,7 @@ class SecurityController extends BaseController
 
     /** Security index page.
      * This page lists the available roles.
-     * 
+     *
      * @Route("/security", name="security_index")
      */
     public function indexAction()
@@ -40,7 +40,7 @@ class SecurityController extends BaseController
     
     /** Role detail page.
      * This page shows the detail of a role.
-     * 
+     *
      * @Route ("/security/role/new", name="security_role_new")
      * @Route ("/security/role/edit/{roleId}", name="security_role_edit")
      */
@@ -55,14 +55,14 @@ class SecurityController extends BaseController
         // Add breadcrumb
         $breadcrumbs = $this->get('white_october_breadcrumbs');
         $router = $this->get("router");
-        if(!empty($roleId))    
+        if (!empty($roleId)) {
             $breadcrumbs->addItem($role->name, $router->generate("security_role_edit", ['roleId' => $roleId]));
-        else
+        } else {
             $breadcrumbs->addItem("New role", $router->generate("security_role_new"));
+        }
         
         // Filter the role rights to make them as an array of the actually defined rights.
-        if(!empty($role))
-        {
+        if (!empty($role)) {
             $role->rights = (array) $role->rights;
             $role->inheritedRights = (array) $role->inheritedRights;
         }
@@ -77,17 +77,14 @@ class SecurityController extends BaseController
         // Handle the form
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $roleData = $form->getData();
             $roleCreated = true;
 
             // If this is a new role, we have to create it before trying to save anything
-            if(empty($roleId))
-            {
+            if (empty($roleId)) {
                 $roleCreated = $securityEndpoint->createRole($roleData->id);
-                if(!$roleCreated)
-                {
+                if (!$roleCreated) {
                     $this->addFlash('danger', 'Role cannot be created.');
                     return $this->redirect($router->generate('security_index'));
                 }
@@ -95,14 +92,14 @@ class SecurityController extends BaseController
                 $roleId = $roleData->id;
             }
 
-            if($roleCreated)
-            {
+            if ($roleCreated) {
                 $roleSaved = $securityEndpoint->saveRole($roleId, $roleData);
 
-                if($roleSaved)
+                if ($roleSaved) {
                     $this->addFlash('success', 'Role saved.');
-                else
+                } else {
                     $this->addFlash('danger', 'Cannot save role.');
+                }
             }
 
             return $this->redirect($router->generate("security_role_edit", ['roleId' => $roleId]));
@@ -120,7 +117,7 @@ class SecurityController extends BaseController
 
     /** Delete role action.
      * Deletes a role by its ID.
-     * 
+     *
      * @Route ("/security/role/delete/{roleId}", name="security_role_delete")
      */
     public function deleteRoleAction($roleId)
@@ -129,10 +126,11 @@ class SecurityController extends BaseController
         $securityEndpoint = $this->get('hedgebot_api')->endpoint('/security');
         $roleDeleted = $securityEndpoint->deleteRole($roleId);
         
-        if($roleDeleted)
+        if ($roleDeleted) {
             $this->addFlash('success', "Role deleted.");
-        else
+        } else {
             $this->addFlash('danger', 'Failed to delete role.');
+        }
         
         return $this->redirect($router->generate("security_index"));
     }

@@ -5,7 +5,7 @@ use Symfony\Component\Form\AbstractType;
 
 class WidgetSettingsType extends AbstractType
 {
-    public final function getBlockPrefix()
+    final public function getBlockPrefix()
     {
         return null;
     }

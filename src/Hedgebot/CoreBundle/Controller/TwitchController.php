@@ -26,7 +26,7 @@ class TwitchController extends BaseController
 
     /** Twitch index page.
      * Lists the access tokens.
-     * 
+     *
      * @Route("/twitch", name="twitch_index")
      */
     public function indexAction()
@@ -43,7 +43,7 @@ class TwitchController extends BaseController
 
     /** Token creation initial page / Twitch OAuth redirect page.
      * This page will allow the user to choose for which channel the token that has been created will be assigned.
-     * 
+     *
      * @Route("/twitch_oauth/redirect", name="twitch_oauth_redirect")
      */
     public function newTokenAction(Request $request)
@@ -54,32 +54,26 @@ class TwitchController extends BaseController
         $newTokenForm = $this->createForm(TwitchTokenType::class);
         $newTokenForm->handleRequest($request);
 
-        if ($newTokenForm->isSubmitted())
-        {
-            if($newTokenForm->isValid())
-            {
+        if ($newTokenForm->isSubmitted()) {
+            if ($newTokenForm->isValid()) {
                 $formData = $newTokenForm->getData();
                 $result = $twitchEndpoint->addAccessToken($formData['channel'], $formData['access_token']);
 
-                if($result)
-                {
+                if ($result) {
                     $this->addFlash('success', 'Successfully saved token.');
                     return $this->redirectToRoute('twitch_index');
-                }
-                else // Failure to create the token is surely because there is already one for the channel in the database
+                } else { // Failure to create the token is surely because there is already one for the channel in the database
                     $this->addFlash('danger', 'Cannot save token: another token already exists for this channel.'.
                                               'If you want to change the token for the channel, delete it then create another one.');
+                }
             }
-        }
-        else
-        {
+        } else {
             // Get the token from the code given by Twitch
             $accessCode = $request->query->get('code');
             $twitchApi = $this->get('twitch_client');
             $tokenInfo = $twitchApi->getAccessCredentials($accessCode);
 
-            if(!empty($tokenInfo['error']))
-            {
+            if (!empty($tokenInfo['error'])) {
                 $this->addFlash('danger', 'Failed to fetch token.');
                 return $this->redirectToRoute('twitch_index');
             }
@@ -90,7 +84,7 @@ class TwitchController extends BaseController
             $channelInfo = $twitchApi->getAuthenticatedChannel($accessToken);
             
             $newTokenForm->setData([
-                'access_token' => $accessToken, 
+                'access_token' => $accessToken,
                 'channel' => $channelInfo['name']
             ]);
         }
@@ -101,7 +95,7 @@ class TwitchController extends BaseController
     
     /** Page where a new token is created.
      * This page will allow the user to choose for which channel the token will be created.
-     * 
+     *
      * @Route("/twitch/token/revoke/{channel}", name="twitch_token_revoke")
      */
     public function revokeTokenAction($channel)
@@ -109,13 +103,12 @@ class TwitchController extends BaseController
         $twitchEndpoint = $this->get('hedgebot_api')->endpoint('/twitch');
         $token = $twitchEndpoint->getAccessToken($channel);
 
-        if(!empty($token))
-        {
+        if (!empty($token)) {
             $twitchEndpoint->removeAccessToken($channel);
             $this->addFlash("success", "Successfully revoked token.");
-        }
-        else
+        } else {
             $this->addFlash("danger", "Cannot revoke token as it doesn't exist.");
+        }
 
         return $this->redirectToRoute('twitch_index');
     }

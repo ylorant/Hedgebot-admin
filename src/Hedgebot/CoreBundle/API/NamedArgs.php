@@ -12,8 +12,9 @@ class NamedArgs
 
     public function __get($name)
     {
-        if(isset($this->args[$args]))
+        if (isset($this->args[$args])) {
             return $this->args[$args];
+        }
 
         return null;
     }

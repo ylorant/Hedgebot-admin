@@ -10,12 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class LoginController extends BaseController
 {
-	/**
+    /**
      * @Route("/login", name="login")
      */
-	public function indexAction(Request $request)
-	{
-	    $authenticationUtils = $this->get('security.authentication_utils');
+    public function indexAction(Request $request)
+    {
+        $authenticationUtils = $this->get('security.authentication_utils');
         
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -27,5 +27,5 @@ class LoginController extends BaseController
             'last_username' => $lastUsername,
             'error'         => $error,
         ]);
-	}
+    }
 }

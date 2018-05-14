@@ -35,15 +35,13 @@ class PluginDiscovererService
         $directory = $this->container->get('kernel')->getProjectDir(). '/src/'. $pluginsPath. '/*/';
         $files = $finder->in($directory)->files()->name('*Bundle.php');
         
-        foreach($files as $file)
-        {
+        foreach ($files as $file) {
             $filePath = str_replace(DIRECTORY_SEPARATOR, "/", $file->getPath());
             $pathParts = explode("/", trim($filePath, "/"));
             $bundleName = end($pathParts);
             
             $class = PluginRouteLoader::PLUGINS_NAMESPACE. '\\'. $bundleName. '\\'. $file->getBasename('.php');
-            if(is_subclass_of($class, PluginBundleInterface::class))
-            {
+            if (is_subclass_of($class, PluginBundleInterface::class)) {
                 $plugin = $class::getPluginName();
                 $pluginsBundles[$plugin] = $class;
             }
@@ -54,8 +52,7 @@ class PluginDiscovererService
         $loadedPlugins = $endpoint->getList();
 
         // Filtering plugin classes to keep only the enabled ones to load
-        $filterFunction = function($plugin) use($loadedPlugins)
-        {
+        $filterFunction = function ($plugin) use ($loadedPlugins) {
             return in_array($plugin, $loadedPlugins);
         };
 
@@ -63,10 +60,11 @@ class PluginDiscovererService
         $bundlesPluginsToLoad = array_filter($pluginsBundles, $filterFunction, ARRAY_FILTER_USE_KEY);
         
         // Updating the config with the new bundles
-        if(is_file($this->configPath))
+        if (is_file($this->configPath)) {
             $config = Yaml::parse(file_get_contents($this->configPath));
-        else
+        } else {
             $config = ['bundles' => []];
+        }
         
         $config['bundles'] = $bundlesPluginsToLoad;
         $yaml = Yaml::dump($config);
@@ -85,7 +83,7 @@ class PluginDiscovererService
 
     /**
      * Event called on kernel termination, will clear the cache if asked by someone (controller, another event listener...).
-     * 
+     *
      * @param PostResponseEvent $event The event given by the controller.
      */
     public function onKernelTerminate(PostResponseEvent $event)

@@ -9,7 +9,7 @@ use Hedgebot\CoreBundle\Widget\DefaultWidget\DefaultWidget;
 
 class DashboardController extends Controller
 {
-	/**
+    /**
      * @Route("/dashboard", name="dashboard")
      */
     public function dashboardAction()
@@ -19,22 +19,23 @@ class DashboardController extends Controller
         $layouts = $widgetsContainer->getLayouts();
 
         $widgetMap = [];
-        foreach($widgetList as $widget)
+        foreach ($widgetList as $widget) {
             $widgetMap[$widget->getId()] = $widget;
+        }
 
         $userLayoutArray = [];
         $userSettings = $this->getUser()->getSettings();
 
-        if(!empty($userSettings->dashboardLayout))
+        if (!empty($userSettings->dashboardLayout)) {
             $userLayoutArray = $userSettings->dashboardLayout;
+        }
         
         // Restore dashboard layout from db
         $userLayout = new DashboardLayout($widgetsContainer);
         $layoutLoaded = $userLayout->fromArray($userLayoutArray);
 
         // If the layout can't be loaded, then we set a default one that warns him to create one to his likings.
-        if(!$layoutLoaded)
-        {
+        if (!$layoutLoaded) {
             $defaultWidget = new DefaultWidget();
             $userLayout->setType($widgetsContainer::DEFAULT_LAYOUT);
             $userLayout->addWidget('main', $defaultWidget->getId());
@@ -65,15 +66,16 @@ class DashboardController extends Controller
         $widgetData = $userLayout->getWidgetById($widgetId);
         $updatedData = null;
         
-        if($widgetData && $widget)
+        if ($widgetData && $widget) {
             $updatedData = $widget->update($widgetData->settings);
+        }
 
         return new JsonResponse($updatedData);
     }
 
     /**
      * Gotta go fast ;)
-     * 
+     *
      * @Route("/gotta-go-fast", name="gotta-go-fast")
      */
     public function gottaGoFastAction()

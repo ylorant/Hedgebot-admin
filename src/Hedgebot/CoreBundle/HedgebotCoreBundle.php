@@ -47,8 +47,8 @@ class HedgebotCoreBundle extends Bundle implements MenuProviderInterface, Dashbo
         ];
     }
     
-	public static function getDefaultConfig()
-	{
-	    return ['bundles' => [], 'settings' => ['widgets' => []]];
-	}
+    public static function getDefaultConfig()
+    {
+        return ['bundles' => [], 'settings' => ['widgets' => []]];
+    }
 }

@@ -21,7 +21,7 @@ class CustomCommandsController extends BaseController
         $breadcrumbs->addItem("Custom commands", $this->generateUrl("custom_commands_list"));
     }
 
-	/**
+    /**
      * @Route("/custom-commands", name="custom_commands_list")
      */
     public function commandListAction(Request $request)

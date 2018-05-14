@@ -1,11 +1,11 @@
 <?php
 namespace Hedgebot\CoreBundle\Interfaces;
 
-interface MenuProviderInterface 
+interface MenuProviderInterface
 {
     /**
      * Returns the menu item for the plugin bundle.
-     * 
+     *
      * @return MenuItem|null The menu item for the plugin.
      */
     public function getMenu();

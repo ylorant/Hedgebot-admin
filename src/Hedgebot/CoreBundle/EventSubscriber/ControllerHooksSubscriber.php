@@ -14,8 +14,9 @@ class ControllerHooksSubscriber implements EventSubscriberInterface
         $controller = $event->getController();
         $controllerReflector = new ReflectionClass($controller[0]);
 
-        if($controllerReflector->hasMethod('beforeActionHook') && $controllerReflector->getMethod('beforeActionHook')->isPublic())
+        if ($controllerReflector->hasMethod('beforeActionHook') && $controllerReflector->getMethod('beforeActionHook')->isPublic()) {
             $controller[0]->beforeActionHook();
+        }
     }
 
     public static function getSubscribedEvents()

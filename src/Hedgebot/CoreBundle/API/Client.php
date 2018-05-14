@@ -60,12 +60,12 @@ class Client
         // Basic JSON-RPC call
         $data = ['jsonrpc' => '2.0', 'method' => $name, 'id' => $this->id++, 'params' => []];
         
-        if(!empty($args))
-        {
-            if(count($args) == 1 && $args[0] instanceof NamedArgs)
+        if (!empty($args)) {
+            if (count($args) == 1 && $args[0] instanceof NamedArgs) {
                 $data['params'] = $args[0]->toArray();
-            else
+            } else {
                 $data['params'] = $args;
+            }
         }
         
         $query = new Curl();
@@ -75,21 +75,20 @@ class Client
         
         $query->post($this->baseUrl.'/'. $this->endpoint, $data);
         
-        if(!empty($query->response))
-        {
+        if (!empty($query->response)) {
             // Check that the call succeeded
-            if($query->httpStatusCode == 200)
-            {
+            if ($query->httpStatusCode == 200) {
                 $json = $query->response;
-                if(!empty($json->error))
+                if (!empty($json->error)) {
                     throw new RPCException($json->error->message, $json->error->code);
-            }
-            else
+                }
+            } else {
                 throw new RPCException($query->response, $query->httpStatusCode);
+            }
             
             return $json->result;
-        }
-        elseif($query->error == true) // Handle errors
+        } elseif ($query->error == true) { // Handle errors
             throw new RPCException($query->errorMessage, $query->errorCode);
+        }
     }
 }

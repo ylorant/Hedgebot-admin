@@ -15,7 +15,7 @@ class RoleTransformer implements DataTransformerInterface
 
     /**
      * Constructor.
-     * 
+     *
      * @param array $availableRights A simple array containing the available rights that have to be listed
      *                               in the right list field.
      */
@@ -25,12 +25,12 @@ class RoleTransformer implements DataTransformerInterface
         $this->roles = $roles;
     }
 
-    /** 
+    /**
      * Transforms the norm data given to the form into the format that will be correct
      * for its fields. Here more specifically, it will transform the right list into the expanded
      * list of all the available rights and set the values for the fields depending on what has been
      * set on the given data.
-     * 
+     *
      * @param object $data The data to transform into its form view.
      * @return object The transformed data.
      */
@@ -41,8 +41,7 @@ class RoleTransformer implements DataTransformerInterface
         $inheritedRights = $data->inheritedRights ?? [];
 
         // Cycle through the available rights to create each row for the rights list
-        foreach($this->availableRights as $right)
-        {
+        foreach ($this->availableRights as $right) {
             $normalizedRight = self::normalizeRight($right);
             $rights[$normalizedRight] = [
                 'override' => isset($setRights[$right]),
@@ -51,17 +50,18 @@ class RoleTransformer implements DataTransformerInterface
         }
         
         // Update the data
-        if(is_object($data))
+        if (is_object($data)) {
             $data->rights = $rights;
-        else
+        } else {
             $data = ['rights' => $rights];
+        }
 
         return $data;
     }
 
     /**
      * Transforms back the data coming from the form view into the norm data that the role object should be receiving.
-     * 
+     *
      * @param object $data The form data to transform back into it's norm view.
      * @return object The normed data.
      */
@@ -71,11 +71,11 @@ class RoleTransformer implements DataTransformerInterface
         $data = (object) $data;
 
         // Cycle through all the rights in the data to keep only the overriden ones
-        foreach($data->rights as $rightName => $right)
-        {
+        foreach ($data->rights as $rightName => $right) {
             $rightName = self::denormalizeRight($rightName);
-            if(!empty($right['override']))
+            if (!empty($right['override'])) {
                 $roleRights[$rightName] = $right['grant'];
+            }
         }
 
         $data->rights = $roleRights;

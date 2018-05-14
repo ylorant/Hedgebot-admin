@@ -26,8 +26,7 @@ class CreateUserCommand extends ContainerAwareCommand
         // Check if database exists
         $databasePath = $this->getContainer()->getParameter('database_path');
 
-        if(!is_file($databasePath))
-        {
+        if (!is_file($databasePath)) {
             $output->writeln(["", "Notice: Database has not been found. Creating it.", ""]);
             $output->write("Creating database...");
 
@@ -81,16 +80,14 @@ class CreateUserCommand extends ContainerAwareCommand
         $password = null;
         $login = $helper->ask($input, $output, $loginQuestion);
 
-        while(true)
-        {
+        while (true) {
             $password = $helper->ask($input, $output, $passwordQuestion);
             $passwordConfirmation = $helper->ask($input, $output, $passwordConfirmQuestion);
 
             // Exit the loop when the passwords are good
-            if($password == $passwordConfirmation)
+            if ($password == $passwordConfirmation) {
                 break;
-            else
-            {
+            } else {
                 // Passwords are incorrect, show the error and loop
                 $output->writeln([
                     "The password do not match.",

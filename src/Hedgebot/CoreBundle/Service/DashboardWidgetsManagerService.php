@@ -42,11 +42,11 @@ class DashboardWidgetsManagerService
         $bundles = $this->container->get('kernel')->getBundles();
         $availableWidgets = [];
 
-        foreach($bundles as $bundle)
-        {
+        foreach ($bundles as $bundle) {
             // Keep only bundles that are plugin bundles
-            if($bundle instanceof DashboardWidgetsProviderInterface)
-            	$availableWidgets = array_merge($availableWidgets, $bundle->getDashboardWidgets());
+            if ($bundle instanceof DashboardWidgetsProviderInterface) {
+                $availableWidgets = array_merge($availableWidgets, $bundle->getDashboardWidgets());
+            }
         }
 
         return $availableWidgets;
@@ -59,10 +59,10 @@ class DashboardWidgetsManagerService
     {
         $widgetsList = $this->getAvailableWidgets();
 
-        foreach($widgetsList as $widget)
-        {
-            if($widget->getId() == $name)
+        foreach ($widgetsList as $widget) {
+            if ($widget->getId() == $name) {
                 return $widget;
+            }
         }
 
         return null;
@@ -77,8 +77,9 @@ class DashboardWidgetsManagerService
     {
         $layouts = $this->getLayouts();
 
-        if(isset($layouts[$id]))
+        if (isset($layouts[$id])) {
             return $layouts[$id];
+        }
 
         return null;
     }
@@ -91,8 +92,7 @@ class DashboardWidgetsManagerService
      */
     public function getLayouts()
     {
-        if(empty($this->layoutCache))
-        {
+        if (empty($this->layoutCache)) {
             $fileLocator = $this->container->get('file_locator');
             $layoutPath = $fileLocator->locate($this->layoutPath);
 

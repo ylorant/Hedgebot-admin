@@ -16,16 +16,14 @@ class ScriptHandler extends SensioScriptHandler
     {
         $io = $event->getIO();
         
-        if($io instanceof ConsoleIO)
-        {
+        if ($io instanceof ConsoleIO) {
             $ioProxy = new ConsoleProxyIO($io);
-            $ioProxy->setInteractive(false);  
+            $ioProxy->setInteractive(false);
         }
 
         IncenteevScriptHandler::buildParameters($event);
         
-        if($io instanceof ConsoleIO)
-        {
+        if ($io instanceof ConsoleIO) {
             $ioProxy = new ConsoleProxyIO($io);
             $ioProxy->setInteractive(true);
         }
@@ -39,8 +37,9 @@ class ScriptHandler extends SensioScriptHandler
         $options = self::getOptions($event);
         $consoleDir = self::getConsoleDir($event, 'setup');
 
-        if($consoleDir === null)
+        if ($consoleDir === null) {
             return;
+        }
         
         static::executeCommand($event, $consoleDir, 'setup', $options['process-timeout']);
     }

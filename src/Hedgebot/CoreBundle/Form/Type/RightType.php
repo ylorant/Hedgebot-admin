@@ -13,7 +13,7 @@ use Hedgebot\CoreBundle\Form\RoleTransformer;
 
 /** Right field type definition.
  * Handles the form display for a right, allowing the user to set wether it's an inherited right or not,
- * and wether it's granted or not. 
+ * and wether it's granted or not.
  */
 class RightType extends AbstractType
 {

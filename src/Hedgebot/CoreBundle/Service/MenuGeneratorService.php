@@ -11,7 +11,7 @@ class MenuGeneratorService
     
     /**
      * Generates the menu for the different bundles that give a menu.
-     * 
+     *
      * @return MenuItemList
      */
     public function generate()
@@ -20,19 +20,17 @@ class MenuGeneratorService
         $bundles = $this->container->get('kernel')->getBundles();
         $itemList = new MenuItemList(null);
         
-        foreach($bundles as $bundle)
-        {
+        foreach ($bundles as $bundle) {
             // Keep only bundles that are plugin bundles
-            if($bundle instanceof MenuProviderInterface)
-            {
+            if ($bundle instanceof MenuProviderInterface) {
                 $menu = $bundle->getMenu();
-                if($menu instanceof MenuItemList)
-                {
-                    foreach($menu as $item)
+                if ($menu instanceof MenuItemList) {
+                    foreach ($menu as $item) {
                         $itemList->add($item);
-                }
-                else
+                    }
+                } else {
                     $itemList->add($menu);
+                }
             }
         }
         

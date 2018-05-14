@@ -3,7 +3,7 @@ namespace Hedgebot\CoreBundle\Interfaces;
 
 /**
  * Dashboard Widget interface. Defines how a widget should be giving out its info.
- * 
+ *
  * FIXME: Put all methods as static, and give the class name to the widget manager service ?
  */
 interface DashboardWidgetInterface
