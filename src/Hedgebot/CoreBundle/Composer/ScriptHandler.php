@@ -41,6 +41,13 @@ class ScriptHandler extends SensioScriptHandler
             return;
         }
         
+        // Execute the setup only if the setup file doesn't exist
+        // FIXME: Try to replace that with a file name that isn't hard-coded ?
+        $configFileLocation = $options['symfony-app-dir']. "/config/hedgebot.yml";
+        if(is_file($configFileLocation)) {
+            return;
+        }
+
         static::executeCommand($event, $consoleDir, 'setup', $options['process-timeout']);
     }
 }
