@@ -36,7 +36,7 @@ class ScriptHandler extends SensioScriptHandler
     {
         $options = self::getOptions($event);
         $consoleDir = self::getConsoleDir($event, 'setup');
-
+        
         if ($consoleDir === null) {
             return;
         }
@@ -47,7 +47,17 @@ class ScriptHandler extends SensioScriptHandler
         if(is_file($configFileLocation)) {
             return;
         }
-
-        static::executeCommand($event, $consoleDir, 'setup', $options['process-timeout']);
+        
+        // Prompt the user to execute the setup command since it seems like it's the first time he installs
+        $io = $event->getIO();
+        $io->write("<question>");
+        $io->write("Hey, it seems it's the first time you're installing the Hedgebot admin panel.");
+        $io->write("Before being completely ready, it needs some configuration. Fortunately, there's a wizard.");
+        $io->write("To start it, just type this command when the install has finished:");
+        $io->write("</question>");
+        $io->write("");
+        $io->write("php bin/console setup");
+        $io->write("");
+        $io->write("<bg=yellow></>");
     }
 }

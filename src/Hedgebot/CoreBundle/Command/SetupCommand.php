@@ -167,7 +167,8 @@ class SetupCommand extends ContainerAwareCommand
             "Ensure that the bot is started before validating settings."
         ]);
         
-        while (true) {
+        $tries = 0;
+        while ($tries < 5) {
             $output->writeln("");
             
             // Ask credentials
@@ -197,6 +198,7 @@ class SetupCommand extends ContainerAwareCommand
                     break;
                 }
             } catch (RPCException $e) {
+                $tries++;
                 $this->error($input, $output, $e->getMessage());
                 continue;
             }
