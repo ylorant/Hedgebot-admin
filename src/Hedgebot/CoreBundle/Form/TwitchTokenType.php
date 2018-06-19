@@ -14,6 +14,7 @@ class TwitchTokenType extends AbstractType
     {
         $builder
             ->add('access_token', HiddenType::class)
+            ->add('refresh_token', HiddenType::class)
             ->add('channel', TextType::class, ['label' => 'Channel'])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save',

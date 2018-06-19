@@ -27,7 +27,8 @@
                         <thead>
                             <tr>
                                 <th>Channel</th>
-                                <th>Token</th>
+                                <th>Access Token</th>
+                                <th>Refresh Token</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -37,14 +38,17 @@
                                 <td>{{ channel }}</td>
                                 <td>
                                     <code>
-                                        {{ token|anonymize }}
+                                        {{ token.token|anonymize }}
                                     </code>
                                 </td>
+                                <td>
+                                    <code>{{ token.refresh|anonymize }}</code>
+                                </td>
                                 <td class="text-right">
-                                        <a href="{{ path('twitch_token_revoke', {'channel': channel}) }}" title="Delete" class="btn btn-danger">
-                                            <i class="material-icons md-18">clear</i>
-                                            <span>Revoke</span>
-                                        </a>
+                                    <a href="{{ path('twitch_token_revoke', {'channel': channel}) }}" title="Delete" class="btn btn-danger">
+                                        <i class="material-icons md-18">clear</i>
+                                        <span>Revoke</span>
+                                    </a>
                                 </td>
                                 </tr> 
                             {% endfor %}

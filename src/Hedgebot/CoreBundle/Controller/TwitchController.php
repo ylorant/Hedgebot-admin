@@ -57,7 +57,7 @@ class TwitchController extends BaseController
         if ($newTokenForm->isSubmitted()) {
             if ($newTokenForm->isValid()) {
                 $formData = $newTokenForm->getData();
-                $result = $twitchEndpoint->addAccessToken($formData['channel'], $formData['access_token']);
+                $result = $twitchEndpoint->addAccessToken($formData['channel'], $formData['access_token'], $formData['refresh_token']);
 
                 if ($result) {
                     $this->addFlash('success', 'Successfully saved token.');
@@ -78,13 +78,12 @@ class TwitchController extends BaseController
                 return $this->redirectToRoute('twitch_index');
             }
 
-            $accessToken = $tokenInfo['access_token'];
-
             // Get the channel name to use for the channel field's default value
-            $channelInfo = $twitchApi->getAuthenticatedChannel($accessToken);
+            $channelInfo = $twitchApi->getAuthenticatedChannel($tokenInfo['access_token']);
             
             $newTokenForm->setData([
-                'access_token' => $accessToken,
+                'access_token' => $tokenInfo['access_token'],
+                'refresh_token' => $tokenInfo['refresh_token'],
                 'channel' => $channelInfo['name']
             ]);
         }
