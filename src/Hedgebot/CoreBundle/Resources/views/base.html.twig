@@ -13,6 +13,7 @@
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"> 
 
         <!-- Bootstrap Core Css -->
         <link href="{{ asset('plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
@@ -117,7 +118,7 @@
                                 <li class="{{ app.request.get('_route') == item.route or (item.route and app.request.requestUri starts with path(item.route)) ? "active" }}">
                                     <a {{ item.route ? 'href=' ~ path(item.route) : "" }} class="waves-effect {{ item.submenu is not empty ? "menu-toggle" : "" }}">
                                         {% if item.icon is not empty %}
-                                            <i class="material-icons">{{ item.icon }}</i>
+                                            {{ item.icon|iconize|raw }}
                                             <span>{{ item.title }}</span>
                                         {% else %}
                                             {{ item.title }}

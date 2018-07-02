@@ -23,7 +23,8 @@ class UtilitiesExtension extends Twig_Extension
     {
         return [
             new TwigFilter('anonymize', [$this, 'anonymize']),
-            new TwigFilter('to_array', [$this, 'toArray'])
+            new TwigFilter('to_array', [$this, 'toArray']),
+            new TwigFilter('iconize', [$this, 'iconize'])
         ];
     }
     
@@ -42,5 +43,34 @@ class UtilitiesExtension extends Twig_Extension
     public function toArray($input)
     {
         return (array) $input;
+    }
+
+    /**
+     * Twig filter: Generates an icon from its key
+     */
+    public function iconize($input)
+    {
+        $iconParts = explode(':', $input, 2);
+        
+        // Default type: material_icons
+        if(count($iconParts) == 1) {
+            array_unshift($iconParts, 'material-icons');
+        }
+        
+        $classes = $iconParts[0];
+        $content = '';
+
+        // Handling all types of icons that the admin is able to generate
+        switch ($iconParts[0]) {
+            case 'zmdi':
+                $classes .= ' zmdi-' . $iconParts[1];
+                break;
+            
+            case 'material-icons':
+                $content = $iconParts[1];
+                break;
+        }
+
+        return '<i class="' . $classes. '">' . $content. '</i>';
     }
 }
