@@ -37,7 +37,7 @@ class CustomCommandsController extends BaseController
     }
 
     /**
-     * @Route("/custom-commands/delete/{name}", options = { "expose"=true }, name="custom_commands_delete")
+     * @Route("/custom-commands/delete/{name}", options = { "expose" = true }, name="custom_commands_delete")
      */
     public function deleteCommandAction($name)
     {
@@ -51,7 +51,7 @@ class CustomCommandsController extends BaseController
     }
 
     /**
-     * @Route("/custom-commands/save/{name}", options = { "expose"=true }, name="custom_commands_save")
+     * @Route("/custom-commands/save/{name}", options = { "expose" = true }, name="custom_commands_save")
      */
     public function saveCommandAction($name, Request $request)
     {
