@@ -80,7 +80,9 @@
                 </div>
 
                 <div class="body">
-                    <iframe id="schedule-iframe" src="http://horaro.org/{{ schedule.eventId }}/{{ schedule.scheduleId }}"></iframe>
+                    <table class="table table-responsive" id="schedule-view">
+
+                    </table>
                 </div>
             </div>
         </div>
@@ -101,7 +103,8 @@
                 pausedScheduleSelector: '#schedule-paused',
                 controlBlockSelector: '#actions-card',
                 actionRoute: 'horaro_ajax_schedule_action',
-                getScheduleRoute: 'horaro_ajax_get_schedule'
+                getScheduleRoute: 'horaro_ajax_get_schedule',
+                scheduleViewSelector: '#schedule-view'
             };
 
             Horaro.init(options);

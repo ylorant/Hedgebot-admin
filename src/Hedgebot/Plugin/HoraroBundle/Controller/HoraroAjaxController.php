@@ -14,9 +14,13 @@ class HoraroAjaxController extends BaseController
     {
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/horaro');
         $schedule = $endpoint->getSchedule($identSlug);
+        $scheduleData = $endpoint->getScheduleData($identSlug);
         
         $response = new JsonResponse();
-        $response->setData($schedule);
+        $response->setData([
+            'scheduleData' => $scheduleData,
+            'schedule' => $schedule 
+        ]);
 
         return $response;
     }
