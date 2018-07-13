@@ -235,6 +235,8 @@ var Horaro = {
                 line.append($('<td>' + itemData[j] + '</td>'));
             }
 
+            scheduleTime = new Date(scheduleTime.getTime() + 1000 * item.length_t + 1000 * scheduleData.setup_t);
+
             tbody.append(line);
         }
 
