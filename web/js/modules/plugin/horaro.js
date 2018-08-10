@@ -225,11 +225,19 @@ var Horaro = {
             }
 
             for(var j = 0; j < itemData.length; j++) {
+                // Check if the column item is not empty, and if it is, use a placeholder string instead
+                if(!itemData[j]) {
+                    itemData[j] = '-';
+                }
+
                 // Markdown
-                var mdMatch = itemData[j].match(/\[(.+)\]\((.+)\)/);
-                
+                var mdMatch = itemData[j].match(/\[(.+?)\]\((.+?)\)/g);
+
                 if(mdMatch != null) {
-                    itemData[j] = '<a href="' + mdMatch[2] + '">' + mdMatch[1] + '</a>';
+                    for(var k = 0; k < mdMatch.length; k++) {
+                        var mdItemMatch = mdMatch[k].match(/\[(.+?)\]\((.+?)\)/);
+                        itemData[j] = itemData[j].replace(mdMatch[k], '<a href="' + mdItemMatch[2] + '">' + mdItemMatch[1] + '</a>');
+                    }
                 }
 
                 line.append($('<td>' + itemData[j] + '</td>'));
