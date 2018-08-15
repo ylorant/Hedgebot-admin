@@ -11,6 +11,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ScheduleType extends AbstractType
 {
+    const SOURCE_NAMESPACE = "Horaro";
+    const CURRENT_DATA_SOURCE_PATH = "schedule.currentItem.data";
+    const NEXT_DATA_SOURCE_PATH = "schedule.nextItem.data";
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('channels');
@@ -34,11 +38,41 @@ class ScheduleType extends AbstractType
             ->add('channel', ChoiceType::class, [
                 'label' => 'Channel',
                 'expanded' => false,
-                'choices' => $channels
+                'choices' => $channels,
+                'attr' => [
+                    'class' => 'channel-selector'
+                ]
             ])
-            ->add('titleTemplate', TextType::class, ['label' => 'Title template', 'required' => false])
-            ->add('gameTemplate', TextType::class, ['label' => 'Game name template', 'required' => false])
-            ->add('announceTemplate', TextType::class, ['label' => 'Announce message template', 'required' => false])
+            ->add('titleTemplate', TextType::class, [
+                'label' => 'Title template', 
+                'required' => false,
+                'attr' => [
+                    'class' => 'store-autocomplete',
+                    'data-basepath' => self::CURRENT_DATA_SOURCE_PATH,
+                    'data-namespace' => self::SOURCE_NAMESPACE,
+                    'data-channel-ref' => 'select.channel-selector'
+                ]
+            ])
+            ->add('gameTemplate', TextType::class, [
+                'label' => 'Game name template', 
+                'required' => false,
+                'attr' => [
+                    'class' => 'store-autocomplete',
+                    'data-basepath' => self::CURRENT_DATA_SOURCE_PATH,
+                    'data-namespace' => self::SOURCE_NAMESPACE,
+                    'data-channel-ref' => 'select.channel-selector'
+                ]
+            ])
+            ->add('announceTemplate', TextType::class, [
+                'label' => 'Announce message template',
+                'required' => false,
+                'attr' => [
+                    'class' => 'store-autocomplete',
+                    'data-basepath' => self::NEXT_DATA_SOURCE_PATH,
+                    'data-namespace' => self::SOURCE_NAMESPACE,
+                    'data-channel-ref' => 'select.channel-selector'
+                ]
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save',
                 'attr' => [

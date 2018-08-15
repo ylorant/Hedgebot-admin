@@ -15,7 +15,13 @@
         <div class="col-lg-6 col-xs-12">
             <div class="form-group form-float">
                 <div class="form-line">
-                    <input type="text" name="text" class="form-control" value="{{ command.text }}" />
+                    <input type="text" 
+                           name="text" 
+                           class="form-control store-autocomplete" 
+                           data-channel-ref="select.channel-selector" 
+                           data-context=".command"
+                           value="{{ command.text }}"
+                    />
                     <label class="form-label">Reply text</label>
                 </div>
             </div>
@@ -24,7 +30,7 @@
         <div class="col-lg-3 col-xs-12">
             <div class="form-group form-float">
                 <div class="form-line">
-                    <select name="channels" class="form-control {{ isTemplate ? "ms" : "" }}" multiple>
+                    <select name="channels" class="form-control {{ isTemplate ? "ms" : "" }} channel-selector" multiple>
                         {% for channel in availableChannels %}
                             <option value="{{ channel }}" {{ channel in command.channels ? "selected" : "" }}>{{ channel }}</option>
                         {% endfor %}

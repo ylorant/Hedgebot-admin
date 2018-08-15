@@ -22,4 +22,10 @@ $(function()
 {
     RivetsFormatters.init(rivets);
     Hedgebot.init();
+    
+    // Load store autocomplete for all inputs that have the .store-autocomplete class
+    Store.init({
+        autocompleteInputSelector: '.store-autocomplete',
+        fetchStoreRoute: 'store_get'
+    });
 });
