@@ -85,7 +85,7 @@ var Store = {
 
         // Regenerate the dropdown and get the store if needed, or else just redo the options
         if(!this.elements.autocompleteDropdown) {
-            this.generateDropdown(currentToken, storeSettings.basePath, storeSettings.namespace, storeSettings.channel);
+            this.generateDropdown(currentToken, storeSettings.basePath, storeSettings.namespace, storeSettings.context, storeSettings.channel);
             this.isFetching = true;
         } else {
             this.generateOptions(currentToken, storeSettings.basePath, storeSettings.namespace);
@@ -186,7 +186,7 @@ var Store = {
 
     },
 
-    generateDropdown: function(match, basePath, namespace, channel)
+    generateDropdown: function(match, basePath, namespace, context, channel)
     {
         var dropdown = $('<div></div>');
         dropdown.addClass('store-dropdown card');
@@ -201,7 +201,7 @@ var Store = {
             this.generateOptions(match, basePath, namespace);
         };
 
-        this.getStore(namespace, channel, onStoreGet.bind(this));
+        this.getStore(namespace, channel, context, onStoreGet.bind(this));
 
         this.elements.autocompleteDropdown = dropdown;
 
@@ -248,9 +248,11 @@ var Store = {
         this.elements.autocompleteDropdown.find('.autocomplete-option').eq(this.currentSelectedOption).addClass('active');
     },
 
-    getStore: function(namespace, channel, cb)
+    getStore: function(namespace, channel, context, cb)
     {
-        var params = {};
+        var params = {
+            simulateData: true
+        };
 
         if(namespace) {
             params.sourceNamespace = namespace;
@@ -258,6 +260,10 @@ var Store = {
 
         if(channel) {
             params.channel = channel;
+        }
+
+        if(context) {
+            params.simulateContext = context;
         }
 
         $.ajax({
@@ -319,7 +325,8 @@ var Store = {
         var settings = {
             "channel": null,
             "basePath": null,
-            "namespace": null
+            "namespace": null,
+            "context": null
         };
 
         // The context setting can only be passed by value and will be used internally for other settings refs,
@@ -352,6 +359,31 @@ var Store = {
             settings.channel = input.dataset.channel.toString();
         } else if(input.dataset.channelRef) {
             settings.channel = $(input.dataset.channelRef, context).val().toString();
+        }
+
+        // Context specification
+        if(input.dataset.simulateContext) {
+            settings.context = input.dataset.simulateContext.toString();
+        } else if(input.dataset.simulateContextRef) {
+            settings.context = $(input.dataset.simulateContextRef, context).val().toString();
+        } else if(input.dataset.simulateContextCallback) { // The settings are specified by a callback
+            var funcPath = input.dataset.simulateContextCallback.split('.');
+            var cb = window;
+
+            // Iterate through the path from window to get the good function to call
+            for(var i = 0; i < funcPath.length; i++) {
+                if(cb[funcPath[i]]) {
+                    cb = cb[funcPath[i]];
+                } else {
+                    cb = null;
+                    break;
+                }
+            }
+
+            // Call the function only if it has been found
+            if(cb) {
+                settings.context = cb();
+            }
         }
 
         return settings;

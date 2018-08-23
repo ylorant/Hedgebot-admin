@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ScheduleType extends AbstractType
 {
@@ -29,6 +30,12 @@ class ScheduleType extends AbstractType
         }
 
         $builder
+            ->add('identSlug', HiddenType::class, [
+                'label' => "Event ID",
+                "disabled" => true,
+                'attr' => [
+                    'class' => 'ident-slug'
+                ]])
             ->add('eventId', TextType::class, ['label' => "Event ID", "disabled" => true])
             ->add('scheduleId', TextType::class, ['label' => "Schedule ID", "disabled" => true])
             ->add('enabled', CheckboxType::class, [
@@ -50,7 +57,8 @@ class ScheduleType extends AbstractType
                     'class' => 'store-autocomplete',
                     'data-basepath' => self::CURRENT_DATA_SOURCE_PATH,
                     'data-namespace' => self::SOURCE_NAMESPACE,
-                    'data-channel-ref' => 'select.channel-selector'
+                    'data-channel-ref' => 'select.channel-selector',
+                    'data-simulate-context-callback' => 'Horaro.getSimulateContext'
                 ]
             ])
             ->add('gameTemplate', TextType::class, [
@@ -60,7 +68,8 @@ class ScheduleType extends AbstractType
                     'class' => 'store-autocomplete',
                     'data-basepath' => self::CURRENT_DATA_SOURCE_PATH,
                     'data-namespace' => self::SOURCE_NAMESPACE,
-                    'data-channel-ref' => 'select.channel-selector'
+                    'data-channel-ref' => 'select.channel-selector',
+                    'data-simulate-context-callback' => 'Horaro.getSimulateContext'
                 ]
             ])
             ->add('announceTemplate', TextType::class, [
@@ -70,7 +79,8 @@ class ScheduleType extends AbstractType
                     'class' => 'store-autocomplete',
                     'data-basepath' => self::NEXT_DATA_SOURCE_PATH,
                     'data-namespace' => self::SOURCE_NAMESPACE,
-                    'data-channel-ref' => 'select.channel-selector'
+                    'data-channel-ref' => 'select.channel-selector',
+                    'data-simulate-context-callback' => 'Horaro.getSimulateContext'
                 ]
             ])
             ->add('submit', SubmitType::class, [

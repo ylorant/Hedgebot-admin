@@ -28,9 +28,11 @@ class StoreController extends BaseController
     {
         $channel = $request->query->get('channel', null);
         $sourceNamespace = $request->query->get('sourceNamespace', null);
+        $simulateData = (bool) $request->query->get('simulateData', false);
+        $simulateContext = $request->query->get('simulateContext', null);
 
         $storeEndpoint = $this->get('hedgebot_api')->endpoint('/store');
-        $storeContent = $storeEndpoint->getStoreData($channel, $sourceNamespace);
+        $storeContent = $storeEndpoint->getStoreData($channel, $sourceNamespace, $simulateData, $simulateContext);
 
         $response = new JsonResponse();
         $response->setData($storeContent);

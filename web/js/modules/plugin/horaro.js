@@ -253,7 +253,6 @@ var Horaro = {
         // debugger;
     },
     
-    
     secondsToTime: function(time)
     {
         time = Math.abs(time);
@@ -271,5 +270,12 @@ var Horaro = {
         minutes %= 60;
 
         return { hr: hours, mn: minutes, sec: seconds};
+    },
+
+    getSimulateContext: function()
+    {
+        return {
+            identSlug: $('input.ident-slug').val()
+        };
     }
 };
