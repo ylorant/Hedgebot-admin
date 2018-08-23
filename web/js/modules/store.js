@@ -29,7 +29,7 @@ var Store = {
 
     bindUIActions: function()
     {
-        $(document).on('keypress click focus', this.options.autocompleteInputSelector, this.onKeypress.bind(this));
+        $(document).on('keydown click focus', this.options.autocompleteInputSelector, this.onKeypress.bind(this));
         $(document).on('blur', this.options.autocompleteInputSelector, this.onBlur.bind(this));
 
         // $(document).on('keydown', '.store-dropdown', this.onDropdownKeypress.bind(this));
@@ -39,18 +39,28 @@ var Store = {
     onKeypress: function(ev)
     {
         var input = ev.target;
-        var isFetching = false;
+        var caretPosition = input.selectionEnd;
+        var inputValue = input.value;
 
-        // Get the current word being typed, relative to the caret position
-        var inputValue = input.value.substring(0, input.selectionEnd);
-
-        // Add the key currently being typed if any, and remove the last one if the key pressed is backspace
-        if(ev.key && ev.key.length === 1) {
-            inputValue += ev.key;
-        } else if(ev.key && ev.keyCode === 8) {
-            inputValue = inputValue.substring(0, inputValue.length - 1);
+        // If we're on a keydown even that has the keycode for left or right or backspace, we adapt the caret position
+        // with the change that hasn't occured on the DOM yet. If the key is anything else that amounts to one character
+        // we assume it's a key being typed and we add it (and move the caret position to reflect the added char).
+        // Basically, this mimicks the effect of the keyboard on the actual input.
+        if(ev.key) {
+            if(ev.keyCode === 37 || ev.keyCode === 8) {
+                caretPosition--;
+            } else if(ev.keyCode === 39) {
+                caretPosition++;
+            } else if(ev.key.length === 1) {
+                inputValue += ev.key;
+                caretPosition++;
+            }
         }
-
+        
+        console.log(ev.key);
+        
+        // Get the current word being typed, relative to the caret position
+        inputValue = inputValue.substring(0, caretPosition);
         var inputWords = inputValue.split(' ');
         var currentToken = inputWords.pop();
 
@@ -64,14 +74,14 @@ var Store = {
         if(this.isFetching) {
             return;
         }
-
+        
         // Handle selection for the Dropdown if it is already open, and stop execution if it is appropriate
         if(ev.key) {
             var continueExec = this.onDropdownKeypress(ev);
 
             if(!continueExec) {
                 ev.stopPropagation();
-                return;
+                return false;
             }
         }
 
