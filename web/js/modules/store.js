@@ -118,9 +118,7 @@ var Store = {
     },
 
     onBlur: function(ev)
-    {
-        var input = ev.target;
-        
+    {   
         if(this.elements.autocompleteDropdown) {
             this.elements.autocompleteDropdown.remove();
         }
