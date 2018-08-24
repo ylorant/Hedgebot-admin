@@ -57,8 +57,6 @@ var Store = {
             }
         }
         
-        console.log(ev.key);
-        
         // Get the current word being typed, relative to the caret position
         inputValue = inputValue.substring(0, caretPosition);
         var inputWords = inputValue.split(' ');
