@@ -1,0 +1,66 @@
+{% extends 'HedgebotCoreBundle::base.html.twig' %}
+{% block title %}Announcements - Hedgebot{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/plugin/announcements.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block main_title %}
+    <h3>
+        Messages
+
+        <div class="pull-right">
+            <a class="btn btn-primary waves-effect" data-action="new-message">
+                <i class="material-icons">add</i>
+                <span>New message</span>
+            </a>
+        </div>
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Messages</h2>
+                </div>
+                    <div class="hidden" id="block-message-template">
+                        {% set templateMessage = {'id': '', 'message': '', 'channels': []} %}
+                        {% include 'HedgebotAnnouncementsBundle::route/message.html.twig' with {'isTemplate': true, 'message': templateMessage, 'availableChannels': availableChannels} %}
+                    </div>
+
+                    <div id="messages">
+                        {% for key,message in messages %}
+                            {% include 'HedgebotAnnouncementsBundle::route/message.html.twig' with {'isTemplate': false, 'message': message, 'availableChannels': availableChannels} %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{# Scripts, load additional scripts needed for this route, and initialize main module #}
+{% block scripts %}
+    <script src="{{ asset('js/modules/plugin/announcements.js') }}"></script>
+    <script type="text/javascript">
+        $(function()
+        {
+            var options = {
+                messageContainerSelector: "#messagess",
+                messageTemplateSelector: "#block-message-template > div",
+                messageSelector: ".message",
+                addMessageSelector: '[data-action="new-message"]',
+                deleteMessageRoute: "announcements_message_delete",
+                saveMessageRoute: "announcements_message_save",
+                fieldNames: {
+                    id: 'id',
+                    message: "message",
+                    channels: "channels"
+                }
+            };
+            Announcements.init(options);
+        });
+    </script>
+{% endblock %}
