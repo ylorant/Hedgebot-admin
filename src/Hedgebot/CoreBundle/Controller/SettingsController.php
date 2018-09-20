@@ -56,8 +56,13 @@ class SettingsController extends BaseController
         $widget = $widgetsContainer->getWidgetByName($widgetName);
         $formTypeClass = $widget->getSettingsFormType();
 
+        $formOptions = [
+            'entity_manager' => $this->getDoctrine()->getManager(),
+            'hedgebot_api'     => $this->get('hedgebot_api')
+        ];
+
         if (!empty($formTypeClass)) {
-            $viewParams['form'] = $this->createForm($formTypeClass)->createView();
+            $viewParams['form'] = $this->createForm($formTypeClass, null, $formOptions)->createView();
         } else {
             $viewParams['form'] = null;
         }

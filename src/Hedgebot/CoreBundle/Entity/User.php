@@ -17,28 +17,28 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
     
     /**
      * @ORM\Column(type="string", length=255)
      *
      */
-    private $username;
+    protected $username;
     
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $password;
+    protected $password;
     
     /**
      * @ORM\Column(type="array", length=255)
      */
-    private $roles;
+    protected $roles;
     
     /**
      * @ORM\Column(type="object", nullable=true)
      */
-    private $settings;
+    protected $settings;
     
     public function __construct()
     {

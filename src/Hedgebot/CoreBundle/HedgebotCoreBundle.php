@@ -7,6 +7,7 @@ use Hedgebot\CoreBundle\Plugin\Menu\MenuItemList;
 use Hedgebot\CoreBundle\Interfaces\DashboardWidgetsProviderInterface;
 use Hedgebot\CoreBundle\Widget\ChatWidget\ChatWidget;
 use Hedgebot\CoreBundle\Widget\DefaultWidget\DefaultWidget;
+use Hedgebot\CoreBundle\Widget\CustomCallWidget\CustomCallWidget;
 
 class HedgebotCoreBundle extends Bundle implements MenuProviderInterface, DashboardWidgetsProviderInterface
 {
@@ -25,6 +26,7 @@ class HedgebotCoreBundle extends Bundle implements MenuProviderInterface, Dashbo
             ->item('Admin settings', null, 'settings')
                 ->children()
                     ->item('Widgets', 'settings_widgets')->end()
+                    ->item('Custom calls', 'custom_calls_index')->end()
                 ->end()
             ->end()
         ->end();
@@ -39,7 +41,8 @@ class HedgebotCoreBundle extends Bundle implements MenuProviderInterface, Dashbo
     {
         return [
             new ChatWidget(),
-            new DefaultWidget()
+            new DefaultWidget(),
+            new CustomCallWidget()
         ];
     }
     
