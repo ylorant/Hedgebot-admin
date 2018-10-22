@@ -30,19 +30,19 @@ class AnnouncementsController extends BaseController
 
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/announcements');
         $serverEndpoint = $this->get('hedgebot_api')->endpoint('/server');
-        $templateVars['messages'] = $endpoint->getMessages();
-        $templateVars['availableChannels'] = $serverEndpoint->getChannels();
+        $templateVars['messages'] = (array) $endpoint->getMessages();
+        $templateVars['availableChannels'] = $serverEndpoint->getAvailableChannels();
 
         return $this->render('HedgebotAnnouncementsBundle::route/index.html.twig', $templateVars);
     }
 
     /**
-     * @Route("/announcements/message/delete/{name}", options = { "expose" = true }, name="announcements_message_delete")
+     * @Route("/announcements/message/delete/{id}", options = { "expose" = true }, name="announcements_message_delete")
      */
-    public function deleteMessageAction($name)
+    public function deleteMessageAction($id)
     {
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/announcements');
-        $deleted = $endpoint->deleteMessage($name);
+        $deleted = $endpoint->deleteMessage($id);
 
         $response = new JsonResponse();
         $response->setData($deleted);
@@ -51,17 +51,28 @@ class AnnouncementsController extends BaseController
     }
 
     /**
-     * @Route("/announcements/message/save/{name}", options = { "expose" = true }, name="announcements_message_save")
+     * @Route("/announcements/message/save/{id}", options = { "expose" = true }, defaults = { "id" = ""}, name="announcements_message_save")
      */
-    public function saveMessageAction($name, Request $request)
+    public function saveMessageAction($id, Request $request)
     {
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/announcements');
         $data = $request->request->all();
+        $newMessageId = null;
 
-        $updated = $endpoint->saveMessage($name, $data);
+        // If no channel is specified, create an empty array to avoid errors
+        if(empty($data['channels'])) {
+            $data['channels'] = [];
+        }
+
+        if(empty($id)) {
+            $newMessageId = $endpoint->addMessage($data['message'], $data['channels']);
+            $saved = true;
+        } else {
+            $saved = $endpoint->editMessage($id, $data['message'], $data['channels']);
+        }
 
         $response = new JsonResponse();
-        $response->setData($updated);
+        $response->setData($newMessageId ? $newMessageId : $saved);
 
         return $response;
     }

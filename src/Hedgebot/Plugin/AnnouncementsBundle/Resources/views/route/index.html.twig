@@ -26,13 +26,13 @@
                     <h2>Messages</h2>
                 </div>
                     <div class="hidden" id="block-message-template">
-                        {% set message = {'message': '', 'channels': []} %}
-                        {% include 'HedgebotCustomCommandsBundle::route/message.html.twig' with {'isTemplate': true, 'message': message, 'availableChannels': availableChannels} %}
+                        {% set templateMessage = {'id': '', 'message': '', 'channels': []} %}
+                        {% include 'HedgebotAnnouncementsBundle::route/message.html.twig' with {'isTemplate': true, 'message': templateMessage, 'availableChannels': availableChannels} %}
                     </div>
 
                     <div id="messages">
                         {% for message in messages %}
-                            {% include 'HedgebotCustomCommandsBundle::route/message.html.twig' with {'isTemplate': false, 'message': message, 'availableChannels': availableChannels} %}
+                            {% include 'HedgebotAnnouncementsBundle::route/message.html.twig' with {'isTemplate': false, 'message': message, 'availableChannels': availableChannels} %}
                         {% endfor %}
                     </div>
                 </div>
@@ -48,7 +48,7 @@
         $(function()
         {
             var options = {
-                messageContainerSelector: "#messagess",
+                messageContainerSelector: "#messages",
                 messageTemplateSelector: "#block-message-template > div",
                 messageSelector: ".message",
                 addMessageSelector: '[data-action="new-message"]',

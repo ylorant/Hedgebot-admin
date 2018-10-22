@@ -1,0 +1,17 @@
+.message .input-group,
+.message .form-group
+{
+    margin-bottom: 0px;
+}
+
+.not-saved,
+.not-saved .form-control,
+.not-saved .dropdown-toggle
+{
+    background-color: #ECECFF !important;
+}
+
+.bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark
+{
+    margin-top: 9px !important;
+}

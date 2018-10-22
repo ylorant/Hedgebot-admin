@@ -42,9 +42,9 @@ var Announcements = {
 
     options: {},
     elements: {
-        commandContainer: null,
+        messageContainer: null,
         addButton: null,
-        commandTemplate: null
+        messageTemplate: null
     },
 
     /**
@@ -63,11 +63,11 @@ var Announcements = {
     /**
      * Initializes the elements.
      */
-    initElements: function(refresh)
+    initElements: function()
     {
-        this.elements.commandContainer = $(this.options.commandContainerSelector);
-        this.elements.addButton = $(this.options.addSelector);
-        this.elements.commandTemplate = $(this.options.commandTemplateSelector);
+        this.elements.messageContainer = $(this.options.messageContainerSelector);
+        this.elements.addButton = $(this.options.addMessageSelector);
+        this.elements.messageTemplate = $(this.options.messageTemplateSelector);
     },
 
     /**
@@ -75,119 +75,128 @@ var Announcements = {
      */
     bindUIActions: function()
     {
-        this.elements.commandContainer.on('click', '[data-action="save"]', this.onSaveCommandClick.bind(this));
-        this.elements.commandContainer.on('click', '[data-action="delete"]', this.onDeleteCommandClick.bind(this));
+        this.elements.messageContainer.on('click', '[data-action="save"]', this.onSaveMessageClick.bind(this));
+        this.elements.messageContainer.on('click', '[data-action="delete"]', this.onDeleteMessageClick.bind(this));
 
-        this.elements.addButton.on('click', this.onAddCommandClick.bind(this));
+        this.elements.addButton.on('click', this.onAddMessageClick.bind(this));
     },
 
     /// EVENTS ///
 
     /**
-     * Event: the Add command button has been pressed
+     * Event: the Add message button has been pressed
      */
-    onAddCommandClick: function()
+    onAddMessageClick: function()
     {
-        this.addCommand();
+        this.addMessage();
     },
 
     /**
-     * Event: A delete command button has been pressed
+     * Event: A delete message button has been pressed
      */
-    onDeleteCommandClick: function(ev)
+    onDeleteMessageClick: function(ev)
     {
-        var commandBlock = this.elements.commandContainer.find(ev.currentTarget.dataset.target).not();
+        let messageBlock = this.elements.messageContainer.find(ev.currentTarget.dataset.target).not();
 
-        // If this is an already saved command, there should be a valid target
-        if(commandBlock.length > 0)
-            this.deleteCommand(commandBlock.data('name'), this.onCommandDeletedResult.bind(this, commandBlock));
-        else // This is a new, not-yet-saved command, we just delete the matching parent command element
-            $(ev.currentTarget).parents(this.options.commandSelector).remove();
-
+        // If this is an already saved message, there should be a valid target
+        if(messageBlock.length > 0) {
+            this.deleteMessage(messageBlock.data('name'), this.onMessageDeletedResult.bind(this, messageBlock));
+        } else { // This is a new, not-yet-saved message, we just delete the matching parent message element
+            $(ev.currentTarget).parents(this.options.messageSelector).remove();
+        }
     },
     
     /**
-     * Event: A command has been deleted.
+     * Event: A message has been deleted.
      */
-    onCommandDeletedResult: function(commandBlock, success)
+    onMessageDeletedResult: function(messageBlock, success)
     {
-        // Deletion has been successful, we remove the command block
+        // Deletion has been successful, we remove the message block
         if(success) {
-            commandBlock.remove();
-            $.notify({ message: "Command has been deleted." });
+            messageBlock.remove();
+            $.notify({ message: "Message has been deleted." });
         }
         else
-            $.notify({ message: "An error occured during command deletion." }, { type: "danger" });
+            $.notify({ message: "An error occured during message deletion." }, { type: "danger" });
     },
 
     /**
-     * Event: Saves a command
+     * Event: Saves a message
      */
-    onSaveCommandClick: function(ev)
+    onSaveMessageClick: function(ev)
     {
-        var commandBlock = this.elements.commandContainer.find(ev.currentTarget.dataset.target);
-        var commandData = {};
-        var commandName = null;
+        let messageBlock = this.elements.messageContainer.find(ev.currentTarget.dataset.target);
+        let messageData = {};
 
-        // If the command block has not been found, then it's a new command and just find the parent block that matches the command selector
-        if(commandBlock.length == 0)
-            commandBlock = $(ev.currentTarget).parents(this.options.commandSelector);
-
-        commandName = commandBlock.data('name');
-
-        commandData.name = commandBlock.find('[name="' + this.options.fieldNames.name + '"]').val();
-        commandData.text = commandBlock.find('[name="' + this.options.fieldNames.text + '"]').val();
-        commandData.channels = commandBlock.find('[name="' + this.options.fieldNames.channels + '"]').val();
+        // If the message block has not been found, then it's a new message and just find the parent block that matches the message selector
+        if(messageBlock.length == 0)
+            messageBlock = $(ev.currentTarget).parents(this.options.messageSelector);
         
-        // If it's a new command, the commandName var will not be filled, so we'll fetch it from the actual input
-        if(!commandName)
-            commandName = commandData.name;
+        messageData.id = messageBlock.attr('id').replace('message-', '');
+        messageData.message = messageBlock.find('[name="' + this.options.fieldNames.message + '"]').val();
+        messageData.channels = messageBlock.find('[name="' + this.options.fieldNames.channels + '"]').val();
 
-        this.saveCommand(commandName, commandData, this.onCommandSavedResult.bind(this, commandBlock, commandData));
+        if(!messageData.channels) {
+            messageData.channels = [];
+        }
+
+        this.saveMessage(messageData.id, messageData, this.onMessageSavedResult.bind(this, messageBlock));
     },
 
     /**
-     * Event: A command has been saved.
+     * Event: A message has been saved.
      */
-    onCommandSavedResult: function(commandBlock, commandData, success)
+    onMessageSavedResult: function(messageBlock, messageId, success)
     {
-        // If the save has succeeded, we need to update the block with the new ID and command name, and their references
+        // If the save has succeeded, we need to update the block with the new ID and message name, and their references
         if(success) {
-            commandBlock.data('name', commandData.name);
-            commandBlock.attr('data-name', commandData.name);
-            commandBlock.attr('id', 'command-' + commandData.name);
+            messageBlock.attr('data-name', messageId);
+            messageBlock.attr('id', 'message-' + messageId);
 
-            commandBlock.find('[data-action="save"]').attr('data-target', "#command-" + commandData.name);
-            commandBlock.find('[data-action="delete"]').attr('data-target', "#command-" + commandData.name);
+            messageBlock.find('[data-action="saveMessage"]').attr('data-target', "#message-" + messageId);
+            messageBlock.find('[data-action="deleteMessage"]').attr('data-target', "#message-" + messageId);
 
-            commandBlock.removeClass('not-saved');
-            $.notify({ message: "Command has been saved." });
+            messageBlock.removeClass('not-saved');
+            $.notify({ message: "Message has been saved." });
         }
         else
-            $.notify({ message: "An error occured during command save." }, { type: "danger" });
+            $.notify({ message: "An error occured during message save." }, { type: "danger" });
     },
 
     /// ACTIONS ///
 
-    saveCommand: function(commandName, commandData, callback)
+    saveMessage: function(messageId, messageData, callback)
     {
+        let routeParams = {};
+        if(messageId) {
+            routeParams = {id: messageId};
+        }
+        
         $.ajax({
-            url: Routing.generate(this.options.saveRoute, {name: commandName}, true),
+            url: Routing.generate(this.options.saveMessageRoute, routeParams, true),
             type: 'post',
-            data: commandData,
+            data: messageData,
             dataType: 'json',
             complete: function(jqXHR, textStatus)
             {
-                var data = jqXHR.responseJSON;
-                callback(textStatus == "success" && data === true);
+                let data = jqXHR.responseJSON;
+                let requestSucceeded = (textStatus == "success" && data !== false);
+
+                // Set the message ID from the data if the request succeeded and it was a creation
+                if(!messageId && requestSucceeded) {
+                    messageId = data;
+                    data = true;
+                }
+                
+                callback(messageId, requestSucceeded);
             }
         });
     },
 
-    deleteCommand: function(commandName, callback)
+    deleteMessage: function(messageId, callback)
     {
         $.ajax({
-            url: Routing.generate(this.options.deleteRoute, {name: commandName}, true),
+            url: Routing.generate(this.options.deleteMessageRoute, {id: messageId}, true),
             type: 'get',
             dataType: 'json',
             complete: function(jqXHR, textStatus)
@@ -198,25 +207,13 @@ var Announcements = {
         });
     },
 
-    addCommand: function()
+    addMessage: function()
     {
-        var newCommandBlock = this.elements.commandTemplate.clone();
-        newCommandBlock.addClass('not-saved');
-        newCommandBlock.attr("id", "#command-" + this.makeID(10)); // Set the ID to a random one
+        let newMessageBlock = this.elements.messageTemplate.clone();
+        newMessageBlock.addClass('not-saved');
 
-        $('select', newCommandBlock).removeClass('ms').selectpicker();
+        $('select', newMessageBlock).removeClass('ms').selectpicker();
 
-        this.elements.commandContainer.append(newCommandBlock);
-    },
-
-    makeID: function(length)
-    {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      
-        for (var i = 0; i < length; i++)
-          text += possible.charAt(Math.floor(Math.random() * possible.length));
-      
-        return text;
+        this.elements.messageContainer.append(newMessageBlock);
     }
 };
