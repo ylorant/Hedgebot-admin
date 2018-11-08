@@ -32,19 +32,44 @@ var Announcements = {
         saveMessageRoute: null,
 
         /**
-         * @var object Field names for each value
+         * @var object Field names for each message property value
          */
-        fieldNames: {
+        messageFieldNames: {
             message: null,
             channels: null
-        }
+        },
+
+        /**
+         * @var string Selector pointing to the interval list container
+         */
+        intervalContainerSelector: null,
+        
+        /**
+         * @var string Selector for one interval, inside the interval container
+         */
+        intervalSelector: null,
+        
+        /**
+         * @var string Route to save an interval on the controller
+         */
+        saveIntervalRoute: null,
+
+        /**
+         * @var object Field names for each interval property value
+         */
+        intervalFieldNames: {
+            enabled: null,
+            channel: null,
+            time: null
+        },
     },
 
     options: {},
     elements: {
         messageContainer: null,
         addButton: null,
-        messageTemplate: null
+        messageTemplate: null,
+        intervalContainer: null
     },
 
     /**
@@ -58,6 +83,11 @@ var Announcements = {
 
         this.initElements();
         this.bindUIActions();
+
+        this.elements.intervalContainer.find(this.options.intervalSelector).each((function(index, el)
+        {
+            $(el).find('[name="' + this.options.intervalFieldNames.enabled + '"]').trigger('change');
+        }).bind(this));
     },
 
     /**
@@ -68,6 +98,7 @@ var Announcements = {
         this.elements.messageContainer = $(this.options.messageContainerSelector);
         this.elements.addButton = $(this.options.addMessageSelector);
         this.elements.messageTemplate = $(this.options.messageTemplateSelector);
+        this.elements.intervalContainer = $(this.options.intervalContainerSelector);
     },
 
     /**
@@ -77,8 +108,10 @@ var Announcements = {
     {
         this.elements.messageContainer.on('click', '[data-action="save"]', this.onSaveMessageClick.bind(this));
         this.elements.messageContainer.on('click', '[data-action="delete"]', this.onDeleteMessageClick.bind(this));
-
         this.elements.addButton.on('click', this.onAddMessageClick.bind(this));
+
+        this.elements.intervalContainer.on('click', '[data-action="save"]', this.onSaveIntervalClick.bind(this));
+        this.elements.intervalContainer.on('change','input[name="' + this.options.intervalFieldNames.enabled + '"]', this.onIntervalEnabledChange.bind(this));
     },
 
     /// EVENTS ///
@@ -100,7 +133,7 @@ var Announcements = {
 
         // If this is an already saved message, there should be a valid target
         if(messageBlock.length > 0) {
-            this.deleteMessage(messageBlock.data('name'), this.onMessageDeletedResult.bind(this, messageBlock));
+            this.deleteMessage(messageBlock.attr('id').replace('message-', ''), this.onMessageDeletedResult.bind(this, messageBlock));
         } else { // This is a new, not-yet-saved message, we just delete the matching parent message element
             $(ev.currentTarget).parents(this.options.messageSelector).remove();
         }
@@ -125,16 +158,16 @@ var Announcements = {
      */
     onSaveMessageClick: function(ev)
     {
-        let messageBlock = this.elements.messageContainer.find(ev.currentTarget.dataset.target);
-        let messageData = {};
+        var messageBlock = this.elements.messageContainer.find(ev.currentTarget.dataset.target);
+        var messageData = {};
 
         // If the message block has not been found, then it's a new message and just find the parent block that matches the message selector
         if(messageBlock.length == 0)
             messageBlock = $(ev.currentTarget).parents(this.options.messageSelector);
         
         messageData.id = messageBlock.attr('id').replace('message-', '');
-        messageData.message = messageBlock.find('[name="' + this.options.fieldNames.message + '"]').val();
-        messageData.channels = messageBlock.find('[name="' + this.options.fieldNames.channels + '"]').val();
+        messageData.message = messageBlock.find('[name="' + this.options.messageFieldNames.message + '"]').val();
+        messageData.channels = messageBlock.find('[name="' + this.options.messageFieldNames.channels + '"]').val();
 
         if(!messageData.channels) {
             messageData.channels = [];
@@ -159,8 +192,40 @@ var Announcements = {
             messageBlock.removeClass('not-saved');
             $.notify({ message: "Message has been saved." });
         }
-        else
+        else {
             $.notify({ message: "An error occured during message save." }, { type: "danger" });
+        }
+    },
+
+    onSaveIntervalClick: function(ev)
+    {
+        var intervalBlock = this.elements.intervalContainer.find(ev.currentTarget.dataset.target);
+        var intervalData = {};
+
+        intervalData.enabled = intervalBlock.find('[name="' + this.options.intervalFieldNames.enabled + '"]').is(":checked");
+        intervalData.channel = intervalBlock.find('[name="' + this.options.intervalFieldNames.channel + '"]').val();
+        intervalData.time = intervalBlock.find('[name="' + this.options.intervalFieldNames.time + '"]').val();
+
+        this.saveInterval(intervalData.channel, intervalData, this.onIntervalSavedResult.bind(this));
+    },
+
+    onIntervalEnabledChange: function(ev)
+    {
+        var checkbox = $(ev.currentTarget);
+        var intervalBlock = checkbox.parents(this.options.intervalSelector);
+        intervalBlock
+            .find('input[name="' + this.options.intervalFieldNames.time + '"]')
+            .attr('disabled', !checkbox.is(':checked'))
+                .parents('.form-line').toggleClass('disabled', !checkbox.is(':checked'));
+    },
+
+    onIntervalSavedResult: function(success)
+    {
+        if(success) {
+            $.notify({ message: "Interval has been saved." });
+        } else {
+            $.notify({ message: "An error occured during interval save." }, { type: "danger" });
+        }
     },
 
     /// ACTIONS ///
@@ -179,8 +244,8 @@ var Announcements = {
             dataType: 'json',
             complete: function(jqXHR, textStatus)
             {
-                let data = jqXHR.responseJSON;
-                let requestSucceeded = (textStatus == "success" && data !== false);
+                var data = jqXHR.responseJSON;
+                var requestSucceeded = (textStatus == "success" && data !== false);
 
                 // Set the message ID from the data if the request succeeded and it was a creation
                 if(!messageId && requestSucceeded) {
@@ -215,5 +280,21 @@ var Announcements = {
         $('select', newMessageBlock).removeClass('ms').selectpicker();
 
         this.elements.messageContainer.append(newMessageBlock);
+    },
+
+    saveInterval: function(intervalChannel, intervalData, callback)
+    {
+        $.ajax({
+            url: Routing.generate(this.options.saveIntervalRoute, {channel: intervalChannel}, true),
+            type: 'post',
+            data: intervalData,
+            dataType: 'json',
+            complete: function(jqXHR, textStatus)
+            {
+                var data = jqXHR.responseJSON;
+                var requestSucceeded = (textStatus == "success" && data !== false);
+                callback(requestSucceeded);
+            }
+        });
     }
 };

@@ -22,18 +22,39 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="card">
-                <div class="header">
-                    <h2>Messages</h2>
-                </div>
-                    <div class="hidden" id="block-message-template">
-                        {% set templateMessage = {'id': '', 'message': '', 'channels': []} %}
-                        {% include 'HedgebotAnnouncementsBundle::route/message.html.twig' with {'isTemplate': true, 'message': templateMessage, 'availableChannels': availableChannels} %}
-                    </div>
+                {# <div class="header">
+                    <h2>Announcements</h2>
+                </div> #}
+                    <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#announcements-messages" data-toggle="tab">Messages</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#announcements-intervals" data-toggle="tab">Channels</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        <div id="announcements-messages" class="tab-pane fade in active">
+                            <div class="hidden" id="block-message-template">
+                                {% set templateMessage = {'id': '', 'message': '', 'channels': []} %}
+                                {% include 'HedgebotAnnouncementsBundle::route/message.html.twig' with {'isTemplate': true, 'message': templateMessage, 'availableChannels': availableChannels} %}
+                            </div>
 
-                    <div id="messages">
-                        {% for message in messages %}
-                            {% include 'HedgebotAnnouncementsBundle::route/message.html.twig' with {'isTemplate': false, 'message': message, 'availableChannels': availableChannels} %}
-                        {% endfor %}
+                            <div id="messages">
+                                {% for message in messages %}
+                                    {% include 'HedgebotAnnouncementsBundle::route/message.html.twig' with {'isTemplate': false, 'message': message, 'availableChannels': availableChannels} %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div id="announcements-intervals" class="tab-pane fade">
+                            <div id="intervals">
+                                {% for interval in intervals %}
+                                    {% include 'HedgebotAnnouncementsBundle::route/interval.html.twig' with {'isTemplate': false, 'interval': interval, 'availableChannels': availableChannels} %}
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,10 +75,19 @@
                 addMessageSelector: '[data-action="new-message"]',
                 deleteMessageRoute: "announcements_message_delete",
                 saveMessageRoute: "announcements_message_save",
-                fieldNames: {
+                messageFieldNames: {
                     id: "id",
                     message: "message",
                     channels: "channels"
+                },
+
+                intervalContainerSelector: "#intervals",
+                intervalSelector: ".interval",
+                saveIntervalRoute: "announcements_interval_save",
+                intervalFieldNames: {
+                    enabled: "enabled",
+                    time: "time",
+                    channel: "channel"
                 }
             };
 
