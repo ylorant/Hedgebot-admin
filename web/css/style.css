@@ -1,5 +1,9 @@
 /* Global layout */
 
+.sidebar .user-info {
+    background: url("../images/diagmonds.png") #666 no-repeat no-repeat;
+}
+
 /* Navbar behavior overriding */
 
 .navbar-brand picture
