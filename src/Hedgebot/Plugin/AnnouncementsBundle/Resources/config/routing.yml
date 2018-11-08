@@ -1,0 +1,3 @@
+announcements_routes:
+    resource: "@HedgebotAnnouncementsBundle/Controller/"
+    type:     annotation

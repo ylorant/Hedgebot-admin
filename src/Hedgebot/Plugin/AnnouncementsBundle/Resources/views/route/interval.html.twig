@@ -1,0 +1,62 @@
+<div class="header interval" id="interval-{{ interval.channel }}" data-saved="true">
+    <div class="row clearfix">
+    
+        <div class="col-lg-1 col-xs-2">
+            <div class="form-group form-float">
+                <div class="switch form-line focused">
+                    <label class="form-label">Enabled</label>
+                    <label>
+                        <input type="checkbox" name="enabled" value="enabled" {% if interval.enabled %}checked="checked"{% endif %} />
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-xs-10">
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input type="text"
+                           name="channel"
+                           class="form-control"
+                           value="{{ interval.channel }}"
+                           readonly
+                    />
+                    <label class="form-label">Channel</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-xs-12">
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input type="text"
+                           name="messages"
+                           class="form-control"
+                           value="{{ interval.messages is not empty ? interval.messages : "" }}"
+                    />
+                    <label class="form-label">Message count</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-xs-12">
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input type="text"
+                           name="time"
+                           class="form-control"
+                           value="{{ interval.time is not empty ? interval.time : "" }}"
+                    />
+                    <label class="form-label">Time interval</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-1 col-xs-12 text-right">
+            <a data-action="save" data-target="#interval-{{ interval.channel }}" title="Update" class="btn btn-success">
+                <i class="material-icons md-18">done</i>
+            </a>
+        </div>
+    </div>
+</div>
