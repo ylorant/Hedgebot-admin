@@ -94,11 +94,12 @@ class AnnouncementsController extends BaseController
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/announcements');
         $data = $request->request->all();
         $time = $this->convertHumanReadableToTime($data['time']);
+        $messages = (int) $data['messages'];
         $saved = false;
 
         if($time !== false) {
             if(filter_var($data['enabled'], FILTER_VALIDATE_BOOLEAN)) {
-                $saved = $endpoint->setInterval($channel, $time);
+                $saved = $endpoint->setInterval($channel, $time, $messages);
             } else {
                 $saved = $endpoint->removeInterval($channel);
             }
@@ -127,6 +128,7 @@ class AnnouncementsController extends BaseController
             $intervals[$channel] = [
                 "channel" => $channel,
                 "enabled" => false,
+                "messages" => null,
                 "time" => null
             ];
         }
@@ -134,6 +136,7 @@ class AnnouncementsController extends BaseController
         foreach($definedIntervals as $definedInterval) {
             if(isset($intervals[$definedInterval->channel])) {
                 $intervals[$definedInterval->channel]['time'] = $this->convertIntervalToHumanReadable((int) $definedInterval->time);
+                $intervals[$definedInterval->channel]['messages'] = $definedInterval->messages;
                 $intervals[$definedInterval->channel]['enabled'] = true;
             }
         }

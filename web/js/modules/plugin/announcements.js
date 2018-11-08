@@ -60,7 +60,8 @@ var Announcements = {
         intervalFieldNames: {
             enabled: null,
             channel: null,
-            time: null
+            time: null,
+            messages: null
         },
     },
 
@@ -205,6 +206,7 @@ var Announcements = {
         intervalData.enabled = intervalBlock.find('[name="' + this.options.intervalFieldNames.enabled + '"]').is(":checked");
         intervalData.channel = intervalBlock.find('[name="' + this.options.intervalFieldNames.channel + '"]').val();
         intervalData.time = intervalBlock.find('[name="' + this.options.intervalFieldNames.time + '"]').val();
+        intervalData.messages = intervalBlock.find('[name="' + this.options.intervalFieldNames.messages + '"]').val();
 
         this.saveInterval(intervalData.channel, intervalData, this.onIntervalSavedResult.bind(this));
     },
@@ -215,6 +217,10 @@ var Announcements = {
         var intervalBlock = checkbox.parents(this.options.intervalSelector);
         intervalBlock
             .find('input[name="' + this.options.intervalFieldNames.time + '"]')
+            .attr('disabled', !checkbox.is(':checked'))
+                .parents('.form-line').toggleClass('disabled', !checkbox.is(':checked'));
+        intervalBlock
+            .find('input[name="' + this.options.intervalFieldNames.messages + '"]')
             .attr('disabled', !checkbox.is(':checked'))
                 .parents('.form-line').toggleClass('disabled', !checkbox.is(':checked'));
     },
