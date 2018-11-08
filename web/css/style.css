@@ -356,5 +356,101 @@
 }
 
 .card > .tab-content {
-    padding: 0px;
+  padding: 0px;
+}
+
+.card .body .form-group .col-xs-1,
+.card .body .form-group .col-sm-1,
+.card .body .form-group .col-md-1,
+.card .body .form-group .col-lg-1
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-2,
+.card .body .form-group .col-sm-2,
+.card .body .form-group .col-md-2,
+.card .body .form-group .col-lg-2
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-3,
+.card .body .form-group .col-sm-3,
+.card .body .form-group .col-md-3,
+.card .body .form-group .col-lg-3
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-4,
+.card .body .form-group .col-sm-4,
+.card .body .form-group .col-md-4,
+.card .body .form-group .col-lg-4
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-5,
+.card .body .form-group .col-sm-5,
+.card .body .form-group .col-md-5,
+.card .body .form-group .col-lg-5
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-6,
+.card .body .form-group .col-sm-6,
+.card .body .form-group .col-md-6,
+.card .body .form-group .col-lg-6
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-7,
+.card .body .form-group .col-sm-7,
+.card .body .form-group .col-md-7,
+.card .body .form-group .col-lg-7
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-8,
+.card .body .form-group .col-sm-8,
+.card .body .form-group .col-md-8,
+.card .body .form-group .col-lg-8
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-9,
+.card .body .form-group .col-sm-9,
+.card .body .form-group .col-md-9,
+.card .body .form-group .col-lg-9
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-10,
+.card .body .form-group .col-sm-10,
+.card .body .form-group .col-md-10,
+.card .body .form-group .col-lg-10
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-11,
+.card .body .form-group .col-sm-11,
+.card .body .form-group .col-md-11,
+.card .body .form-group .col-lg-11
+{
+    margin-bottom: 0px;
+}
+
+.card .body .form-group .col-xs-12,
+.card .body .form-group .col-sm-12,
+.card .body .form-group .col-md-12,
+.card .body .form-group .col-lg-12
+{
+    margin-bottom: 0px;
 }
