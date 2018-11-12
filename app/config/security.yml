@@ -30,6 +30,8 @@ security:
             logout:
                 path: /logout
                 target: /login
+            
+            logout_on_user_change: true
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
