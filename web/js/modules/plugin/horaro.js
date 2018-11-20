@@ -97,6 +97,7 @@ var Horaro = {
         this.elements.buttons.previous.on('click', this.onPreviousButtonClick.bind(this));
         this.elements.buttons.pause.on('click', this.onPauseButtonClick.bind(this));
         this.elements.buttons.next.on('click', this.onNextButtonClick.bind(this));
+        this.elements.scheduleView.on('click', '[data-action="goto"]', this.onGoToItemClick.bind(this));
 
         this.refreshScheduleInterval = setInterval(this.refreshSchedule.bind(this), 30000);
     },
@@ -124,7 +125,13 @@ var Horaro = {
         return false;
     },
 
-    executeAction: function(action, cb)
+    onGoToItemClick: function(ev)
+    {
+        this.executeAction('goto', this.refreshSchedule.bind(this), {item: ev.currentTarget.dataset.item});
+        return false;
+    },
+
+    executeAction: function(action, cb, parameters)
     {
         this.loadingAnimation = this.elements.controlBlock.waitMe({
             effect: 'rotation',
@@ -143,9 +150,21 @@ var Horaro = {
             }
         };
 
+        var routeParameters = {
+            identSlug: this.options.identSlug,
+            action: action
+        };
+
+        // Handling extra parameters
+        if(typeof parameters == "object") {
+            for(var i in parameters) {
+                routeParameters[i] = parameters[i];
+            }
+        }
+
         $.ajax({
-            url: Routing.generate(this.options.actionRoute, {identSlug: this.options.identSlug, action: action}, true),
-            type: 'post',
+            url: Routing.generate(this.options.actionRoute, routeParameters, true),
+            type: 'get',
             dataType: 'json',
             complete: onComplete.bind(this)
         });
@@ -153,6 +172,16 @@ var Horaro = {
 
     refreshSchedule: function()
     {
+        if(this.loadingAnimation) {
+            this.loadingAnimation.waitMe('hide');
+            this.loadingAnimation = this.elements.scheduleView.waitMe({
+                effect: 'rotation',
+                text: '',
+                bg: 'rgba(255,255,255,0.90)',
+                color: '#3f51b5'
+            });
+        }
+
         $.ajax({
             url: Routing.generate(this.options.getScheduleRoute, {identSlug: this.options.identSlug}, true),
             type: 'post',
@@ -242,6 +271,14 @@ var Horaro = {
 
                 line.append($('<td>' + itemData[j] + '</td>'));
             }
+
+            // Add the "go to item" button
+            var button = $('<a data-action="goto" data-item="' + i + '"></a>');
+            button.addClass('btn btn-primary');
+            button.html('<i class="material-icons">fast_forward</i>')
+            var cell = $('<td></td>');
+            cell.append(button);
+            line.append(cell);
 
             scheduleTime = new Date(scheduleTime.getTime() + 1000 * item.length_t + 1000 * scheduleData.setup_t);
 

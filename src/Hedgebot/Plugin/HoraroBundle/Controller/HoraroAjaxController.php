@@ -4,6 +4,7 @@ namespace Hedgebot\Plugin\HoraroBundle\Controller;
 use Hedgebot\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class HoraroAjaxController extends BaseController
 {
@@ -28,7 +29,7 @@ class HoraroAjaxController extends BaseController
     /**
      * @Route("/horaro/ajax/schedule/{identSlug}/action/{action}", options = { "expose" = true }, name="horaro_ajax_schedule_action")
      */
-    public function actionScheduleAction($identSlug, $action)
+    public function actionScheduleAction(Request $request, $identSlug, $action)
     {
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/horaro');
 
@@ -55,6 +56,17 @@ class HoraroAjaxController extends BaseController
             // Next item
             case 'next':
                 $result = $endpoint->nextItem($identSlug);
+                break;
+            
+            // Go to specific item
+            case 'goto':
+                $itemIndex = $request->query->get('item');
+                
+                if(is_numeric($itemIndex)) {
+                    $result = $endpoint->goToItem($identSlug, $itemIndex);
+                } else {
+                    $result = false;
+                }
                 break;
         }
         
