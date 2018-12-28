@@ -23,9 +23,7 @@ class HedgebotAnnouncementsBundle extends Bundle implements PluginBundleInterfac
      */
     public function getMenu()
     {
-        $baseItem = new MenuItem('Announcements', 'announcements_list', 'message');
-        
-        return $baseItem;
+        return new MenuItem('Announcements', 'announcements_list', 'message');
     }
     
     /**

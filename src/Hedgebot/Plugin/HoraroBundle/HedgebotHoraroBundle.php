@@ -22,9 +22,7 @@ class HedgebotHoraroBundle extends Bundle implements PluginBundleInterface, Menu
      */
     public function getMenu()
     {
-        $baseItem = new MenuItem('Horaro', 'horaro_schedule_list', 'date_range');
-        
-        return $baseItem;
+        return new MenuItem('Horaro', 'horaro_schedule_list', 'date_range');
     }
     
     /**
