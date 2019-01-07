@@ -15,7 +15,7 @@ class CreateUserCommand extends ContainerAwareCommand
     {
         $this
             ->setName('user:create')
-            ->setDescription('Creates an user on web admin.')
+            ->setDescription('Creates an user on the web admin.')
             ->setHelp('Use this command to create an user on Hedgebot\'s web admin.');
     }
 
