@@ -4,6 +4,37 @@
     background: url("../images/diagmonds.png") #666 no-repeat no-repeat;
 }
 
+/* Text tweaks */
+
+.text-embossed
+{
+    color: #888;
+    text-shadow: 0px 1px 0px rgba(255,255,255,.5);
+}
+
+.card .text-embossed
+{
+    color: inherit;
+    text-shadow: inherit;
+}
+
+/* General form tweaks */
+
+textarea
+{
+    resize: none;
+}
+
+textarea.resizable
+{
+    resize: vertical;
+}
+
+input.form-control[type="file"]
+{
+    height: auto;
+}
+
 /* Navbar behavior overriding */
 
 .navbar-brand picture

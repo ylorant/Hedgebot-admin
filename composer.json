@@ -35,7 +35,8 @@
         "php-curl-class/php-curl-class": "^8.0",
         "whiteoctober/breadcrumbs-bundle": "^1.2",
         "nicklaw5/twitch-api-php": "^1.1",
-        "ramsey/uuid": "^3.7"
+        "ramsey/uuid": "^3.7",
+        "jublonet/codebird-php": "^3.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

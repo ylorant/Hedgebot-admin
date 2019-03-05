@@ -85,6 +85,8 @@ var SymfonyCollections =
         $(insertTarget).before(newElementDOM);
 
         this.bindDeleteEvent(counter, newElementDOM);
+
+        $('select:not(.ms)', newElementDOM).selectpicker();
     },
 
     /**

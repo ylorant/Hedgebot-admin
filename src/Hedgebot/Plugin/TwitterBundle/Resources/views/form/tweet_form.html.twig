@@ -1,0 +1,59 @@
+{% use 'HedgebotCoreBundle::form/material_form.html.twig' %}
+
+{%- block _tweet_constraints_rest -%}
+    <div class="text-right constraint-collection-add-container">
+        <a class="btn btn-primary btn-circle-lg waves-effect" data-action="collection-add">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+{%- endblock _tweet_constraints_rest -%}
+
+{%- block _tweet_constraints_entry_row -%}
+    <div class="row" data-item>
+        <div class="col-lg-4">
+            {{ form_row(form.type) }}
+        </div>
+        <div class="col-lg-4">
+            {{ form_row(form.lval) }}
+        </div>
+        <div class="col-lg-4">
+            {{ form_row(form.rval) }}
+        </div>
+    </div>
+{%- endblock _tweet_constraints_entry_row -%}
+
+{%- block _tweet_constraints_entry_lval_row -%}
+    <div class="input-group">
+        <div class="form-line">
+            {{ form_widget(form) }}
+            {{ form_label(form) }}
+        </div>
+        <span class="input-group-addon">=</span>
+    </div>
+{%- endblock _tweet_constraints_entry_lval_row -%}
+
+{%- block _tweet_constraints_entry_rval_row -%}
+    <div class="input-group">
+        <div class="form-line">
+            {{ form_widget(form) }}
+            {{ form_label(form) }}
+        </div>
+        <a href="javascript:void(0);" class="input-group-addon">
+            <i class="material-icons" data-action="collection-delete">clear</i>
+        </a>
+    </div>
+{%- endblock _tweet_constraints_entry_rval_row -%}
+
+{# TODO: Maybe add this into material_form.html.twig to allow thumbnails in all forms ? #}
+{%- block file_row -%}
+    {% if form.vars.data is not empty %}
+        <div class="thumbnail">
+            <img src="{{ form.vars.data.pathname }}" />
+        </div>
+    {% endif %}
+    <div class="form-group form-float {% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock file_row -%}

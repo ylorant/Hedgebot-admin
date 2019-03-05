@@ -42,6 +42,14 @@
     {%- endif -%}
 {%- endblock checkbox_widget -%}
 
+{%- block radio_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' with-gap')|trim}) -%}
+    <div class="radio">
+        <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+        <label for="{{ id }}">{{ label }}</label>
+    </div>
+{%- endblock radio_widget -%}
+
 {%- block choice_row -%}
     <div class="form-group form-float {% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
         {{- form_label(form) -}}
@@ -58,3 +66,16 @@
     </label>
 </div>
 {% endblock switch_widget %}
+
+{%- block file_row -%}
+    <div class="form-group form-float {% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock file_row -%}
+
+{% block datetime_widget %}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' datetimepicker')|trim}) -%}
+    {{- parent() -}}
+{% endblock datetime_widget %}

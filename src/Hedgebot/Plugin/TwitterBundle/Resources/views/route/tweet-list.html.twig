@@ -1,0 +1,56 @@
+{% extends 'HedgebotCoreBundle::base.html.twig' %}
+{% block title %}Tweets - Twitter{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/plugin/customcommands.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block main_title %}
+    <h3>
+        Twitter - Tweets
+
+        <div class="pull-right">
+            <a class="btn btn-primary waves-effect" href="{{ path("twitter_tweet_new") }}">
+                <i class="material-icons">add</i>
+                <span>New tweet</span>
+            </a>
+        </div>
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% for tweet in tweets %}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>{{ tweet.account }}</h2>
+                    </div>
+
+                    <div class="header">
+                        <p>
+                            {{ tweet.content }}
+                        </p>
+
+                        {% if tweet.media is not empty %}
+                            {% for media in tweet.media %}
+                                <div class="thumbnail">
+                                    <img class="img-responsive" src="{{ media }}" />
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+                    <div class="body text-right">
+                        <a href="{{ path('twitter_tweet_edit', {'tweetId': tweet.id}) }}" class="btn btn-primary"><i class="material-icons">create</i> <span>Edit</span></a>
+                        <a href class="btn btn-danger"><i class="material-icons">delete</i> <span>Delete</span></a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-xs-12 text-center text-embossed">
+                <em>No scheduled tweet yet :(</em>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

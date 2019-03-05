@@ -2,6 +2,7 @@ var Store = {
     defaultOptions: {
         autocompleteInputSelector: null,
         fetchStoreRoute: null,
+        fullContentTokenClass: null,
     },
     options: {},
     
@@ -62,6 +63,12 @@ var Store = {
         var inputWords = inputValue.split(' ');
         var currentToken = inputWords.pop();
 
+        // If the input has a class stating that it's a full-field input, treat the full input value as the token,
+        // effectively short-circuiting the above handling
+        if(input.classList.contains(this.options.fullContentTokenClass)) {
+            currentToken = '$' + input.value;
+        }
+        
         // Check if we are trying to input a store variable (starts with $), and do not do anything if not
         if(currentToken[0] !== '$') {
             this.onBlur(ev);
@@ -134,13 +141,20 @@ var Store = {
             var inputValueRight = this.elements.focusedInput.value.substring(this.elements.focusedInput.selectionEnd);
             var inputWords = inputValueLeft.split(' ');
             var currentToken = inputWords.pop();
+            var separator = " ";
+            var tokenSymbolUsed = true;
+
+            if(this.elements.focusedInput.classList.contains(this.options.fullContentTokenClass)) {
+                separator = "";
+                tokenSymbolUsed = false;
+            }
 
             // Get the selected value and trim it to remove the part that is already written
             var selectedValue = this.elements.autocompleteDropdown.find('.autocomplete-option')
                                                                   .eq(this.currentSelectedOption).data('value');
-            selectedValue = selectedValue.substring(currentToken.length - 1);
+            selectedValue = selectedValue.substring(currentToken.length - (tokenSymbolUsed ? 1 : 0));
 
-            $(this.elements.focusedInput).val(inputValueLeft + selectedValue + " " + inputValueRight);
+            $(this.elements.focusedInput).val(inputValueLeft + selectedValue + separator + inputValueRight);
             ev.target = this.elements.focusedInput;
             this.onBlur(ev);
             
