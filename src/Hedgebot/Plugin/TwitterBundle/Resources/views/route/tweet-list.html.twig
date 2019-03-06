@@ -43,7 +43,7 @@
                     </div>
                     <div class="body text-right">
                         <a href="{{ path('twitter_tweet_edit', {'tweetId': tweet.id}) }}" class="btn btn-primary"><i class="material-icons">create</i> <span>Edit</span></a>
-                        <a href class="btn btn-danger"><i class="material-icons">delete</i> <span>Delete</span></a>
+                        <a href="{{ path('twitter_tweet_delete', {'tweetId': tweet.id}) }}" class="btn btn-danger"><i class="material-icons">delete</i> <span>Delete</span></a>
                     </div>
                 </div>
             </div>

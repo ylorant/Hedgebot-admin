@@ -142,6 +142,23 @@ class TwitterTweetController extends BaseController
     }
 
     /**
+     * @Route("/twitter/tweets/delete/{tweetId}", name="twitter_tweet_delete")
+     */
+    public function deleteTweetAction($tweetId)
+    {
+        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/twitter');
+        
+        $deleted = $endpoint->deleteScheduledTweet($tweetId);
+        if($deleted) {
+            $this->addFlash("success", "Tweet deleted.");
+        } else {
+            $this->addFlash("danger", "Failed to delete tweet.");
+        }
+        
+        return $this->redirectToRoute('twitter_tweet_list');
+    }
+
+    /**
      * Generates an unique filename for an uploaded file.
      * 
      * @param File $file The file to generate the unique name for.
