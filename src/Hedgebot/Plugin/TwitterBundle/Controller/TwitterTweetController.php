@@ -80,6 +80,12 @@ class TwitterTweetController extends BaseController
 
         // Handle form submission
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // If no previous tweet is present, fetch the form tweet from the form itself
+            if(empty($formTweet)) {
+                $formTweet = (object) $form->getData();
+            }
+
             try {
                 if(!empty($formTweet->media)) {
                     $file = $formTweet->media;
@@ -96,9 +102,11 @@ class TwitterTweetController extends BaseController
                     $mediaHttpUrl = $newPath["dir"]. $newPath["name"];
                     $mediaHttpUrl = str_replace($this->get('kernel')->getProjectDir(). "/web", $request->getSchemeAndHttpHost(), $mediaHttpUrl);
                     $formTweet->media = [$mediaHttpUrl];
-                } else {
+                } elseif(!empty($tweet->media)) {
                     // If there is no new media uploaded, keep the old one
                     $formTweet->media = $tweet->media;
+                } else {
+                    $formTweet->media = [];
                 }
 
                 // Format times
