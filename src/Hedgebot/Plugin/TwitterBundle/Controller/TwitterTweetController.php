@@ -69,6 +69,12 @@ class TwitterTweetController extends BaseController
             } else {
                 $formTweet->trigger = 'event';
             }
+
+            if(is_array($formTweet->constraints)) {
+                foreach($formTweet->constraints as &$constraint) {
+                    $constraint = (array) $constraint;
+                }
+            }
         }
 
         $serverEndpoint = $this->get('hedgebot_api')->endpoint('/server');

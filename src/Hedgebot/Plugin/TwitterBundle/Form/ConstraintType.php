@@ -18,9 +18,9 @@ class ConstraintType extends AbstractType
     {
         // Setting the data class as stdClass here, because otherwise the property resolver would try to access it as an
         // array and that causes errors
-        $resolver->setDefaults([
-            'data_class' => 'stdClass'
-        ]);
+        // $resolver->setDefaults([
+        //     'data_class' => 'stdClass'
+        // ]);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
