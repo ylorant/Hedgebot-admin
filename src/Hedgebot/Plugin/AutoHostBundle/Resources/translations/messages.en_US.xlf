@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="autohost">
+                <source>autohost</source>
+                <target>AutoHost</target>
+            </trans-unit>
+            <trans-unit id="title.channel_to_host">
+                <source>title.channels_to_host</source>
+                <target>Channels to host</target>
+            </trans-unit>
+            <trans-unit id="form.time_interval">
+                <source>form.time_interval</source>
+                <target>Time interval</target>
+            </trans-unit>
+            <trans-unit id="form.black_list">
+                <source>form.black_list</source>
+                <target>Black list</target>
+            </trans-unit>
+            <trans-unit id="form.white_list">
+                <source>form.white_list</source>
+                <target>White list</target>
+            </trans-unit>
+            <trans-unit id="form.channel_hosted">
+                <source>form.channel_hosted</source>
+                <target>Channel hosted</target>
+            </trans-unit>
+            <trans-unit id="form.priority">
+                <source>form.priority</source>
+                <target>Priority (%)</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
