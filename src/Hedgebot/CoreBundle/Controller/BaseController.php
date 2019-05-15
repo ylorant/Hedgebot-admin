@@ -10,6 +10,6 @@ class BaseController extends Controller
     public function beforeActionHook()
     {
         $breadcrumbs = $this->get('white_october_breadcrumbs');
-        $breadcrumbs->addItem("Home", $this->get("router")->generate("dashboard"));
+        $breadcrumbs->addItem("home", $this->get("router")->generate("dashboard"));
     }
 }

@@ -1,0 +1,37 @@
+.noUi-horizontal .noUi-handle {
+    background-color: #1f91f3;
+}
+.form-group .form-slider {
+    position: relative;
+    padding: 20px;
+}
+.form-group .form-slider .form-label {
+    font-weight: normal;
+    color: #aaa;
+    position: absolute;
+    top: -10px;
+    left: 0;
+    font-size: 12px;
+    cursor: text;
+    -moz-transition: .2s;
+    -o-transition: .2s;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+.noUi-horizontal .noUi-tooltip {
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+    left: 50%;
+    bottom: 120%;
+}
+.noUi-tooltip {
+    display: block;
+    position: absolute;
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+    background: #fff;
+    color: #000;
+    padding: 5px;
+    text-align: center;
+    white-space: nowrap;
+}

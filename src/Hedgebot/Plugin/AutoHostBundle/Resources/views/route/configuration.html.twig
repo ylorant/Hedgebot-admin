@@ -1,0 +1,57 @@
+<div class="header host" id="host-{{ host.channel }}" data-saved="true">
+    <div class="row clearfix">
+
+        <div class="col-lg-6 col-xs-12">
+            <div class="form-group form-float">
+                <div class="switch form-line focused">
+                    <label class="form-label">{% trans %}form.enabled{% endtrans %}</label>
+                    <label>
+                        <input type="checkbox" name="enabled" value="enabled"
+                               {% if host.enabled %}checked="checked"{% endif %} />
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xs-12">
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input type="text"
+                           name="time-interval"
+                           class="form-control"
+                           value="{{ host.time is not empty ? host.time : "" }}"
+                    />
+                    <label class="form-label">{% trans %}form.time_interval{% endtrans %}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-xs-12">
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input type="text" name="title-black-list" data-role="tagsinput" class="form-control"
+                           value="{{ host.titleBlackList|default([])|join(',') }}" />
+                    <label class="form-label">{% trans %}form.black_list{% endtrans %}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-xs-12">
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input type="text" name="title-white-list" data-role="tagsinput" class="form-control"
+                           value="{{ host.titleWhiteList|default([])|join(',') }}" />
+                    <label class="form-label">{% trans %}form.white_list{% endtrans %}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-xs-12 text-right">
+            <a data-action="save" data-target="#interval-{{ host.channel }}" title="Update" class="btn btn-success">
+                <i class="material-icons md-18">done</i>
+            </a>
+        </div>
+
+    </div>
+</div>
