@@ -47,6 +47,9 @@ class AnnouncementsController extends BaseController
 
     /**
      * @Route("/announcements/message/delete/{id}", options = { "expose" = true }, name="announcements_message_delete")
+     *
+     * @param $id
+     * @return JsonResponse
      */
     public function deleteMessageAction($id)
     {
@@ -61,6 +64,10 @@ class AnnouncementsController extends BaseController
 
     /**
      * @Route("/announcements/message/save/{id}", options = { "expose" = true }, defaults = { "id" = ""}, name="announcements_message_save")
+     *
+     * @param $id
+     * @param Request $request
+     * @return JsonResponse
      */
     public function saveMessageAction($id, Request $request)
     {
@@ -88,6 +95,10 @@ class AnnouncementsController extends BaseController
 
     /**
      * @Route("/announcements/interval/save/{channel}", options = { "expose" = true }, name="announcements_interval_save")
+     *
+     * @param string $channel
+     * @param Request $request
+     * @return JsonResponse
      */
     public function saveIntervalAction($channel, Request $request)
     {
@@ -95,11 +106,12 @@ class AnnouncementsController extends BaseController
         $data = $request->request->all();
         $time = $this->convertHumanReadableToTime($data['time']);
         $messages = (int) $data['messages'];
+        $enabled = (bool) $data['enabled'];
         $saved = false;
 
         if($time !== false) {
             if(filter_var($data['enabled'], FILTER_VALIDATE_BOOLEAN)) {
-                $saved = $endpoint->setInterval($channel, $time, $messages);
+                $saved = $endpoint->setInterval($channel, $time, $messages, $enabled);
             } else {
                 $saved = $endpoint->removeInterval($channel);
             }
@@ -137,7 +149,7 @@ class AnnouncementsController extends BaseController
             if(isset($intervals[$definedInterval->channel])) {
                 $intervals[$definedInterval->channel]['time'] = $this->convertIntervalToHumanReadable((int) $definedInterval->time);
                 $intervals[$definedInterval->channel]['messages'] = $definedInterval->messages;
-                $intervals[$definedInterval->channel]['enabled'] = true;
+                $intervals[$definedInterval->channel]['enabled'] = (bool) $definedInterval->enabled;
             }
         }
 
@@ -146,8 +158,10 @@ class AnnouncementsController extends BaseController
 
     /**
      * Converts an interval time from seconds to an human readable form (for example 15m17s).
-     * 
+     *
      * @param int $time The time in seconds to convert.
+     *
+     * @return string
      */
     protected function convertIntervalToHumanReadable($time)
     {
