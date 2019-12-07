@@ -2,32 +2,32 @@ var Announcements = {
 
     defaultOptions: {
         /**
-         * @var string Selector pointing to the messages list container
+         * @var {string|null} Selector pointing to the messages list container
          */
         messageContainerSelector: null,
 
         /**
-         * @var string Selector for one message, inside the message container
+         * @var {string|null} Selector for one message, inside the message container
          */
         messageSelector: null,
 
         /**
-         * @var string Selector to the message template element
+         * @var {string|null} Selector to the message template element
          */
         messageTemplateSelector: null,
 
         /**
-         * @var string The selector for the "add message" button
+         * @var {string|null} The selector for the "add message" button
          */
         addMessageSelector: null,
 
         /**
-         * @var string Route to delete a message on the controller
+         * @var {string|null} Route to delete a message on the controller
          */
         deleteMessageRoute: null,
 
         /**
-         * @var string Route to save a message on the controller
+         * @var {string|null} Route to save a message on the controller
          */
         saveMessageRoute: null,
 
@@ -40,17 +40,17 @@ var Announcements = {
         },
 
         /**
-         * @var string Selector pointing to the interval list container
+         * @var {string|null} Selector pointing to the interval list container
          */
         intervalContainerSelector: null,
         
         /**
-         * @var string Selector for one interval, inside the interval container
+         * @var {string|null} Selector for one interval, inside the interval container
          */
         intervalSelector: null,
         
         /**
-         * @var string Route to save an interval on the controller
+         * @var {string|null} Route to save an interval on the controller
          */
         saveIntervalRoute: null,
 
@@ -76,7 +76,7 @@ var Announcements = {
     /**
      * Initializes the module
      * 
-     * @param array options The option list
+     * @param {array} options The option list
      */
     init: function(options)
     {
@@ -236,6 +236,11 @@ var Announcements = {
 
     /// ACTIONS ///
 
+    /**
+     * @param messageId
+     * @param messageData
+     * @param callback
+     */
     saveMessage: function(messageId, messageData, callback)
     {
         let routeParams = {};
@@ -288,6 +293,11 @@ var Announcements = {
         this.elements.messageContainer.append(newMessageBlock);
     },
 
+    /**
+     * @param intervalChannel
+     * @param intervalData
+     * @param callback
+     */
     saveInterval: function(intervalChannel, intervalData, callback)
     {
         $.ajax({
