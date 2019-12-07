@@ -32,7 +32,7 @@ class ForwardedTrustSubscriber implements EventSubscriberInterface
     /**
      * @inheritDoc
      */
-    public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return [
             KernelEvents::REQUEST => 'onKernelRequest'
