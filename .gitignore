@@ -19,3 +19,4 @@
 .idea/
 !web/upload/.gitkeep
 web/upload/*
+.php_cs.cache

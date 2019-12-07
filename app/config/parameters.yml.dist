@@ -16,3 +16,6 @@ parameters:
     hedgebot_api_token: ~
 
     upload_directory: "%kernel.project_dir%/web/upload/"
+
+    # Reverse proxies trusted addresses
+    trusted_proxies: []

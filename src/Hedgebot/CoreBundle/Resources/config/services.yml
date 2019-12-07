@@ -7,6 +7,7 @@ parameters:
     hedgebot_core.routing.plugins.class: Hedgebot\CoreBundle\Routing\PluginRouteLoader
     hedgebot_core.twig.utilities.class: Hedgebot\CoreBundle\Twig\UtilitiesExtension
     hedgebot_core.event_subscriber.controller_hooks.class: Hedgebot\CoreBundle\EventSubscriber\ControllerHooksSubscriber
+    hedgebot_core.event_subscriber.forwarded_trust.class: Hedgebot\CoreBundle\EventSubscriber\ForwardedTrustSubscriber
 
 services:
     hedgebot_api:
@@ -56,3 +57,10 @@ services:
         class: "%hedgebot_core.event_subscriber.controller_hooks.class%"
         tags:
             - { name: kernel.event_subscriber }
+
+    forwarded_trust:
+        class: "%hedgebot_core.event_subscriber.forwarded_trust.class%"
+        arguments: ['%trusted_proxies%']
+        tags:
+            - { name: kernel.event_subscriber }
+    
