@@ -1,4 +1,4 @@
-var Announcements = {
+let Announcements = {
 
     defaultOptions: {
         /**
@@ -76,7 +76,7 @@ var Announcements = {
     /**
      * Initializes the module
      * 
-     * @param {array} options The option list
+     * @param {Object} options The option list
      */
     init: function(options)
     {
@@ -159,11 +159,11 @@ var Announcements = {
      */
     onSaveMessageClick: function(ev)
     {
-        var messageBlock = this.elements.messageContainer.find(ev.currentTarget.dataset.target);
-        var messageData = {};
+        let messageBlock = this.elements.messageContainer.find(ev.currentTarget.dataset.target);
+        let messageData = {};
 
         // If the message block has not been found, then it's a new message and just find the parent block that matches the message selector
-        if(messageBlock.length == 0)
+        if(messageBlock.length === 0)
             messageBlock = $(ev.currentTarget).parents(this.options.messageSelector);
         
         messageData.id = messageBlock.attr('id').replace('message-', '');
@@ -200,8 +200,8 @@ var Announcements = {
 
     onSaveIntervalClick: function(ev)
     {
-        var intervalBlock = this.elements.intervalContainer.find(ev.currentTarget.dataset.target);
-        var intervalData = {};
+        const intervalBlock = this.elements.intervalContainer.find(ev.currentTarget.dataset.target);
+        let intervalData = {};
 
         intervalData.enabled = intervalBlock.find('[name="' + this.options.intervalFieldNames.enabled + '"]').is(":checked");
         intervalData.channel = intervalBlock.find('[name="' + this.options.intervalFieldNames.channel + '"]').val();
@@ -213,8 +213,8 @@ var Announcements = {
 
     onIntervalEnabledChange: function(ev)
     {
-        var checkbox = $(ev.currentTarget);
-        var intervalBlock = checkbox.parents(this.options.intervalSelector);
+        const checkbox = $(ev.currentTarget);
+        const intervalBlock = checkbox.parents(this.options.intervalSelector);
         intervalBlock
             .find('input[name="' + this.options.intervalFieldNames.time + '"]')
             .attr('disabled', !checkbox.is(':checked'))
@@ -255,8 +255,8 @@ var Announcements = {
             dataType: 'json',
             complete: function(jqXHR, textStatus)
             {
-                var data = jqXHR.responseJSON;
-                var requestSucceeded = (textStatus == "success" && data !== false);
+                let data = jqXHR.responseJSON;
+                const requestSucceeded = (textStatus == "success" && data !== false);
 
                 // Set the message ID from the data if the request succeeded and it was a creation
                 if(!messageId && requestSucceeded) {
@@ -277,7 +277,7 @@ var Announcements = {
             dataType: 'json',
             complete: function(jqXHR, textStatus)
             {
-                var data = jqXHR.responseJSON;
+                const data = jqXHR.responseJSON;
                 callback(textStatus == "success" && data === true);
             }
         });
@@ -307,8 +307,8 @@ var Announcements = {
             dataType: 'json',
             complete: function(jqXHR, textStatus)
             {
-                var data = jqXHR.responseJSON;
-                var requestSucceeded = (textStatus == "success" && data !== false);
+                const data = jqXHR.responseJSON;
+                const requestSucceeded = (textStatus == "success" && data !== false);
                 callback(requestSucceeded);
             }
         });

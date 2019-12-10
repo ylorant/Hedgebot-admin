@@ -7,6 +7,7 @@ use Hedgebot\CoreBundle\Interfaces\MenuProviderInterface;
 use Hedgebot\CoreBundle\Interfaces\DashboardWidgetsProviderInterface;
 use Hedgebot\CoreBundle\Plugin\Menu\MenuItem;
 
+
 class HedgebotAutoHostBundle extends Bundle implements PluginBundleInterface, MenuProviderInterface, DashboardWidgetsProviderInterface
 {
 

@@ -1,5 +1,5 @@
 {% extends 'HedgebotCoreBundle::base.html.twig' %}
-{% block title %}AutoHost{% endblock %}
+{% block title %}{% trans %}autohost{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}" rel="stylesheet"/>
@@ -24,7 +24,6 @@
                                     <option class="host-channel"
                                             value="{{ channel }}" {{ channel in channelSelected ? "selected" : "" }}>{{ channel }}</option>
                                 {% endfor %}
-                                <option class="host-channel" value="speedthemall">speedthemall</option>
                             </select>
                             <label class="form-label">{% trans %}form.channel{% endtrans %}</label>
                         </div>
@@ -34,7 +33,7 @@
         </div>
         <div class="col-lg-9 col-xs-12">
             <div class="pull-right">
-                <a class="btn btn-primary waves-effect" data-action="new-channel">
+                <a class="btn btn-primary waves-effect" data-action="new-hosted">
                     <i class="material-icons">add</i>
                     <span>New channel to host</span>
                 </a>
@@ -45,17 +44,13 @@
     <div class="row">
         <div class="col-lg-4 col-xs-12">
             <div class="card">
-
                 <div class="header">
                     <h2>{% trans %}title.configuration{% endtrans %}</h2>
                 </div>
-
-                <div class="body">
+                <div id="host-channel-configuration" class="body">
                     {% for host in hosts %}
                         {% if host.channel in channelSelected %}
-                            <div id="configuration">
-                                {% include 'HedgebotAutoHostBundle::route/configuration.html.twig' with {'isTemplate': false, 'host': host} %}
-                            </div>
+                            {% include 'HedgebotAutoHostBundle::route/configuration.html.twig' with {'isTemplate': false, 'host': host} %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -66,8 +61,11 @@
                 <div class="header">
                     <h2>{% trans %}title.channels_to_host{% endtrans %}</h2>
                 </div>
-
-                <div class="body">
+                <div class="hidden" id="block-hosted-template">
+                    {% set templateHosted = {'channel':'', 'hostedChannels': {'': {'channel': '', 'enabled': 'enabled', 'priority': 0.5}}} %}
+                    {% include 'HedgebotAutoHostBundle::route/hosted.html.twig' with {'isTemplate': true, 'host': templateHosted} %}
+                </div>
+                <div id="hosted-channels" class="body" data-channel="{{channelSelected}}">
                     {% for host in hosts %}
                         {% if host.channel in channelSelected %}
                             {% include 'HedgebotAutoHostBundle::route/hosted.html.twig' with {'isTemplate': false, 'host': host} %}
@@ -88,22 +86,29 @@
     <script type="text/javascript">
         $(function () {
             const options = {
+                indexAutohostRoute: "autohost_list",
+
                 hostChannelContainerSelector: '#chosen-channel',
                 hostChannelSelector: '#host-channels',
-                indexAutohostRoute: "index",
-                configurationContainerSelector: '#configuration',
+
+                configurationContainerSelector: '#host-channel-configuration',
+                saveConfigurationRoute: "autohost_configuration_save",
                 configurationFieldNames: {
-                    channel: "channel",
                     enabled: "enabled",
                     timeInterval: "time-interval",
                     blackList: "title-black-list",
                     whiteList: "title-white-list"
                 },
+
                 hostedContainerSelector: '#hosted-channels',
+                addHostedSelector: '[data-action="new-hosted"]',
+                hostedTemplateSelector: '#block-hosted-template > div',
+                saveHostedRoute: "autohost_hosted_save",
+                deleteHostedRoute: "autohost_hosted_delete",
                 hostedFieldNames: {
                     enabled: "enabled",
                     hostedChannel: "hosted-channel",
-                    priority: ""
+                    priority: "priority-slider"
                 }
             };
 

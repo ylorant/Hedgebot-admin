@@ -4,7 +4,7 @@
         <div class="col-lg-1 col-xs-2">
             <div class="form-group form-float">
                 <div class="switch form-line focused">
-                    <label class="form-label">Enabled</label>
+                    <label class="form-label">{% trans %}form.enabled{% endtrans %}</label>
                     <label>
                         <input type="checkbox" name="enabled" value="enabled" {% if interval.enabled %}checked="checked"{% endif %} />
                         <span class="lever"></span>
@@ -22,7 +22,7 @@
                            value="{{ interval.channel }}"
                            readonly
                     />
-                    <label class="form-label">Channel</label>
+                    <label class="form-label">{% trans %}form.channel{% endtrans %}</label>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                            class="form-control"
                            value="{{ interval.messages is not empty ? interval.messages : "" }}"
                     />
-                    <label class="form-label">Message count</label>
+                    <label class="form-label">{% trans %}form.message_count{% endtrans %}</label>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
                            class="form-control"
                            value="{{ interval.time is not empty ? interval.time : "" }}"
                     />
-                    <label class="form-label">Time interval</label>
+                    <label class="form-label">{% trans %}form.time_interval{% endtrans %}</label>
                 </div>
             </div>
         </div>
