@@ -22,7 +22,7 @@ class DefaultWidget implements DashboardWidgetInterface
 
     public function getDescription()
     {
-        return "Shows a default message when the user doesn\'t have any dashboard layout set.";
+        return "Shows a default message when the user doesn't have any dashboard layout set.";
     }
 
     public function getViewName()
