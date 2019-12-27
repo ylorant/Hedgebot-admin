@@ -31,6 +31,9 @@ var Horaro = {
          */
         controlBlockSelector: null,
 
+        /** @var string Selector to the current item display HTML block */
+        currentItemSelector: null,
+
         /**
          * @var string Selector to the schedule view HTML block. 
          */
@@ -56,7 +59,8 @@ var Horaro = {
         },
         pausedScheduleBlock: null,
         controlBlock: null,
-        scheduleView: null
+        scheduleView: null,
+        currentItem: null
     },
     loadingAnimation: null,
     refreshScheduleInterval: null,
@@ -87,6 +91,7 @@ var Horaro = {
         this.elements.pausedScheduleBlock = $(this.options.pausedScheduleSelector);
         this.elements.controlBlock = $(this.options.controlBlockSelector);
         this.elements.scheduleView = $(this.options.scheduleViewSelector);
+        this.elements.currentItem = $(this.options.currentItemSelector);
     },
 
     /**
@@ -209,85 +214,94 @@ var Horaro = {
         }
 
         // Update schedule view
-        $(this.elements.scheduleView).html('');
+        if(this.elements.scheduleView.length > 0) {
+            $(this.elements.scheduleView).html('');
 
-        // Write table header
-        var thead = $('<thead></thead>');
-        var headline = $('<tr></tr>');
+            // Write table header
+            var thead = $('<thead></thead>');
+            var headline = $('<tr></tr>');
 
-        var columns = Array.from(scheduleData.columns);
-        var firstElement = columns.shift();
+            var columns = Array.from(scheduleData.columns);
+            var firstElement = columns.shift();
 
-        columns.unshift("Estimate");
-        columns.unshift(firstElement);
-        columns.unshift("Time");
+            columns.unshift("Estimate");
+            columns.unshift(firstElement);
+            columns.unshift("Time");
 
-        for(var i = 0; i < columns.length; i++) {
-            headline.append('<th>' + columns[i] + '</th>');
-        }
-
-        thead.append(headline);
-        $(this.elements.scheduleView).append(thead);
-
-        var tbody = $('<tbody></tbody>');
-
-        for(var i = 0; i < scheduleData.items.length; i++) {
-            var item = scheduleData.items[i];
-            var itemData = item.data;
-
-            var itemFirstElement = itemData.shift();
-            var timeString = scheduleTime.getHours().toString().padStart(2, "0") + ":" 
-                           + scheduleTime.getMinutes().toString().padStart(2, "0");
-            
-            // Computing time
-            var time = this.secondsToTime(item.length_t);
-            itemData.unshift(time.hr.toString().padStart(2, "0") + ":" + 
-                             time.mn.toString().padStart(2, "0") + ":" + 
-                             time.sec.toString().padStart(2, "0"));
-            itemData.unshift(itemFirstElement);
-            itemData.unshift(timeString.padStart(2, "0"));
-
-            var line = $('<tr></tr>');
-
-            if(i == schedule.currentIndex) {
-                line.addClass('info');
+            for(var i = 0; i < columns.length; i++) {
+                headline.append('<th>' + columns[i] + '</th>');
             }
 
-            for(var j = 0; j < itemData.length; j++) {
-                // Check if the column item is not empty, and if it is, use a placeholder string instead
-                if(!itemData[j]) {
-                    itemData[j] = '-';
+            thead.append(headline);
+            $(this.elements.scheduleView).append(thead);
+
+            var tbody = $('<tbody></tbody>');
+
+            for(var i = 0; i < scheduleData.items.length; i++) {
+                var item = scheduleData.items[i];
+                var itemData = item.data;
+
+                var itemFirstElement = itemData.shift();
+                var timeString = scheduleTime.getHours().toString().padStart(2, "0") + ":" 
+                            + scheduleTime.getMinutes().toString().padStart(2, "0");
+                
+                // Computing time
+                var time = this.secondsToTime(item.length_t);
+                itemData.unshift(time.hr.toString().padStart(2, "0") + ":" + 
+                                time.mn.toString().padStart(2, "0") + ":" + 
+                                time.sec.toString().padStart(2, "0"));
+                itemData.unshift(itemFirstElement);
+                itemData.unshift(timeString.padStart(2, "0"));
+
+                var line = $('<tr></tr>');
+
+                if(i == schedule.currentIndex) {
+                    line.addClass('info');
                 }
 
-                // Markdown
-                var mdMatch = itemData[j].match(/\[(.+?)\]\((.+?)\)/g);
-
-                if(mdMatch != null) {
-                    for(var k = 0; k < mdMatch.length; k++) {
-                        var mdItemMatch = mdMatch[k].match(/\[(.+?)\]\((.+?)\)/);
-                        itemData[j] = itemData[j].replace(mdMatch[k], '<a href="' + mdItemMatch[2] + '">' + mdItemMatch[1] + '</a>');
+                for(var j = 0; j < itemData.length; j++) {
+                    // Check if the column item is not empty, and if it is, use a placeholder string instead
+                    if(!itemData[j]) {
+                        itemData[j] = '-';
                     }
+
+                    // Markdown
+                    var mdMatch = itemData[j].match(/\[(.+?)\]\((.+?)\)/g);
+
+                    if(mdMatch != null) {
+                        for(var k = 0; k < mdMatch.length; k++) {
+                            var mdItemMatch = mdMatch[k].match(/\[(.+?)\]\((.+?)\)/);
+                            itemData[j] = itemData[j].replace(mdMatch[k], '<a href="' + mdItemMatch[2] + '">' + mdItemMatch[1] + '</a>');
+                        }
+                    }
+
+                    line.append($('<td>' + itemData[j] + '</td>'));
                 }
 
-                line.append($('<td>' + itemData[j] + '</td>'));
+                // Add the "go to item" button
+                var button = $('<a data-action="goto" data-item="' + i + '"></a>');
+                button.addClass('btn btn-primary');
+                button.html('<i class="material-icons">fast_forward</i>')
+                var cell = $('<td></td>');
+                cell.append(button);
+                line.append(cell);
+
+                scheduleTime = new Date(scheduleTime.getTime() + 1000 * item.length_t + 1000 * scheduleData.setup_t);
+
+                tbody.append(line);
             }
 
-            // Add the "go to item" button
-            var button = $('<a data-action="goto" data-item="' + i + '"></a>');
-            button.addClass('btn btn-primary');
-            button.html('<i class="material-icons">fast_forward</i>')
-            var cell = $('<td></td>');
-            cell.append(button);
-            line.append(cell);
-
-            scheduleTime = new Date(scheduleTime.getTime() + 1000 * item.length_t + 1000 * scheduleData.setup_t);
-
-            tbody.append(line);
+            $(this.elements.scheduleView).append(tbody);
         }
 
-        $(this.elements.scheduleView).append(tbody);
+        if(this.elements.currentItem.length > 0) {
+            var columns = Array.from(scheduleData.columns);
 
-        // debugger;
+            $('[data-column]', this.elements.currentItem).each(function() {
+                var columnIndex = $(this).data('column');
+                $('.item-value', this).html(scheduleData.items[schedule.currentIndex].data[columnIndex]);
+            });
+        }
     },
     
     secondsToTime: function(time)

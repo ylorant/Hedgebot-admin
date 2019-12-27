@@ -25,6 +25,11 @@ class CustomCallWidget implements DashboardWidgetInterface
         return 'HedgebotCoreBundle:widget:custom-call-widget.html.twig';
     }
 
+    public function getScriptPaths()
+    {
+        return [];
+    }
+
     public function getSettingsFormType()
     {
         return CustomCallWidgetSettingsType::class;

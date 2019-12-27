@@ -10,6 +10,7 @@ class WidgetSettingsType extends AbstractType
     {
         $resolver->setRequired('entity_manager');
         $resolver->setRequired('hedgebot_api');
+        $resolver->setRequired('widget');
     }
 
     final public function getBlockPrefix()

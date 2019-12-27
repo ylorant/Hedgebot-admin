@@ -37,6 +37,12 @@ interface DashboardWidgetInterface
     public function getViewName();
 
     /**
+     * Gets the script paths that should be loaded for the widgets. The names will be resolved.
+     * @return array The different script paths as an array.
+     */
+    public function getScriptPaths();
+
+    /**
      * Gets the settings form type class for the widget.
      *
      * @return string The form type class for the widget's settings.

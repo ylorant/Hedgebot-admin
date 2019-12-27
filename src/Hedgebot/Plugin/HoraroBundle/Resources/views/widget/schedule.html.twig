@@ -1,0 +1,36 @@
+<div class="card schedule-card" data-slug="{{ schedule.identSlug ?? "" }}">
+    <div class="header">
+        <h2>Horaro schedule - {{ settings.channel }}</h2>
+    </div>
+    <div class="body schedule-actions">
+        {% if schedule is not empty %}
+            <ul class="list-unstyled">
+                <li>
+                    Schedule: <span id="schedule-current-item">{{ scheduleData.name }}</span>
+                </li>
+                <li>
+                    Current item:
+                    <ul id="current-item-data">
+                        {% for index, column in scheduleData.columns %}
+                            <li data-column="{{ index }}">
+                                {{ column }}: 
+                                <span class="item-value">{{ scheduleData.items[schedule.currentIndex].data[index]|markdown|striptags }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </p>
+            <p class="text-center {{ schedule.paused ? "" : "hidden" }}" id="schedule-paused">
+                <span class="col-orange font-bold">Schedule is paused</span>
+            </p>
+            <div class="text-center">
+                <button id="previous-button" class="btn btn-lg btn-primary">Previous item</button>
+                <button id="pause-button" class="btn btn-lg btn-primary">{{ schedule.paused ? "Resume" : "Pause" }} schedule</button>
+                <button id="next-button" class="btn btn-lg btn-primary">Next item</button>
+            </div>
+        {% else %}
+            <p class="text-center">
+                <span class="col-grey font-italic">No active schedule</span>
+            </p>
+        {% endif %}
+    </div>
+</div>

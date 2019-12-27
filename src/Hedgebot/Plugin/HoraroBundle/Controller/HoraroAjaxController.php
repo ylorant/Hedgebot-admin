@@ -2,6 +2,7 @@
 namespace Hedgebot\Plugin\HoraroBundle\Controller;
 
 use Hedgebot\CoreBundle\Controller\BaseController;
+use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,10 +14,18 @@ class HoraroAjaxController extends BaseController
      */
     public function getScheduleAction($identSlug)
     {
+        $markdownParser = $this->get('markdown.parser');
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/horaro');
         $schedule = $endpoint->getSchedule($identSlug);
         $scheduleData = $endpoint->getScheduleData($identSlug);
         
+        foreach($scheduleData->items as &$item) {
+            foreach($item->data as &$itemData) {
+                $itemData = strip_tags($markdownParser->transformMarkdown($itemData));
+                dump($itemData);
+            }
+        }
+
         $response = new JsonResponse();
         $response->setData([
             'scheduleData' => $scheduleData,

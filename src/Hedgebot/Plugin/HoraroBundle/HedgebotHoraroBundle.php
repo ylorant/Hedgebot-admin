@@ -6,6 +6,7 @@ use Hedgebot\CoreBundle\Interfaces\PluginBundleInterface;
 use Hedgebot\CoreBundle\Interfaces\MenuProviderInterface;
 use Hedgebot\CoreBundle\Interfaces\DashboardWidgetsProviderInterface;
 use Hedgebot\CoreBundle\Plugin\Menu\MenuItem;
+use Hedgebot\Plugin\HoraroBundle\Widget\ScheduleWidget;
 
 class HedgebotHoraroBundle extends Bundle implements PluginBundleInterface, MenuProviderInterface, DashboardWidgetsProviderInterface
 {
@@ -30,6 +31,8 @@ class HedgebotHoraroBundle extends Bundle implements PluginBundleInterface, Menu
      */
     public function getDashboardWidgets()
     {
-        return [];
+        return [
+            new ScheduleWidget($this->container->get('hedgebot_api'))
+        ];
     }
 }

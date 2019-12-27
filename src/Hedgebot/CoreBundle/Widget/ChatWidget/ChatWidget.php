@@ -30,6 +30,11 @@ class ChatWidget implements DashboardWidgetInterface
         return 'HedgebotCoreBundle:widget:chat-widget.html.twig';
     }
 
+    public function getScriptPaths()
+    {
+        return [];
+    }
+
     public function getSettingsFormType()
     {
         return ChatWidgetSettingsType::class;

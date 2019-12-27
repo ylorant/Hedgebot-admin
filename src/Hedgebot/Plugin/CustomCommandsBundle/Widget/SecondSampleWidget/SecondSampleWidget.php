@@ -28,6 +28,11 @@ class SecondSampleWidget implements DashboardWidgetInterface
         return 'HedgebotCustomCommandsBundle:widget:second-sample-widget.html.twig';
     }
 
+    public function getScriptPaths()
+    {
+        return [];
+    }
+
     public function getSettingsFormType()
     {
         return null;

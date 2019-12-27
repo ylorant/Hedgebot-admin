@@ -2,7 +2,6 @@
 namespace Hedgebot\CoreBundle\Service;
 
 use Hedgebot\CoreBundle\Interfaces\DashboardWidgetsProviderInterface;
-use Hedgebot\CoreBundle\Helper\ArrayHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Yaml\Yaml;
 use Ramsey\Uuid\Uuid;

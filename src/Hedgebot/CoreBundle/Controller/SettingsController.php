@@ -58,7 +58,8 @@ class SettingsController extends BaseController
 
         $formOptions = [
             'entity_manager' => $this->getDoctrine()->getManager(),
-            'hedgebot_api'     => $this->get('hedgebot_api')
+            'hedgebot_api'   => $this->get('hedgebot_api'),
+            'widget'         => $widget
         ];
 
         if (!empty($formTypeClass)) {

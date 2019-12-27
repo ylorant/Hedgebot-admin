@@ -30,6 +30,11 @@ class DefaultWidget implements DashboardWidgetInterface
         return 'HedgebotCoreBundle:widget:default-widget.html.twig';
     }
 
+    public function getScriptPaths()
+    {
+        return [];
+    }
+
     public function getSettingsFormType()
     {
         return null;

@@ -5,6 +5,8 @@
     <link href="{{ asset('css/pages/dashboard.css') }}" rel="stylesheet" />
 {% endblock %}
 
+{% set widgetScripts = [] %}
+
 {% block content %}
     <div class="block-header">
         <h1>Dashboard</h1>
@@ -29,6 +31,20 @@
 
 {% block scripts %}
     <script src="{{ asset('js/modules/widgets.js') }}"></script>
+    
+    {% set widgetScripts = [] %}
+    {% for blockName, blockData in layout.blocks %}
+        {% for blockWidget in userLayout.getBlockWidgets(blockName) %}
+            {% if widgets[blockWidget.type] is not empty %}
+                {% set widgetScripts = widgetScripts|merge(widgets[blockWidget.type].scriptPaths) %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    
+    {% for script in widgetScripts %}
+        <script src="{{ asset(script) }}"></script>
+    {% endfor %}
+
     <script type="text/javascript">
         $(function()
         {
