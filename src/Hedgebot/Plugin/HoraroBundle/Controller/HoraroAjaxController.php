@@ -22,7 +22,6 @@ class HoraroAjaxController extends BaseController
         foreach($scheduleData->items as &$item) {
             foreach($item->data as &$itemData) {
                 $itemData = strip_tags($markdownParser->transformMarkdown($itemData));
-                dump($itemData);
             }
         }
 
