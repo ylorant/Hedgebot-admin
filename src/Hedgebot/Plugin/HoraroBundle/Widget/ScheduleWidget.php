@@ -109,7 +109,7 @@ class ScheduleWidget implements DashboardWidgetInterface
         $dayDelay = new DateInterval('P1D');
 
         foreach($schedules as $schedule) {
-            if(!$schedule->enabled || !$schedule->started || $schedule->channel != $channel) {
+            if(!$schedule->enabled || $schedule->channel != $channel) {
                 continue;
             }
 
