@@ -115,6 +115,9 @@ class ScheduleWidget implements DashboardWidgetInterface
 
             $scheduleData = $schedulesData[$schedule->identSlug];
             $scheduleStartTime = new DateTime($scheduleData->start);
+            
+            // Remove 1 hr from the schedule start time to show it slightly before it starts
+            $scheduleStartTime->sub(new DateInterval("PT1H"));
 
             // If the start time is in the future, discard it
             if($scheduleStartTime > $now) {
