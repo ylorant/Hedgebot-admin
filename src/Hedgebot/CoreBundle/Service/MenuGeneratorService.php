@@ -4,6 +4,7 @@ namespace Hedgebot\CoreBundle\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Hedgebot\CoreBundle\Plugin\Menu\MenuItemList;
 use Hedgebot\CoreBundle\Interfaces\MenuProviderInterface;
+use Hedgebot\CoreBundle\Plugin\Menu\MenuItem;
 
 class MenuGeneratorService
 {
@@ -28,7 +29,7 @@ class MenuGeneratorService
                     foreach ($menu as $item) {
                         $itemList->add($item);
                     }
-                } else {
+                } elseif($menu instanceof MenuItem) {
                     $itemList->add($menu);
                 }
             }

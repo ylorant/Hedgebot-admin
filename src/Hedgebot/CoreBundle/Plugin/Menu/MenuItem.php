@@ -1,11 +1,8 @@
 <?php
 namespace Hedgebot\CoreBundle\Plugin\Menu;
 
-class MenuItem
+class MenuItem extends AbstractItem
 {
-    /** @var Menu title text */
-    protected $title;
-    
     /** @var Target url for the node */
     protected $route;
     
@@ -15,31 +12,18 @@ class MenuItem
     /** @var MenuItemList Submenu item list */
     protected $submenu;
     
-    /** @var MenuItemList Parent menu item list */
-    protected $parent;
-    
     public function __construct($title, $route = null, $icon = null, $parent = null)
     {
-        $this->title = $title;
+        parent::__construct($title, $parent);
+
         $this->route = $route;
         $this->icon = $icon;
-        $this->parent = $parent;
     }
     
     public function children()
     {
         $this->submenu = new MenuItemList($this);
         return $this->submenu;
-    }
-    
-    public function end()
-    {
-        return $this->parent;
-    }
-    
-    public function getTitle()
-    {
-        return $this->title;
     }
     
     public function getRoute()

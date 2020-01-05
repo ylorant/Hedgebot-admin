@@ -20,6 +20,7 @@ class HedgebotCoreBundle extends Bundle implements MenuProviderInterface, Dashbo
         
         // Sub-menu
         $baseItem
+            ->header('Core')->end()
             ->item('Dashboard', 'dashboard', 'dashboard')->end()
             ->item('Permissions', 'security_index', 'lock')->end()
             ->item('Twitch tokens', 'twitch_index', "zmdi:twitch")->end()
@@ -29,6 +30,7 @@ class HedgebotCoreBundle extends Bundle implements MenuProviderInterface, Dashbo
                     ->item('Custom calls', 'custom_calls_index')->end()
                 ->end()
             ->end()
+            ->header('Plugins')->end()
         ->end();
         
         return $baseItem;

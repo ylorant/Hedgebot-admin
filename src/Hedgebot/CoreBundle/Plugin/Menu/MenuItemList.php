@@ -18,6 +18,14 @@ class MenuItemList implements Iterator
     {
         $this->parent = $parent;
     }
+
+    public function header($title)
+    {
+        $item = new HeaderItem($title, $this);
+        $this->add($item);
+
+        return $item;
+    }
     
     public function item($title, $href = null, $icon = null)
     {
@@ -27,7 +35,7 @@ class MenuItemList implements Iterator
         return $item;
     }
     
-    public function add(MenuItem $item)
+    public function add(AbstractItem $item)
     {
         $this->items[] = $item;
         return $item;

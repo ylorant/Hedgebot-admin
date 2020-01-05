@@ -118,29 +118,32 @@
                             {# Recursive menu generation macro #}
                             {% macro showRecursiveMenu(item) %}
                                 {% import _self as self %}
-                                <li class="{{ app.request.get('_route') == item.route or (item.route and app.request.requestUri starts with path(item.route)) ? "active" }}">
-                                    <a {{ item.route ? 'href=' ~ path(item.route) : "" }} class="waves-effect {{ item.submenu is not empty ? "menu-toggle" : "" }}">
-                                        {% if item.icon is not empty %}
-                                            {{ item.icon|iconize|raw }}
-                                            <span>{{ item.title }}</span>
-                                        {% else %}
-                                            {{ item.title }}
+                                {% if item is instanceof('\\Hedgebot\\CoreBundle\\Plugin\\Menu\\MenuItem') %}
+                                    <li class="{{ app.request.get('_route') == item.route or (item.route and app.request.requestUri starts with path(item.route)) ? "active" }}">
+                                        <a {{ item.route ? 'href=' ~ path(item.route) : "" }} class="waves-effect {{ item.submenu is not empty ? "menu-toggle" : "" }}">
+                                            {% if item.icon is not empty %}
+                                                {{ item.icon|iconize|raw }}
+                                                <span>{{ item.title }}</span>
+                                            {% else %}
+                                                {{ item.title }}
+                                            {% endif %}
+                                        </a>
+                                        {% if item.submenu is not empty %}
+                                            <ul class="ml-menu">
+                                                {% for child in item.submenu %}
+                                                    {{ self.showRecursiveMenu(child) }}
+                                                {% endfor %}
+                                            </ul>
                                         {% endif %}
-                                    </a>
-                                    {% if item.submenu is not empty %}
-                                        <ul class="ml-menu">
-                                            {% for child in item.submenu %}
-                                                {{ self.showRecursiveMenu(child) }}
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                                </li>
+                                    </li>
+                                {% elseif item is instanceof('\\Hedgebot\\CoreBundle\\Plugin\\Menu\\HeaderItem') %}
+                                    <li class="header">{{ item.title|upper }}</li>
+                                {% endif %}
                             {% endmacro %}
 
                             {% import _self as self %}
                             <div class="menu">
                                 <ul class="list">
-                                    <li class="header">MAIN NAVIGATION</li>
                                     {% for item in menuGenerator.generate() %}
                                         {{ self.showRecursiveMenu(item) }}
                                     {% endfor %}
