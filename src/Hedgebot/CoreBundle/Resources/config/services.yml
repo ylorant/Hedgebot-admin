@@ -50,7 +50,7 @@ services:
         class: "%hedgebot_core.service.twitch_client.class%"
         arguments: [ '@router', 'twitch_oauth_redirect' ]
         calls:
-            - [ setScope, [ ['channel_editor', 'channel_read', 'user_read', 'user:edit:broadcast'] ] ]
+            - [ setScope, [ ['channel_editor', 'channel_commercial', 'channel_read', 'user_read', 'user:edit:broadcast'] ] ]
             - [ initFromHedgebotApiClient, ['@hedgebot_api'] ]
     
     controller_hooks:

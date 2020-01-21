@@ -18,7 +18,7 @@ class TwitchClientService
     /** @var string The route name that should be given as redirect Uri */
     protected $redirectRoute;
 
-    const TWITCH_SCOPE = ['channel_editor', 'channel_commercial'];
+    const TWITCH_SCOPE = ['channel_editor'];
 
     /**
      * Constructor.
