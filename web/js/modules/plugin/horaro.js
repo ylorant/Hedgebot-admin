@@ -83,7 +83,7 @@ var Horaro = {
     /**
      * Initializes the elements.
      */
-    initElements: function(refresh)
+    initElements: function()
     {
         this.elements.buttons.previous = $(this.options.previousButtonSelector);
         this.elements.buttons.pause = $(this.options.pauseButtonSelector);

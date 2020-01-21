@@ -73,7 +73,7 @@ class HoraroController extends BaseController
         // Create and handle the form
         $form = $this->createForm(ScheduleType::class, $templateVars['schedule'], ['channels' => $channels]);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $scheduleData = $form->getData();
 

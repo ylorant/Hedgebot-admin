@@ -2,7 +2,6 @@
 namespace Hedgebot\Plugin\HoraroBundle\Controller;
 
 use Hedgebot\CoreBundle\Controller\BaseController;
-use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
