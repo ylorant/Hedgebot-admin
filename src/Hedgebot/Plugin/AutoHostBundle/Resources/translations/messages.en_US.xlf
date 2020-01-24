@@ -34,6 +34,10 @@
                 <source>form.priority</source>
                 <target>Priority (%)</target>
             </trans-unit>
+            <trans-unit id="no_channel">
+                <source>no_channel</source>
+                <target>No channel to configure</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

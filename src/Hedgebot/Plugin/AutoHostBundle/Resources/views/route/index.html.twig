@@ -8,75 +8,77 @@
 
 {% block main_title %}
     <h3>
-        AutoHost
+        {% trans %}autohost{% endtrans %}
     </h3>
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-lg-3 col-xs-12">
-            <div class="card">
-                <div class="body">
-                    <div class="form-group form-float">
-                        <div class="form-line m-b--20">
-                            <div id="chosen-channel">
-                                <select id="host-channels" name="host-channels" class="form-control channel-selector">
-                                    {% for channel in availableChannels %}
-                                        <option class="host-channel"
-                                                value="{{ channel }}" {{ channel in channelSelected ? "selected" : "" }}>{{ channel }}</option>
-                                    {% endfor %}
-                                </select>
-                                <label class="form-label">{% trans %}form.channel{% endtrans %}</label>
+    {% if availableChannels is not empty %}
+        <div class="row">
+            <div class="col-lg-4 col-xs-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="form-group form-float">
+                            <div class="form-line m-b--20">
+                                <div id="chosen-channel">
+                                    <select id="host-channels" name="host-channels" class="form-control channel-selector">
+                                        {% for channel in availableChannels %}
+                                            <option class="host-channel"
+                                                    value="{{ channel }}" {{ channel in channelSelected ? "selected" : "" }}>{{ channel }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label class="form-label">{% trans %}form.channel{% endtrans %}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-9 col-xs-12">
-            <div class="pull-right">
-                <a class="btn btn-primary waves-effect" data-action="new-hosted">
-                    <i class="material-icons">add</i>
-                    <span>New channel to host</span>
-                </a>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-4 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>{% trans %}title.configuration{% endtrans %}</h2>
+        <div class="row">
+            <div class="col-lg-4 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>{% trans %}title.configuration{% endtrans %}</h2>
+                    </div>
+                    <div id="host-channel-configuration" class="body">
+                        {% for host in hosts %}
+                            {% if host.channel in channelSelected %}
+                                {% include 'HedgebotAutoHostBundle::route/configuration.html.twig' with {'isTemplate': false, 'host': host} %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
-                <div id="host-channel-configuration" class="body">
-                    {% for host in hosts %}
-                        {% if host.channel in channelSelected %}
-                            {% include 'HedgebotAutoHostBundle::route/configuration.html.twig' with {'isTemplate': false, 'host': host} %}
-                        {% endif %}
-                    {% endfor %}
+            </div>
+            <div class="col-lg-8 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <a class="btn btn-xs btn-primary waves-effect pull-right m-t--5" data-action="new-hosted">
+                            <i class="material-icons">add</i>
+                            <span>New channel</span>
+                        </a>
+                        <h2>{% trans %}title.channels_to_host{% endtrans %}</h2>
+                    </div>
+                    <div class="hidden" id="block-hosted-template">
+                        {% set templateHosted = {'channel':'', 'hostedChannels': {'': {'channel': '', 'enabled': 'enabled', 'priority': 0.5}}} %}
+                        {% include 'HedgebotAutoHostBundle::route/hosted.html.twig' with {'isTemplate': true, 'host': templateHosted} %}
+                    </div>
+                    <div id="hosted-channels" data-channel="{{channelSelected}}">
+                        {% for host in hosts %}
+                            {% if host.channel in channelSelected %}
+                                {% include 'HedgebotAutoHostBundle::route/hosted.html.twig' with {'isTemplate': false, 'host': host} %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-8 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>{% trans %}title.channels_to_host{% endtrans %}</h2>
-                </div>
-                <div class="hidden" id="block-hosted-template">
-                    {% set templateHosted = {'channel':'', 'hostedChannels': {'': {'channel': '', 'enabled': 'enabled', 'priority': 0.5}}} %}
-                    {% include 'HedgebotAutoHostBundle::route/hosted.html.twig' with {'isTemplate': true, 'host': templateHosted} %}
-                </div>
-                <div id="hosted-channels" data-channel="{{channelSelected}}">
-                    {% for host in hosts %}
-                        {% if host.channel in channelSelected %}
-                            {% include 'HedgebotAutoHostBundle::route/hosted.html.twig' with {'isTemplate': false, 'host': host} %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
+    {% else %}
+        <p class="text-center text-muted font-italic">
+            {% trans %}no_channel{% endtrans %}
+        </p>
+    {% endif %}
 {% endblock %}
 
 {# Scripts, load additional scripts needed for this route, and initialize main module #}

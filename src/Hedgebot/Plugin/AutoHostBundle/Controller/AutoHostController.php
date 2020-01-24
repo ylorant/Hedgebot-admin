@@ -43,9 +43,9 @@ class AutoHostController extends BaseController
 
         $templateVars['availableChannels'] = $serverEndpoint->getAvailableChannels();
 
-        // Get selected channel depends of one parameter in $data when you have already loaded AutoHost page and
-        //     want another channel to configure than the first one in channels list
-        $templateVars['channelSelected'] = $templateVars['availableChannels'][0];
+        // Selected channel is set from the request data if a channel has been selected by the user,
+        // else we default to the first available channel from the bot
+        $templateVars['channelSelected'] = !empty($templateVars['availableChannels']) ? $templateVars['availableChannels'][0] : null;
         if (key_exists('selectedHost', $data) && isset($data['selectedHost'])) {
             $templateVars['channelSelected'] = $data['selectedHost'];
         }
@@ -54,7 +54,7 @@ class AutoHostController extends BaseController
     }
 
     /**
-     * @Route("/autohost/configuration/save/", options = { "expose" = true }, defaults = {}, name="autohost_configuration_save")
+     * @Route("/autohost/configuration/save", options = { "expose" = true }, defaults = {}, name="autohost_configuration_save")
      *
      * @param Request $request
      * @return JsonResponse
@@ -78,7 +78,7 @@ class AutoHostController extends BaseController
     }
 
     /**
-     * @Route("/autohost/hosted/save/", options = { "expose" = true }, defaults = {}, name="autohost_hosted_save")
+     * @Route("/autohost/hosted/save", options = { "expose" = true }, defaults = {}, name="autohost_hosted_save")
      *
      * @param Request $request
      * @return JsonResponse
@@ -104,7 +104,7 @@ class AutoHostController extends BaseController
     }
 
     /**
-     * @Route("/autohost/hosted/delete/", options = { "expose" = true }, defaults = {}, name="autohost_hosted_delete")
+     * @Route("/autohost/hosted/delete", options = { "expose" = true }, defaults = {}, name="autohost_hosted_delete")
      *
      * @param Request $request
      * @return JsonResponse

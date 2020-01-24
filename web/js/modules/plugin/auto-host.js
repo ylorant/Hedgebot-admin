@@ -310,12 +310,7 @@ let AutoHost = {
                 let data = jqXHR.responseJSON;
                 const requestSucceeded = (textStatus === "success" && data !== false);
 
-                // Set the message ID from the data if the request succeeded and it was a creation
-                if(!configurationData.id && requestSucceeded) {
-                    configurationData.id = data;
-                }
-
-                callback(configurationData.id, requestSucceeded);
+                callback(configurationData.channel, requestSucceeded);
             }
         });
     },
