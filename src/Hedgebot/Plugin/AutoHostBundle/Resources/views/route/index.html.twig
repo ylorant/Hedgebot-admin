@@ -16,16 +16,18 @@
     <div class="row">
         <div class="col-lg-3 col-xs-12">
             <div class="card">
-                <div class="form-group form-float">
-                    <div class="form-line">
-                        <div id="chosen-channel">
-                            <select id="host-channels" name="host-channels" class="form-control channel-selector">
-                                {% for channel in availableChannels %}
-                                    <option class="host-channel"
-                                            value="{{ channel }}" {{ channel in channelSelected ? "selected" : "" }}>{{ channel }}</option>
-                                {% endfor %}
-                            </select>
-                            <label class="form-label">{% trans %}form.channel{% endtrans %}</label>
+                <div class="body">
+                    <div class="form-group form-float">
+                        <div class="form-line m-b--20">
+                            <div id="chosen-channel">
+                                <select id="host-channels" name="host-channels" class="form-control channel-selector">
+                                    {% for channel in availableChannels %}
+                                        <option class="host-channel"
+                                                value="{{ channel }}" {{ channel in channelSelected ? "selected" : "" }}>{{ channel }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label class="form-label">{% trans %}form.channel{% endtrans %}</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -65,7 +67,7 @@
                     {% set templateHosted = {'channel':'', 'hostedChannels': {'': {'channel': '', 'enabled': 'enabled', 'priority': 0.5}}} %}
                     {% include 'HedgebotAutoHostBundle::route/hosted.html.twig' with {'isTemplate': true, 'host': templateHosted} %}
                 </div>
-                <div id="hosted-channels" class="body" data-channel="{{channelSelected}}">
+                <div id="hosted-channels" data-channel="{{channelSelected}}">
                     {% for host in hosts %}
                         {% if host.channel in channelSelected %}
                             {% include 'HedgebotAutoHostBundle::route/hosted.html.twig' with {'isTemplate': false, 'host': host} %}

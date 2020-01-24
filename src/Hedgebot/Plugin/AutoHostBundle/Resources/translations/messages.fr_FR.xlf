@@ -16,7 +16,7 @@
             </trans-unit>
             <trans-unit id="form.time_interval">
                 <source>form.time_interval</source>
-                <target>Intervalle de temps</target>
+                <target>Intervalle de changement</target>
             </trans-unit>
             <trans-unit id="form.black_list">
                 <source>form.black_list</source>
