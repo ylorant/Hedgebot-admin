@@ -88,7 +88,7 @@ class AutoHostController extends BaseController
         $endpoint = $this->get('hedgebot_api')->endpoint($this::ENDPOINT_PATH);
         $data = $request->request->all();
         $newHostedId = null;
-        $enabled = (bool) $data['enabled'];
+        $enabled = $data['enabled'] == "true";
 
         if(empty($data['id'])) {
             $newHostedId = $endpoint->addHostedChannel($data['channel'], $data['hosted'], $data['priority'], $enabled);
