@@ -1,0 +1,3 @@
+autohost_routes:
+  resource: "@HedgebotAutoHostBundle/Controller/"
+  type:     annotation
