@@ -42,4 +42,30 @@ class StreamSettingsAjaxController extends BaseController
 
         return new JsonResponse(['success' => $adsStarted]);
     }
+
+    /**
+     * @Route("/streamcontrol/ajax/host/{channel}", options = { "expose" = true }, name="streamcontrol_ajax_host_channel")
+     */
+    public function hostChannelAction($channel, Request $request)
+    {
+        $requestData = $request->request->all();
+
+        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/streamcontrol');
+        $endpoint->hostChannel($channel, $requestData['target']);
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * @Route("/streamcontrol/ajax/raid/{channel}", options = { "expose" = true }, name="streamcontrol_ajax_raid_channel")
+     */
+    public function raidChannelAction($channel, Request $request)
+    {
+        $requestData = $request->request->all();
+
+        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/streamcontrol');
+        $endpoint->raidChannel($channel, $requestData['target']);
+
+        return new JsonResponse(['success' => true]);
+    }
 }
