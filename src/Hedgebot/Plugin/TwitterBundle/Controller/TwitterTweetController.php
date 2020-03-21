@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Hedgebot\Plugin\TwitterBundle\Form\TweetType;
 use Symfony\Component\HttpFoundation\File\File;
 use DateTime;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class TwitterTweetController extends BaseController
 {
@@ -162,6 +163,33 @@ class TwitterTweetController extends BaseController
         }
         
         return $this->redirectToRoute('twitter_tweet_list');
+    }
+
+    /**
+     * @Route("/twitter/tweets/send/{tweetId}", name="twitter_tweet_send")
+     */
+    public function sendTweetAction($tweetId)
+    {
+        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/twitter');
+        $sent = $endpoint->sendScheduledTweet($tweetId);
+
+        if($sent) {
+            $tweet = $endpoint->getScheduledTweet($tweetId);
+
+            $this->addFlash("success", "Tweet sent.");
+            
+            // Redirect to either the tweet page or to the list page depending on the tweet status
+            if(!empty($tweet)) {
+                return $this->redirectToRoute('twitter_tweet_edit', ["tweetId" => $tweetId]);
+            } else {
+                return $this->redirectToRoute('twitter_tweet_list');
+            }
+
+        } else {
+            $this->addFlash("danger", "Failed to send tweet.");
+            return $this->redirectToRoute('twitter_tweet_edit', ["tweetId" => $tweetId]);
+        }
+        
     }
 
     /**

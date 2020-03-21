@@ -68,6 +68,17 @@
                     </div>
                 </div>
             </div>
+            {% if tweet is not empty %}
+                <div class="card">
+                    <div class="header">
+                        <h2>Actions</h2>
+                    </div>
+
+                    <div class="body text-center">
+                        <a class="btn btn-primary btn-lg waves-effect" href="{{ path('twitter_tweet_send', {'tweetId': tweet.id}) }}">Send tweet now</a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
