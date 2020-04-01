@@ -43,7 +43,8 @@ class ChatWidget implements DashboardWidgetInterface
     public function update(array $settings = [])
     {
         return [
-            'settings' => $settings
+            'settings' => $settings,
+            'currentHost' => $_SERVER["SERVER_NAME"]
         ];
     }
 }
