@@ -18,8 +18,6 @@ class TimerAjaxController extends BaseController
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/timer');
         $timer = $endpoint->getTimerById($timerId);
 
-        dump($timer);
-
         if(empty($timer)) {
             $success = false;
         }
