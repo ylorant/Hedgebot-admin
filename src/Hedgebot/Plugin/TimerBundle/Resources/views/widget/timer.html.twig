@@ -1,0 +1,47 @@
+<div class="card timer-widget" data-id="{{ timer.id }}">
+    <div class="header">
+        <h2>Timer - {{ timer.id }}</h2>
+        <ul class="header-dropdown">
+            <li>
+                <a href="javascript:void(0);" data-toggle="reload">
+                    <i class="material-icons">loop</i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <span class="hidden timer-info" 
+          rv-data-started="timer.started" data-started="{{ timer.started ? "true" : "false" }}"
+          rv-data-paused="timer.paused" data-paused="{{ timer.paused ? "true" : "false" }}"
+          rv-data-startTime="timer.start-time" data-start-time="{{ timer.startTime }}"
+          rv-data-offset="timer.offset" data-offset="{{ timer.offset }}"
+    >
+    </span>
+          
+
+    <div class="body text-center">
+        <div class="row">
+            <div class="col-xs-12 col-md-6 font-32 timer-component-block">
+                <span class="timer-time"
+                    rv-text="timer.formattedTime" 
+                    rv-data-startTime="timer.startTime">
+                    {{ timer.formattedTime }}
+                </span>
+            </div>
+
+            <div class="col-xs-12 col-md-6 timer-control text-center timer-component-block">
+                <button class="btn bg-green timer-start-button waves-effect" title="Start/Stop">
+                    <i class="material-icons">play_arrow</i>
+                </button>
+                
+                <button class="btn bg-blue timer-pause-button waves-effect" title="Pause/Resume">
+                    <i class="material-icons">pause</i>
+                </button>
+
+                <button class="btn bg-red timer-reset-button waves-effect" title="Reset">
+                    <i class="material-icons">replay</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,3 @@
+horaro_routes:
+    resource: "@HedgebotTimerBundle/Controller/"
+    type:     annotation
