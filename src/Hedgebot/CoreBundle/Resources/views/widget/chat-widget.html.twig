@@ -4,6 +4,10 @@
     </div>
 
     <div class="body">
-        <iframe src="https://www.twitch.tv/embed/{{ settings.channel }}/chat"></iframe>
+        {% if settings.light_chat is defined and settings.light_chat == "1" %}
+            <iframe src="https://nightdev.com/hosted/obschat/?theme=light&channel={{ settings.channel }}&fade=false&bot_activity=true&prevent_clipping=false"></iframe>
+        {% else %}
+            <iframe src="https://www.twitch.tv/embed/{{ settings.channel }}/chat"></iframe>
+        {% endif %}
     </div>
 </div>

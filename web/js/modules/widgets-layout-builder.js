@@ -137,8 +137,19 @@ var WidgetsLayoutBuilder = {
         // Prepare the method that will fill the widgets with their settings upon loading
         var fillSettingsCallback = function(settings, widget)
         {
-            for(var settingName in settings)
-                $('input[name="' + settingName + '"]', widget).trigger('focus').val(settings[settingName]).trigger('blur');
+            for(var settingName in settings) {
+                var input = $('[name="' + settingName + '"]', widget);
+
+                switch(input.attr('type')) {
+                    case "checkbox":
+                        if(settings[settingName] !== null) {    
+                            input.attr("checked", true);
+                        }
+                        break;
+                    default:
+                        input.trigger('focus').val(settings[settingName]).trigger('blur');
+                }
+            }
         };
 
         // Iterate over the current layout's widgets and check that the block exists for each widget
@@ -385,7 +396,16 @@ var WidgetsLayoutBuilder = {
                 for(var j = 0; j < settingsInputs.length; j++)
                 {
                     var input = settingsInputs.get(j);
-                    widgetObj.settings[input.name] = input.value;
+
+                    switch(input.getAttribute("type")) {
+                        case "checkbox":
+                            if($(input).is(":checked")) {
+                                widgetObj.settings[input.name] = input.value;
+                            }
+                            break;
+                        default:
+                            widgetObj.settings[input.name] = input.value;
+                        }
                 }
 
                 // Save the widget into the block
