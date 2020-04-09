@@ -190,7 +190,7 @@ var StreamControl = {
         if(data.success) {
             $.notify({message: "Ads started."});
         } else {
-            $.notify({message: "Failed starting ads."});
+            $.notify({message: "Failed starting ads."}, {type: "danger"});
         }
     },
 
@@ -201,7 +201,7 @@ var StreamControl = {
         if(data.success) {
             $.notify({message: "Host command launched."});
         } else {
-            $.notify({message: "Failed launching host command."});
+            $.notify({message: "Failed launching host command."}, {type: "danger"});
         }
     },
 
@@ -212,7 +212,7 @@ var StreamControl = {
         if(data.success) {
             $.notify({message: "Raid command launched."});
         } else {
-            $.notify({message: "Failed launching raid command."});
+            $.notify({message: "Failed launching raid command."}, {type: "danger"});
         }
     }
 };
