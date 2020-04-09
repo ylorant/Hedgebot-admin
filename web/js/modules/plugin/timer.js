@@ -174,7 +174,8 @@ var Timer = {
             timerInfo.startTime, 
             timerInfo.offset, 
             timerInfo.paused, 
-            timerInfo.started
+            timerInfo.started,
+            timerInfo.countdown ? timerInfo.countdownAmount : null,
         );
 
         timerTimeBlock.html(this.formatTimerTime(elapsed));
@@ -191,6 +192,8 @@ var Timer = {
         timerInfoBlock.data('offset', data.offset);
         timerInfoBlock.data('paused', data.paused);
         timerInfoBlock.data('started', data.started);
+        timerInfoBlock.data('countdown', data.countdown);
+        timerInfoBlock.data('countdownAmount', data.countdownAmount);
     },
 
     /**
@@ -205,6 +208,8 @@ var Timer = {
         timerInfo.offset = timerInfoBlock.data('offset');
         timerInfo.paused = timerInfoBlock.data('paused');
         timerInfo.started = timerInfoBlock.data('started');
+        timerInfo.countdown = timerInfoBlock.data('countdown');
+        timerInfo.countdownAmount = timerInfoBlock.data('countdown-amount');
 
         return timerInfo;
     },
@@ -212,13 +217,22 @@ var Timer = {
     /**
      * Gets the elapsed time on the given timer.
      */
-    getTimerElapsedTime: function(startTime, offset = 0, paused = false, started = false)
+    getTimerElapsedTime: function(startTime, offset = 0, paused = false, started = false, countdownAmount = null)
     {
         var elapsed = offset;
 
         if(started && !paused) {
             var now = new Date();
             elapsed += (now.getTime() / 1000) - startTime;
+        }
+
+        if(countdownAmount != null) {
+            elapsed = (countdownAmount) - elapsed;
+
+            if(elapsed < 0) {
+                elapsed = 0;
+            }
+
         }
         
         return elapsed;

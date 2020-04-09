@@ -112,6 +112,14 @@ class TimerWidget implements DashboardWidgetInterface
         $elapsed = $this->getTimerElapsedTime($timer);
         $output = "";
         
+        if($timer->countdown && $timer->countdownAmount > 0) {
+            $elapsed = $timer->countdownAmount - $elapsed;
+
+            if($elapsed < 0) {
+                $elapsed = 0;
+            }
+        }
+
         $totalSeconds = floor($elapsed);
 
         $hours = floor($totalSeconds / 3600);
