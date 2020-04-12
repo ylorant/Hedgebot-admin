@@ -36,7 +36,7 @@
     {% for blockName, blockData in layout.blocks %}
         {% for blockWidget in userLayout.getBlockWidgets(blockName) %}
             {% if widgets[blockWidget.type] is not empty %}
-                {% set widgetScripts = widgetScripts|merge(widgets[blockWidget.type].scriptPaths) %}
+                {% set widgetScripts = widgetScripts|merge(widgets[blockWidget.type].scriptPaths)|unique %}
             {% endif %}
         {% endfor %}
     {% endfor %}

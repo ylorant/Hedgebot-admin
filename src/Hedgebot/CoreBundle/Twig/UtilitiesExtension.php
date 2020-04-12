@@ -24,7 +24,8 @@ class UtilitiesExtension extends Twig_Extension
         return [
             new TwigFilter('anonymize', [$this, 'anonymize']),
             new TwigFilter('to_array', [$this, 'toArray']),
-            new TwigFilter('iconize', [$this, 'iconize'])
+            new TwigFilter('iconize', [$this, 'iconize']),
+            new TwigFilter('unique', [$this, 'unique'])
         ];
     }
     
@@ -72,5 +73,16 @@ class UtilitiesExtension extends Twig_Extension
         }
 
         return '<i class="' . $classes. '">' . $content. '</i>';
+    }
+
+    /**
+     * Filters all unique values from an array.
+     * 
+     * @param array $input Input array
+     * @return array Filtered array. 
+     */
+    public function unique($input)
+    {
+        return array_unique($input);
     }
 }
