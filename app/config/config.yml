@@ -39,6 +39,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         menuGenerator: "@menu_generator"
+        eventManagerIOHost: "%eventmanager_io_host%"
 
 # Swiftmailer Configuration
 swiftmailer:

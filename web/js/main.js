@@ -25,6 +25,11 @@ $(function()
     RivetsFormatters.init(rivets);
     Hedgebot.init();
     
+    // Initialize SocketIO event manager
+    EventManager.init({
+        socketHost: parameters.eventManagerIOHost
+    });
+    
     // Load store autocomplete for all inputs that have the .store-autocomplete class
     Store.init({
         autocompleteInputSelector: '.store-autocomplete',
