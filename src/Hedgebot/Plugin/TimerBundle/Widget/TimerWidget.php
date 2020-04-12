@@ -6,6 +6,18 @@ use Hedgebot\CoreBundle\Service\ApiClientService;
 
 class TimerWidget implements DashboardWidgetInterface
 {
+    /** @var array Available colors for the timer widget */
+    const COLORS = [
+        '' => 'White',
+        'bg-black' => 'Black',
+        'bg-blue-grey' => 'Grey',
+        'bg-red' => 'Red',
+        'bg-orange' => 'Orange',
+        'bg-amber' => 'Yellow',
+        'bg-indigo' => 'Indigo',
+        'bg-purple' => 'Purple'
+    ];
+
     /** @var ApiClientService $hedgebotApi */
     protected $hedgebotApi;
 

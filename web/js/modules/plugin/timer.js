@@ -46,6 +46,7 @@ var Timer = {
 
         this.initElements();
         this.bindUIActions();
+        this.bindRelayEvents();
 
         this.refreshTimer();
     },
@@ -70,6 +71,26 @@ var Timer = {
         setInterval(this.refreshAllTimers.bind(this), 1000);
     },
 
+    /**
+     * Binds events callbacks to the socket relay
+     */
+    bindRelayEvents: function()
+    {
+        EventManager.bind("timer/*", this.onTimerEvent.bind(this));
+    },
+
+    /**
+     * Event: timer update from the bot
+     */
+    onTimerEvent: function(ev)
+    {
+        var timer = this.elements.timerBlocks.filter('[data-id="' + ev.timer.id + '"]');
+
+        if(timer.length) {
+            this.updateTimerInfo(timer, ev.timer);
+            this.refreshTimer(timer);
+        }
+    },
 
     /**
      * Event: the start/stop button has been clicked
@@ -109,20 +130,10 @@ var Timer = {
      */
     executeTimerAction(timerId, action, timerElement)
     {
-        var onActionComplete = function(jqXHR, textStatus) {
-            var data = jqXHR.responseJSON;
-
-            if(data) {
-                this.updateTimerInfo(timerElement, data);
-                this.refreshTimer(timerElement);
-            }
-        };
-
         $.ajax({
             url: Routing.generate(this.options.actionRoute, {timerId: timerId, action: action}, true),
             type: 'post',
-            data: {},
-            complete: onActionComplete.bind(this)
+            data: {}
         });
     },
 
