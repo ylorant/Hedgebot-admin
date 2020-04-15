@@ -24,7 +24,8 @@ class TimerWidgetSettingsType extends WidgetSettingsType
                 'choices' => $timersOption
             ])
             ->add('background_color', ChoiceType::class, [
-                'choices' => array_flip(TimerWidget::COLORS)
+                'choices' => array_flip(TimerWidget::COLORS),
+                'required' => false
             ]);
     }
 }
