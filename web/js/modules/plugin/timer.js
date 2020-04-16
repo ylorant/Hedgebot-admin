@@ -48,7 +48,7 @@ var Timer = {
         this.bindUIActions();
         this.bindRelayEvents();
 
-        this.refreshTimer();
+        this.refreshAllTimers();
     },
 
     /**
