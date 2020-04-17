@@ -5,6 +5,7 @@ parameters:
     hedgebot_core.service.dashboard_widgets.class: Hedgebot\CoreBundle\Service\DashboardWidgetsManagerService
     hedgebot_core.service.twitch_client.class: Hedgebot\CoreBundle\Service\TwitchClientService
     hedgebot_core.routing.plugins.class: Hedgebot\CoreBundle\Routing\PluginRouteLoader
+    hedgebot_core.routing.plugins_public.class: Hedgebot\CoreBundle\Routing\PluginPublicRouteLoader
     hedgebot_core.twig.utilities.class: Hedgebot\CoreBundle\Twig\UtilitiesExtension
     hedgebot_core.event_subscriber.controller_hooks.class: Hedgebot\CoreBundle\EventSubscriber\ControllerHooksSubscriber
     hedgebot_core.event_subscriber.forwarded_trust.class: Hedgebot\CoreBundle\EventSubscriber\ForwardedTrustSubscriber
@@ -16,6 +17,12 @@ services:
     
     plugin_routing_loader:
         class: "%hedgebot_core.routing.plugins.class%"
+        arguments: [ '@kernel', '%kernel.bundles%' ]
+        tags:
+            - { name: routing.loader }
+
+    plugin_public_routing_loader:
+        class: "%hedgebot_core.routing.plugins_public.class%"
         arguments: [ '@kernel', '%kernel.bundles%' ]
         tags:
             - { name: routing.loader }

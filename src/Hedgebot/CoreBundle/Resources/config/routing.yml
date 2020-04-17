@@ -14,5 +14,10 @@ plugins_routes:
     resource: .
     type: plugin_routes
 
+plugins_public_routes:
+    prefix: /public/plugin
+    resource: .
+    type: plugin_public_routes
+
 logout:
     path: /logout
