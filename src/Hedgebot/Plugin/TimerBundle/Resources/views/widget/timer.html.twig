@@ -1,32 +1,23 @@
 <div class="card timer-widget" data-id="{{ timer.id }}">
     <div class="header {{ settings.background_color ?? ''}}">
         <h2>Timer - {{ timer.title }}</h2>
-        <ul class="header-dropdown">
-            <li>
-                <a href="javascript:void(0);" data-toggle="reload">
-                    <i class="material-icons">loop</i>
-                </a>
-            </li>
-        </ul>
     </div>
 
     <span class="hidden timer-info" 
-          rv-data-started="timer.started" data-started="{{ timer.started ? "true" : "false" }}"
-          rv-data-paused="timer.paused" data-paused="{{ timer.paused ? "true" : "false" }}"
-          rv-data-startTime="timer.start-time" data-start-time="{{ timer.startTime }}"
-          rv-data-offset="timer.offset" data-offset="{{ timer.offset }}"
-          rv-data-countdown="timer.countdown" data-countdown="{{ timer.countdown ? "true" : "false" }}"
-          rv-data-countdownAmount="timer.countdown-amount" data-countdown-amount="{{ timer.countdownAmount }}"
+          data-started="{{ timer.started ? "true" : "false" }}"
+          data-paused="{{ timer.paused ? "true" : "false" }}"
+          data-start-time="{{ timer.startTime }}"
+          data-offset="{{ timer.offset }}"
+          data-countdown="{{ timer.countdown ? "true" : "false" }}"
+          data-countdown-amount="{{ timer.countdownAmount }}"
     >
     </span>
           
 
-    <div class="body text-center {{ settings.background_color ?? ''}}">
+    <div class="{{ extended_controls is defined ? "header" : "body" }} text-center {{ settings.background_color ?? ''}}">
         <div class="row">
             <div class="col-xs-12 col-md-6 font-32 timer-component-block">
-                <span class="timer-time"
-                    rv-text="timer.formattedTime" 
-                    rv-data-startTime="timer.startTime">
+                <span class="timer-time">
                     {{ timer.formattedTime }}
                 </span>
             </div>
@@ -46,4 +37,23 @@
             </div>
         </div>
     </div>
+
+    {% if extended_controls is defined %}
+        <div class="body text-center {{ settings.background_color ?? '' }}">
+            <a class="btn btn-primary waves-effect" title="Embed" target="_blank" href="{{ path('timer_front_embed', {'id': timer.id }) }}">
+                <i class="material-icons">cast</i> 
+                <span>Embed</span>
+            </a>
+
+            <a class="btn btn-success waves-effect" title="Edit">
+                <i class="material-icons">create</i>
+                <span>Edit</span>
+            </a>
+
+            <a class="btn btn-danger waves-effect" title="Delete">
+                <i class="material-icons">delete</i> 
+                <span>Delete</span>
+            </a>
+        </div> 
+    {% endif %}
 </div>

@@ -4,6 +4,7 @@ namespace Hedgebot\Plugin\TimerBundle;
 use Hedgebot\CoreBundle\Interfaces\DashboardWidgetsProviderInterface;
 use Hedgebot\CoreBundle\Interfaces\MenuProviderInterface;
 use Hedgebot\CoreBundle\Interfaces\PluginBundleInterface;
+use Hedgebot\CoreBundle\Plugin\Menu\MenuItem;
 use Hedgebot\Plugin\TimerBundle\Widget\TimerWidget;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -22,7 +23,7 @@ class HedgebotTimerBundle extends Bundle implements PluginBundleInterface, MenuP
      */
     public function getMenu()
     {
-        return null;
+        return new MenuItem('Timers', 'timer_list', 'alarm');
     }
     
     /**

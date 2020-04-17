@@ -11,23 +11,7 @@ var Timer = {
         /**
          * @var string Timer info element block selector.
          */
-        timerInfoSelector: null,
-        /**
-         * @var string Timer start/stop button inside the timer block
-         */
-        startButtonSelector: null,
-        /**
-         * @var string The pause button inside the timer block
-         */
-        pauseButtonSelector: null,
-        /**
-         * @var string The reset button inside the timer block
-         */
-        resetButtonSelector: null,
-        /**
-         * @var string The route to execute a timer action
-         */
-        actionRoute: null
+        timerInfoSelector: null
     },
 
     options: {},
@@ -45,10 +29,9 @@ var Timer = {
         this.options = $.extend(this.defaultOptions, options);
 
         this.initElements();
-        this.bindUIActions();
         this.bindRelayEvents();
 
-        this.refreshAllTimers();
+        this.refreshTimer();
     },
 
     /**
@@ -59,16 +42,6 @@ var Timer = {
         this.elements.timerBlocks = $(this.options.timerBlockSelector);
 
         setInterval(this.refreshAllTimers.bind(this), 250);
-    },
-
-    /**
-     * Binds events from the elements to callbacks
-     */
-    bindUIActions: function()
-    {
-        $(this.options.startButtonSelector, this.elements.timerBlocks).on('click', this.onStartButtonClick.bind(this));
-        $(this.options.pauseButtonSelector, this.elements.timerBlocks).on('click', this.onPauseButtonClick.bind(this));
-        $(this.options.resetButtonSelector, this.elements.timerBlocks).on('click', this.onResetButtonClick.bind(this));
     },
 
     /**
@@ -93,51 +66,6 @@ var Timer = {
     },
 
     /**
-     * Event: the start/stop button has been clicked
-     */
-    onStartButtonClick: function(ev)
-    {
-        var timerElement = $(ev.currentTarget).parents(this.options.timerBlockSelector);
-        var timerId = timerElement.data('id');
-
-        this.executeTimerAction(timerId, "start", timerElement);
-    },
-
-    /**
-     * Event: the pause button has been clicked
-     */
-    onPauseButtonClick: function(ev)
-    {
-        var timerElement = $(ev.currentTarget).parents(this.options.timerBlockSelector);
-        var timerId = timerElement.data('id');
-
-        this.executeTimerAction(timerId, "pause", timerElement);
-    },
-
-    /**
-     * Event: the reset button has been clicked
-     */
-    onResetButtonClick: function(ev)
-    {
-        var timerElement = $(ev.currentTarget).parents(this.options.timerBlockSelector);
-        var timerId = timerElement.data('id');
-
-        this.executeTimerAction(timerId, "reset", timerElement);
-    },
-
-    /**
-     * Executes an action on the given timer id, and then updates the timerElement on success.
-     */
-    executeTimerAction(timerId, action, timerElement)
-    {
-        $.ajax({
-            url: Routing.generate(this.options.actionRoute, {timerId: timerId, action: action}, true),
-            type: 'post',
-            data: {}
-        });
-    },
-
-    /**
      * Refreshes completely all timers
      */
     refreshAllTimers: function()
@@ -152,33 +80,21 @@ var Timer = {
      */
     refreshTimer: function(timerElement)
     {
+        timerElement = $(timerElement);
+
         var timerTimeBlock = $(this.options.timerTimeDisplaySelector, timerElement);
         var timerInfo = this.getTimerInfo(timerElement);
-        var startButton = $(this.options.startButtonSelector, timerElement);
-        var pauseButton = $(this.options.pauseButtonSelector, timerElement);
 
-        timerTimeBlock.removeClass('col-grey col-green col-blue');
-        startButton.attr('disabled', false);
-        pauseButton.attr('disabled', false);
-        startButton.find('i').html('play_arrow');
-        pauseButton.find('i').html('pause');
+        timerElement.removeClass('timer-started timer-ended timer-paused');
 
         if(timerInfo.started) {
-            timerTimeBlock.addClass('col-blue');
-            startButton.find('i').html('check');
-        } else {
-            pauseButton.attr('disabled', true);
-        
-            if(timerInfo.offset != 0) {
-                timerTimeBlock.addClass('col-green');
-            }
+            timerElement.addClass('timer-started');
+        } else if(timerInfo.offset != 0) {
+            timerElement.addClass('timer-ended');
         }
-            
 
         if(timerInfo.paused) {
-            timerTimeBlock.addClass('col-grey');
-            pauseButton.find('i').html('play_arrow');
-            startButton.attr('disabled', true);
+            timerElement.addClass('timer-paused');
         } 
 
         var elapsed = this.getTimerElapsedTime(

@@ -1,0 +1,28 @@
+{% extends 'HedgebotCoreBundle::base.html.twig' %}
+{% block title %}Timers{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/plugin/timer.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block main_title %}
+    <h3>
+        Timers
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% for currentTimer in timers %}
+            <div class="col-xs-12 col-lg-4">
+                {% include 'HedgebotTimerBundle::widget/timer.html.twig' with {'timer': currentTimer, 'settings': {}, 'extended_controls': true} %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{# Scripts, load additional scripts needed for this route, and initialize main module #}
+{% block scripts %}
+    <script src="{{ asset('js/modules/plugin/timer.js') }}"></script>
+    <script src="{{ asset('js/modules/plugin/widget/timer.js') }}"></script>
+{% endblock %}

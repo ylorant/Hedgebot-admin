@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <title>Timer embed</title>
+    </head>
+
+    <body>
+        <div class="timer-widget" data-id="{{ timer.id }}">
+            <span class="hidden timer-info" 
+                data-started="{{ timer.started ? "true" : "false" }}"
+                data-paused="{{ timer.paused ? "true" : "false" }}"
+                data-start-time="{{ timer.startTime }}"
+                data-offset="{{ timer.offset }}"
+                data-countdown="{{ timer.countdown ? "true" : "false" }}"
+                data-countdown-amount="{{ timer.countdownAmount }}"
+            >
+            </span>
+            <span class="timer-time">
+                {{ timer.formattedTime }}
+            </span>
+        </div>
+
+        <!-- Jquery Core Js -->
+        <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+        <!-- SocketIO base library -->
+        {# if we're on the dev environment, we load the local socket.io #}
+        {% if app.environment == "dev" %}
+            <script src="{{ eventManagerIOHost }}/socket.io/socket.io.js"></script>
+        {% else %}
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+        {% endif %}
+
+        <script src="{{ asset('js/modules/event-manager.js') }}"></script>
+        <script src="{{ asset('js/public/plugin/timer.js') }}"></script>
+        <script type="text/javascript">
+            $(function()
+            {
+                // Initialize SocketIO event manager
+                EventManager.init({
+                    socketHost: '{{ eventManagerIOHost }}'
+                });
+
+                var options = {
+                    timerBlockSelector: '.timer-widget',
+                    timerInfoSelector: '.timer-info',
+                    timerTimeDisplaySelector: '.timer-time'
+                };
+
+                Timer.init(options);
+            });
+        </script>
+    </body>
+</html>
