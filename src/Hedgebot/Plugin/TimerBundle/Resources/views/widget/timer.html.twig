@@ -1,7 +1,9 @@
 <div class="card timer-widget" data-id="{{ timer.id }}">
-    <div class="header {{ settings.background_color ?? ''}}">
-        <h2>Timer - {{ timer.title }}</h2>
-    </div>
+    {% if settings.hide_title_bar is not defined or settings.hide_title_bar != "1" %}
+        <div class="header {{ settings.background_color ?? ''}}">
+            <h2>Timer - {{ timer.title }}</h2>
+        </div>
+    {% endif %}
 
     <span class="hidden timer-info" 
           data-started="{{ timer.started ? "true" : "false" }}"

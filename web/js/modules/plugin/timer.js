@@ -171,6 +171,7 @@ var Timer = {
         
             if(timerInfo.offset != 0) {
                 timerTimeBlock.addClass('col-green');
+                startButton.find('i').html('undo');
             }
         }
             
