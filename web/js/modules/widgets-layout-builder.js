@@ -138,7 +138,7 @@ var WidgetsLayoutBuilder = {
         var fillSettingsCallback = function(settings, widget)
         {
             for(var settingName in settings) {
-                var input = $('[name="' + settingName + '"]', widget);
+                var input = $("[name*='[" + settingName + "]']", widget);
 
                 switch(input.attr('type')) {
                     case "checkbox":
@@ -396,15 +396,19 @@ var WidgetsLayoutBuilder = {
                 for(var j = 0; j < settingsInputs.length; j++)
                 {
                     var input = settingsInputs.get(j);
+                    var inputName = input.name;
+
+                    inputName = inputName.match(/.+\[(.+)\]/);
+                    inputName = inputName[1];
 
                     switch(input.getAttribute("type")) {
                         case "checkbox":
                             if($(input).is(":checked")) {
-                                widgetObj.settings[input.name] = input.value;
+                                widgetObj.settings[inputName] = input.value;
                             }
                             break;
                         default:
-                            widgetObj.settings[input.name] = input.value;
+                            widgetObj.settings[inputName] = input.value;
                         }
                 }
 

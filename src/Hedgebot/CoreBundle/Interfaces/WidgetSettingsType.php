@@ -15,6 +15,6 @@ class WidgetSettingsType extends AbstractType
 
     final public function getBlockPrefix()
     {
-        return null;
+        return uniqid();
     }
 }
