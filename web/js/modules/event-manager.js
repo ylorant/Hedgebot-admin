@@ -17,9 +17,11 @@ var EventManager = {
     {
         this.options = $.extend(this.defaultOptions, options);
 
-        this.io = io(this.options.socketHost);
-
-        this.initIOEvents();
+        // Initialize only if Socket.IO is loaded
+        if(typeof(io) !== "undefined") {
+            this.io = io(this.options.socketHost);
+            this.initIOEvents();
+        }
     },
 
     initIOEvents: function()
