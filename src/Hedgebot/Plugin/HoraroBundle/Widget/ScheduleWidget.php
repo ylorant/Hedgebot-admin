@@ -72,80 +72,21 @@ class ScheduleWidget implements DashboardWidgetInterface
      */
     public function update(array $settings = [])
     {
-        $schedule = null;
         $scheduleData = null;
-
         $endpoint = $this->hedgebotApi->endpoint('/plugin/horaro');
         
         // Try to get if there's a schedule actually on
-        $schedules = (array) $endpoint->getSchedules();
-        $schedulesData = (array) $endpoint->getSchedulesData();
-        $activeSlug = $this->findActiveSchedule($settings['channel'], $schedules, $schedulesData);
+        $activeSchedule = $endpoint->getCurrentSchedule($settings['channel'], true);
         
         // Get the schedule data
-        if(!empty($activeSlug)) {
-            $schedule = $endpoint->getSchedule($activeSlug);
-            $scheduleData = $endpoint->getScheduleData($activeSlug);
+        if(!empty($activeSchedule)) {
+            $scheduleData = $endpoint->getScheduleData($activeSchedule->identSlug);
         }
 
         return [
             'settings'     => $settings,
-            'schedule'     => $schedule,
+            'schedule'     => $activeSchedule,
             'scheduleData' => $scheduleData
         ];
-    }
-
-    /**
-     * Tries to find the active schedule from the given schedules.
-     * @param string $channel The channel to find the active schedule of.
-     * @param array  $schedules The list of available schedules.
-     * @param array  $schedulesData The list of available schedules' data.
-     * @return string|null The schedule ident slug if found, null if no schedule is active.
-     */
-    protected function findActiveSchedule($channel, $schedules, $schedulesData)
-    {
-        $startTimes = [];
-        $now = new DateTime();
-        $dayDelay = new DateInterval('P1D');
-
-        foreach($schedules as $schedule) {
-            if(!$schedule->enabled || $schedule->channel != $channel) {
-                continue;
-            }
-
-            $scheduleData = $schedulesData[$schedule->identSlug];
-            $scheduleStartTime = new DateTime($scheduleData->start);
-            
-            // Remove 1 hr from the schedule start time to show it slightly before it starts
-            $scheduleStartTime->sub(new DateInterval("PT1H"));
-
-            // If the start time is in the future, discard it
-            if($scheduleStartTime > $now) {
-                continue;
-            }
-
-            // Limit the end of the schedule as the last item end timee + 1 day
-            $lastItem = end($scheduleData->items);
-            $endDate = new DateTime($lastItem->scheduled);
-            $lastItemDuration = new DateInterval($lastItem->length);
-            $endDate->add($lastItemDuration);
-            $endDate->add($dayDelay);
-
-            if($endDate < $now) {
-                continue;
-            }
-
-            $startTimes[$schedule->identSlug] = $scheduleData->start_t;
-        }
-
-        if(!empty($startTimes)) {
-            asort($startTimes);
-            $orderedSlugs = array_keys($startTimes);
-            $selectedSlug = reset($orderedSlugs);
-
-            return $selectedSlug;
-        }
-
-        return null;
     }
 }
