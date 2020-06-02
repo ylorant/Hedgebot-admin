@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bd8f92e4555f0abd72ac300d94d0386",
+    "content-hash": "fc33238270d26e8a1a3f6f26c920c543",
     "packages": [
         {
             "name": "composer/installers",
@@ -1305,7 +1305,7 @@
                     "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
                 },
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -1952,16 +1952,16 @@
         },
         {
             "name": "php-curl-class/php-curl-class",
-            "version": "8.6.2",
+            "version": "8.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-curl-class/php-curl-class.git",
-                "reference": "54be433a7299c15b024ba808e10a96c5d5791d99"
+                "reference": "180273b577148090a62bb7333201d17e0b6efb75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/54be433a7299c15b024ba808e10a96c5d5791d99",
-                "reference": "54be433a7299c15b024ba808e10a96c5d5791d99",
+                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/180273b577148090a62bb7333201d17e0b6efb75",
+                "reference": "180273b577148090a62bb7333201d17e0b6efb75",
                 "shasum": ""
             },
             "require": {
@@ -2015,7 +2015,7 @@
                 "web-service",
                 "xml"
             ],
-            "time": "2019-11-17T08:37:31+00:00"
+            "time": "2020-04-20T03:39:57+00:00"
         },
         {
             "name": "psr/cache",
@@ -3907,6 +3907,46 @@
             ],
             "description": "JSONP callback validator.",
             "time": "2014-01-20T22:35:06+00:00"
+        },
+        {
+            "name": "ylorant/hedgebot-api-client",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ylorant/hedgebot-api-client.git",
+                "reference": "244a69f0f8150b80e4a9e6b3e7ac47d49032ec63"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ylorant/hedgebot-api-client/zipball/244a69f0f8150b80e4a9e6b3e7ac47d49032ec63",
+                "reference": "244a69f0f8150b80e4a9e6b3e7ac47d49032ec63",
+                "shasum": ""
+            },
+            "require": {
+                "php-curl-class/php-curl-class": "^8.8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HedgebotApi\\": "src/",
+                    "HedgebotApi\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yohann Lorant",
+                    "email": "yohann.lorant@gmail.com"
+                }
+            ],
+            "description": "PHP Hedgebot API Client library",
+            "time": "2020-06-02T03:44:31+00:00"
         }
     ],
     "packages-dev": [
@@ -3962,6 +4002,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
+            "abandoned": "symfony/maker-bundle",
             "time": "2017-12-07T15:36:41+00:00"
         },
         {
@@ -4038,5 +4079,6 @@
     "platform": {
         "php": ">=5.5.9"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
