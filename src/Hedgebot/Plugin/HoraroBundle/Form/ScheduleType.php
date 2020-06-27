@@ -38,7 +38,7 @@ class ScheduleType extends AbstractType
                 ]])
             ->add('eventId', TextType::class, ['label' => "Event ID", "disabled" => true])
             ->add('scheduleId', TextType::class, ['label' => "Schedule ID", "disabled" => true])
-            ->add('hiddenKey', TextType::class, ['label' => "Hidden column key"])
+            ->add('hiddenKey', TextType::class, ['label' => "Hidden column key", "required" => false])
             ->add('enabled', CheckboxType::class, [
                 'label' => 'Schedule is enabled',
                 'required' => false
