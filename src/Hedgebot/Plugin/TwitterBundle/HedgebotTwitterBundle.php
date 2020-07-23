@@ -26,7 +26,7 @@ class HedgebotTwitterBundle extends Bundle implements PluginBundleInterface, Men
 
         $baseItem
             ->children()
-                ->item('Tokens', 'twitter_token_list')->end()
+                ->item('Accounts', 'twitter_token_list')->end()
                 ->item('Scheduled tweets', 'twitter_tweet_list')->end();
         
         return $baseItem;
