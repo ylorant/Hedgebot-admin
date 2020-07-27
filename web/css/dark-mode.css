@@ -220,7 +220,7 @@ code
 
 .bg-indigo
 {
-    background-color: #283593;
+    background-color: #283593 !important;
 }
 
 .col-orange
