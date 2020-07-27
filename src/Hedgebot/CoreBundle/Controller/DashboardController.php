@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Hedgebot\CoreBundle\Widget\DefaultWidget\DefaultWidget;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends Controller
 {
@@ -81,5 +84,25 @@ class DashboardController extends Controller
     public function gottaGoFastAction()
     {
         return $this->render("HedgebotCoreBundle::route/gotta-go-fast.html.twig");
+    }
+
+    /**
+     * Toggles on and off dark mode.
+     * 
+     * @Route("/dark-mode", name="toggle-dark-mode")
+     */
+    public function toggleDarkMode(Request $request)
+    {
+        $darkModeCookie = $request->cookies->get('dark-mode');
+
+        $response = $this->redirectToRoute('dashboard');
+
+        if(!empty($darkModeCookie)) {
+            $response->headers->setCookie(new Cookie('dark-mode', "false", time()));
+        } else {
+            $response->headers->setCookie(new Cookie('dark-mode', "true", time() + (86400 * 30)));
+        }
+
+        return $response;
     }
 }

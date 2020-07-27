@@ -73,11 +73,12 @@ input.form-control[type="file"]
 .sidebar .user-info
 {
     background-repeat: repeat;
+    height: auto;
 }
 
-.sidebar .user-info
+.sidebar .user-info a:hover
 {
-    height: auto;
+    text-decoration: none;
 }
 
 .sidebar .user-info .info-container
@@ -93,6 +94,13 @@ input.form-control[type="file"]
 .sidebar .user-info .info-container .user-helper-dropdown a
 {
     color: white;
+}
+
+.sidebar .user-info .info-container .user-helper-dropdown .zmdi
+{
+    font-size: 24px;
+    line-height: 1;
+    vertical-align: top;
 }
 
 .block-header h1

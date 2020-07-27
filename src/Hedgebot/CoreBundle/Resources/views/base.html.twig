@@ -43,7 +43,13 @@
 
         <!-- Custom styles -->
         <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+
         {% block stylesheets %}{% endblock %}
+        
+        {% if app.request.cookies.has('dark-mode') and app.request.cookies.get('dark-mode') == "true" %}
+            <!-- Dark mode style -->
+            <link href="{{ asset('css/dark-mode.css') }}" rel="stylesheet" />
+        {% endif %}
     </head>
 
     {% set rightSidebarBlock = block('right_sidebar') %}
@@ -80,17 +86,17 @@
                         	</a>
                         </div>
 
-                        {% if rightSidebarBlock is not empty %}
-                            <div class="pull-right">
-                                <ul class="nav navbar-nav navbar-right">
+                        <div class="pull-right">
+                            <ul class="nav navbar-nav navbar-right">
+                                {% if rightSidebarBlock is not empty %}
                                     <li class="pull-right">
                                         <a href="javascript:void(0);" class="js-right-sidebar" data-close="true">
                                             <i class="material-icons">more_vert</i>
                                         </a>
                                     </li>
-                                </ul>
-                            </div>
-                        {% endif %}
+                                {% endif %}
+                            </ul>
+                        </div>
                     </div>
                 </nav>
                 <!-- #Top Bar -->
@@ -105,6 +111,10 @@
                                 <div class="info-container">
                                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</div>
                                     <div class="btn-group user-helper-dropdown">
+
+                                        <a href="{{ path('toggle-dark-mode') }}" class=" m-r-10" title="Toggle dark mode">
+                                            <i class="zmdi zmdi-brightness-4"></i>
+                                        </a>
                                         <a title="Log out" href="{{ path('logout') }}">
                                             <i class="material-icons">power_settings_new</i>
                                         </a>
