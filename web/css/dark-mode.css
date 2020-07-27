@@ -26,6 +26,11 @@ code
     color: #ef9a9a;
 }
 
+.login-page .logo picture
+{
+    opacity: 0.8;
+}
+
 /* SIDEBAR */
 
 .sidebar .user-info
@@ -211,6 +216,11 @@ code
 .bg-purple
 {
     background-color: #4A148C !important;
+}
+
+.bg-indigo
+{
+    background-color: #283593 !important;
 }
 
 .col-orange
