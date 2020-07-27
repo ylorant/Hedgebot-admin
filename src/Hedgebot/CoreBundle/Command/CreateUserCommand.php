@@ -1,6 +1,7 @@
 <?php
 namespace Hedgebot\CoreBundle\Command;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -77,8 +78,22 @@ class CreateUserCommand extends ContainerAwareCommand
 
         $output->writeln(["Enter new user's credentials below.", ""]);
 
+        $login = null;
         $password = null;
-        $login = $helper->ask($input, $output, $loginQuestion);
+
+        /** @var EntityRepository $userRepository */
+        $userRepository = $this->getContainer()->get('doctrine')->getRepository(User::class);
+
+        while(true) {
+            $login = $helper->ask($input, $output, $loginQuestion);
+            $user = $userRepository->findOneBy(['username' => $login]);
+
+            if(empty($user)) {
+                break;
+            } else {
+                $output->writeln(["This username already exists.", ""]);
+            }
+        }
 
         while (true) {
             $password = $helper->ask($input, $output, $passwordQuestion);
