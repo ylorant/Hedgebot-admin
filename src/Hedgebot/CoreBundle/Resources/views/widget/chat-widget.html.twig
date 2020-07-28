@@ -5,9 +5,10 @@
 
     <div class="body">
         {% if settings.light_chat is defined and settings.light_chat == "1" %}
-            <iframe src="https://nightdev.com/hosted/obschat/?theme=light&channel={{ settings.channel }}&fade=false&bot_activity=true&prevent_clipping=false"></iframe>
+            {% set theme = app.request.cookies.has('dark-mode') ? "" : "light" %}
+            <iframe src="https://nightdev.com/hosted/obschat/?{{ theme ? 'theme=' ~ theme ~ '&' : '' }}channel={{ settings.channel }}&fade=false&bot_activity=true&prevent_clipping=false"></iframe>
         {% else %}
-            <iframe src="https://www.twitch.tv/embed/{{ settings.channel }}/chat"></iframe>
+            <iframe src="https://www.twitch.tv/embed/{{ settings.channel }}/chat?parent={{ app.request.headers.get('host') }}"></iframe>
         {% endif %}
     </div>
 </div>
