@@ -18,9 +18,32 @@
                 data-countdown-amount="{{ timer.countdownAmount }}"
             >
             </span>
-            <span class="timer-time">
-                {{ timer.formattedTime }}
-            </span>
+
+            {# Display the global timer time only if the player isn't defined #}
+            {% if player is empty %}
+                <span class="timer-time">
+                    {{ timer.formattedTime }}
+                </span>
+            {% else %}
+                {# The player is defined, so we display his timer only #}
+                {% set playerObject = timer.players[player] %}
+                <div class="timer-player" data-id="{{ playerObject.player }}">
+                    <span class="hidden timer-player-info"
+                          data-elapsed="{{ playerObject.elapsed is defined ? playerObject.elapsed : "null" }}"    
+                    >
+                    </span>
+
+                    <div class="timer-player-time">
+                        {% if playerObject.elapsed is not empty %}
+                            {{ playerObject.formattedTime }}
+                        {% else %}
+                            {{ timer.formattedTime }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+
         </div>
 
         <!-- Jquery Core Js -->
@@ -46,7 +69,10 @@
                 var options = {
                     timerBlockSelector: '.timer-widget',
                     timerInfoSelector: '.timer-info',
-                    timerTimeDisplaySelector: '.timer-time'
+                    timerTimeDisplaySelector: '.timer-time',
+                    playerSelector: '.timer-player',
+                    playerInfoSelector: '.timer-player-info',
+                    playerTimeDisplaySelector: '.timer-player-time',
                 };
 
                 Timer.init(options);

@@ -7,6 +7,10 @@ $(function()
         resetButtonSelector: '.timer-reset-button',
         timerInfoSelector: '.timer-info',
         timerTimeDisplaySelector: '.timer-time',
+        playerSelector: '.timer-player',
+        playerInfoSelector: '.timer-player-info',
+        playerStopButtonSelector: '.timer-player-stop-button',
+        playerTimeDisplaySelector: '.timer-player-time',
         actionRoute: 'timer_ajax_action'
     };
 

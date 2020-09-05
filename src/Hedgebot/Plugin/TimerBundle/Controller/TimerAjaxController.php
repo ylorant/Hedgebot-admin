@@ -35,6 +35,11 @@ class TimerAjaxController extends BaseController
                 $success = $endpoint->resetTimer($timerId);
                 break;
             
+            case 'playerStop':
+                $player = $request->request->get('player');
+                $success = $endpoint->stopPlayerTimer($timerId, $player);
+                break;
+            
             default:
                 $success = false;
         }

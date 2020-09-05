@@ -105,7 +105,36 @@ var Timer = {
             timerInfo.countdown ? timerInfo.countdownAmount : null,
         );
 
-        timerTimeBlock.html(this.formatTimerTime(elapsed));
+        var timerFormattedTime = this.formatTimerTime(elapsed);
+        timerTimeBlock.html(timerFormattedTime);
+
+        // Fill player info
+        var playerBlocks = $(this.options.playerSelector, timerElement);
+        playerBlocks.each((function(index, playerElement) {
+            var playerTimerBlock = $(this.options.playerTimeDisplaySelector, playerElement);
+            var playerName = $(playerElement).data('id');
+            
+            playerTimerBlock.removeClass('timer-started timer-ended timer-paused');
+
+            // Runner has stopped their timer
+            if(timerInfo.players[playerName].elapsed) {
+                playerTimerBlock.addClass('timer-ended');
+                playerTimerBlock.html(this.formatTimerTime(timerInfo.players[playerName].elapsed));
+            } else { // Timer is still running, we basically mimick general timer
+                
+                if(timerInfo.started) {
+                    playerTimerBlock.addClass('timer-started');
+                } else if(timerInfo.offset != 0) {
+                    playerTimerBlock.addClass('timer-ended');
+                }
+
+                if(timerInfo.paused) {
+                    playerTimerBlock.addClass('timer-paused');
+                } 
+
+                playerTimerBlock.html(timerFormattedTime);
+            }
+        }).bind(this));
     },
 
     /**
@@ -121,6 +150,17 @@ var Timer = {
         timerInfoBlock.data('started', data.started);
         timerInfoBlock.data('countdown', data.countdown);
         timerInfoBlock.data('countdownAmount', data.countdownAmount);
+
+        if(data.players) {
+            for(var playerName in data.players) {
+                var player = data.players[playerName];
+                var playerInfoBlock = $(this.options.playerSelector, timerElement)
+                    .filter('[data-id="' + playerName + '"]')
+                    .find(this.options.playerInfoSelector);
+                
+                playerInfoBlock.data('elapsed', player.elapsed);
+            }
+        }
     },
 
     /**
@@ -128,6 +168,7 @@ var Timer = {
      */
     getTimerInfo: function(timerElement)
     {
+        var playersBlocks = $(this.options.playerSelector, timerElement);
         var timerInfoBlock = $(this.options.timerInfoSelector, timerElement);
         var timerInfo = {};
 
@@ -137,6 +178,17 @@ var Timer = {
         timerInfo.started = timerInfoBlock.data('started');
         timerInfo.countdown = timerInfoBlock.data('countdown');
         timerInfo.countdownAmount = timerInfoBlock.data('countdown-amount');
+        timerInfo.players = [];
+
+        playersBlocks.each((function(index, playerElement) {
+            var playerInfoBlock = $(this.options.playerInfoSelector, playerElement);
+            var playerName = $(playerElement).data('id');
+
+            timerInfo.players[playerName] = {
+                "player": playerName,
+                "elapsed": playerInfoBlock.data('elapsed') || null
+            };
+        }).bind(this));
 
         return timerInfo;
     },

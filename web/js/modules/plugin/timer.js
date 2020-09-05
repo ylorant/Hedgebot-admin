@@ -25,6 +25,22 @@ var Timer = {
          */
         resetButtonSelector: null,
         /**
+         * @var string The player element selector, inside the timer block
+         */
+        playerSelector: null,
+        /**
+         * @var string The player info selector inside of the player block
+         */
+        playerInfoSelector: null,
+        /**
+         * @var string The player time display selector inside of the player block.
+         */
+        playerTimeDisplaySelector: null,
+        /**
+         * @var string The player stop button inside the player element
+         */
+        playerStopButtonSelector: null,
+        /**
          * @var string The route to execute a timer action
          */
         actionRoute: null
@@ -69,6 +85,7 @@ var Timer = {
         $(this.options.startButtonSelector, this.elements.timerBlocks).on('click', this.onStartButtonClick.bind(this));
         $(this.options.pauseButtonSelector, this.elements.timerBlocks).on('click', this.onPauseButtonClick.bind(this));
         $(this.options.resetButtonSelector, this.elements.timerBlocks).on('click', this.onResetButtonClick.bind(this));
+        $(this.options.playerSelector + " " + this.options.playerStopButtonSelector, this.elements.timerBlocks).on('click', this.onPlayerStopButtonClick.bind(this));
     },
 
     /**
@@ -126,14 +143,38 @@ var Timer = {
     },
 
     /**
+     * Event: the stop button for a player has been clicked
+     */
+    onPlayerStopButtonClick: function(ev)
+    {
+        var timerElement = $(ev.currentTarget).parents(this.options.timerBlockSelector);
+        var timerId = timerElement.data('id');
+        var playerElement = $(ev.currentTarget).parents(this.options.playerSelector);
+        var playerId = playerElement.data('id');
+
+        this.executeTimerAction(timerId, "playerStop", timerElement, {"player": playerId});
+    },
+
+    /**
      * Executes an action on the given timer id, and then updates the timerElement on success.
      */
-    executeTimerAction(timerId, action, timerElement)
+    executeTimerAction(timerId, action, timerElement, actionParameters)
     {
+        if(typeof(actionParameters) == "undefined") {
+            actionParameters = {};
+        }
+
         $.ajax({
             url: Routing.generate(this.options.actionRoute, {timerId: timerId, action: action}, true),
             type: 'post',
-            data: {}
+            data: actionParameters,
+            complete: function(jqXHR, textStatus)
+            {
+                var data = jqXHR.responseJSON;
+                if(textStatus != "success" || !data) {
+                    $.notify({ message: "An error occured during timer action." }, { type: "danger" });
+                }
+            }
         });
     },
 
@@ -152,30 +193,34 @@ var Timer = {
      */
     refreshTimer: function(timerElement)
     {
+        // Get handles to required elements and timer info
         var timerTimeBlock = $(this.options.timerTimeDisplaySelector, timerElement);
-        var timerInfo = this.getTimerInfo(timerElement);
         var startButton = $(this.options.startButtonSelector, timerElement);
         var pauseButton = $(this.options.pauseButtonSelector, timerElement);
+        var timerInfo = this.getTimerInfo(timerElement);
 
+        // Apply default settings to buttons (as if it wasn't started yet)
         timerTimeBlock.removeClass('col-grey col-green col-blue');
         startButton.attr('disabled', false);
         pauseButton.attr('disabled', false);
         startButton.find('i').html('play_arrow');
         pauseButton.find('i').html('pause');
 
-        if(timerInfo.started) {
+        // Change the timer buttons and color depending on its status
+        if(timerInfo.started) { // Timer running
             timerTimeBlock.addClass('col-blue');
             startButton.find('i').html('check');
-        } else {
+        } else { // Timer is stopped/paused
             pauseButton.attr('disabled', true);
         
+            // Timer has been stopped (finished)
             if(timerInfo.offset != 0) {
                 timerTimeBlock.addClass('col-green');
                 startButton.find('i').html('undo');
             }
         }
-            
-
+        
+        // Timer is paused
         if(timerInfo.paused) {
             timerTimeBlock.addClass('col-grey');
             pauseButton.find('i').html('play_arrow');
@@ -190,7 +235,37 @@ var Timer = {
             timerInfo.countdown ? timerInfo.countdownAmount : null,
         );
 
-        timerTimeBlock.html(this.formatTimerTime(elapsed));
+        var timerFormattedTime = this.formatTimerTime(elapsed);
+        timerTimeBlock.html(timerFormattedTime);
+
+        // Fill player info
+        var playerBlocks = $(this.options.playerSelector, timerElement);
+        playerBlocks.each((function(index, playerElement) {
+            var playerTimerBlock = $(this.options.playerTimeDisplaySelector, playerElement);
+            var playerStopButton = $(this.options.playerStopButtonSelector, playerElement);
+            var playerName = $(playerElement).data('id');
+            
+            playerTimerBlock.removeClass('col-grey col-green col-blue');
+            playerStopButton.attr('disabled', false);
+            playerStopButton.find('i').html('done');
+
+            // If the timer is not currently in its running state, disable the stop button
+            if(!timerInfo.started || timerInfo.paused) {
+                playerStopButton.attr('disabled', true);
+            }
+
+            // Runner has stopped their timer
+            if(timerInfo.players[playerName].elapsed) {
+                playerTimerBlock.addClass('col-green');
+                playerStopButton.find('i').html('undo');
+
+                playerTimerBlock.html(this.formatTimerTime(timerInfo.players[playerName].elapsed));
+            } else { // Timer is still running, we basically mimick general timer
+                playerTimerBlock.addClass(timerTimeBlock.attr('class'));
+
+                playerTimerBlock.html(timerFormattedTime);
+            }
+        }).bind(this));
     },
 
     /**
@@ -206,6 +281,17 @@ var Timer = {
         timerInfoBlock.data('started', data.started);
         timerInfoBlock.data('countdown', data.countdown);
         timerInfoBlock.data('countdownAmount', data.countdownAmount);
+
+        if(data.players) {
+            for(var playerName in data.players) {
+                var player = data.players[playerName];
+                var playerInfoBlock = $(this.options.playerSelector, timerElement)
+                    .filter('[data-id="' + playerName + '"]')
+                    .find(this.options.playerInfoSelector);
+                
+                playerInfoBlock.data('elapsed', player.elapsed);
+            }
+        }
     },
 
     /**
@@ -213,6 +299,7 @@ var Timer = {
      */
     getTimerInfo: function(timerElement)
     {
+        var playersBlocks = $(this.options.playerSelector, timerElement);
         var timerInfoBlock = $(this.options.timerInfoSelector, timerElement);
         var timerInfo = {};
 
@@ -222,6 +309,17 @@ var Timer = {
         timerInfo.started = timerInfoBlock.data('started');
         timerInfo.countdown = timerInfoBlock.data('countdown');
         timerInfo.countdownAmount = timerInfoBlock.data('countdown-amount');
+        timerInfo.players = {};
+
+        playersBlocks.each((function(index, playerElement) {
+            var playerInfoBlock = $(this.options.playerInfoSelector, playerElement);
+            var playerName = $(playerElement).data('id');
+
+            timerInfo.players[playerName] = {
+                "player": playerName,
+                "elapsed": playerInfoBlock.data('elapsed') || null
+            };
+        }).bind(this));
 
         return timerInfo;
     },

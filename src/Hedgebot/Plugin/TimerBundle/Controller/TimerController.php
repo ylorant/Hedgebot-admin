@@ -29,8 +29,8 @@ class TimerController extends BaseController
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/timer');
         $timers = $endpoint->getTimers();
 
-        foreach($timers as $timer) {
-            $timer->formattedTime = TimerHelper::formatTimerTime($timer);
+        foreach($timers as &$timer) {
+            $timer = TimerHelper::prepareTimer($timer);
         }
 
         $templateVars['timers'] = $timers;

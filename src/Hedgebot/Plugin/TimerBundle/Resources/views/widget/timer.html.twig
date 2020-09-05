@@ -5,7 +5,8 @@
         </div>
     {% endif %}
 
-    <span class="hidden timer-info" 
+    <span class="hidden timer-info"
+          data-type="{{ timer.type }}"
           data-started="{{ timer.started ? "true" : "false" }}"
           data-paused="{{ timer.paused ? "true" : "false" }}"
           data-start-time="{{ timer.startTime }}"
@@ -16,7 +17,7 @@
     </span>
           
 
-    <div class="{{ extended_controls is defined ? "header" : "body" }} text-center {{ settings.background_color ?? ''}}">
+    <div class="{{ extended_controls is defined or timer.type == "race-timer" ? "header" : "body" }} text-center {{ settings.background_color ?? ''}}">
         <div class="row">
             <div class="col-xs-12 col-md-6 font-32 timer-component-block">
                 <span class="timer-time">
@@ -39,6 +40,41 @@
             </div>
         </div>
     </div>
+
+    {# Race timer specific controls #}
+    {% if timer.type == "race-timer" %}
+        <div class="{{ extended_controls is defined or timer.type == "race-timer" ? "header" : "body" }} text-center {{ settings.background_color ?? ''}}">
+            {% for player in timer.players %}
+                <div class="row timer-player {{ loop.index > 1 ? "m-t-10" : "" }}" data-id="{{ player.player }}">
+                    <div class="col-xs-5 font-20">
+                        {{ player.player }}
+                    </div>
+
+                    <span class="hidden timer-player-info"
+                          data-elapsed="{{ player.elapsed is defined ? player.elapsed : "null" }}"    
+                    >
+                    </span>
+
+                    <div class="col-xs-4 font-20 timer-player-time">
+                        {% if player.elapsed is not empty %}
+                            {{ player.formattedTime }}
+                        {% else %}
+                            {{ timer.formattedTime }}
+                        {% endif %}
+                    </div>
+
+                    <div class="col-xs-3">
+                        <button class="btn btn-xs bg-green timer-player-stop-button waves-effect" title="Stop">
+                            <i class="material-icons">done</i>
+                        </button>
+                        <a class="btn btn-xs btn-primary waves-effect" target="_blank" href="{{ path('timer_front_embed', {'id': timer.id, 'player': player.player}) }}">
+                            <i class="material-icons">cast</i>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     {% if extended_controls is defined %}
         <div class="body text-center {{ settings.background_color ?? '' }}">

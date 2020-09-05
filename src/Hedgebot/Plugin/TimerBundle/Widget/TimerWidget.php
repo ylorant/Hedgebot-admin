@@ -85,9 +85,7 @@ class TimerWidget implements DashboardWidgetInterface
     {
         $endpoint = $this->hedgebotApi->endpoint('/plugin/timer');
         $timer = $endpoint->getTimerById($settings['timer']);
-
-        // Format the time
-        $timer->formattedTime = TimerHelper::formatTimerTime($timer);
+        $timer = TimerHelper::prepareTimer($timer);
 
         return [
             'settings' => $settings,
