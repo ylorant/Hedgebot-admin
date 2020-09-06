@@ -43,7 +43,7 @@
 
     {# Race timer specific controls #}
     {% if timer.type == "race-timer" %}
-        <div class="{{ extended_controls is defined or timer.type == "race-timer" ? "header" : "body" }} text-center {{ settings.background_color ?? ''}}">
+        <div class="header text-center {{ settings.background_color ?? ''}}">
             {% for player in timer.players %}
                 <div class="row timer-player {{ loop.index > 1 ? "m-t-10" : "" }}" data-id="{{ player.player }}">
                     <div class="col-xs-5 font-20">

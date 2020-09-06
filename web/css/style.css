@@ -18,6 +18,11 @@
     text-shadow: inherit;
 }
 
+.card .header:last-child
+{
+    border-bottom: 0px;
+}
+
 /* General form tweaks */
 
 textarea
