@@ -67,9 +67,12 @@
                         <button class="btn btn-xs bg-green timer-player-stop-button waves-effect" title="Stop">
                             <i class="material-icons">done</i>
                         </button>
-                        <a class="btn btn-xs btn-primary waves-effect" target="_blank" href="{{ path('timer_front_embed', {'id': timer.id, 'player': player.player}) }}">
-                            <i class="material-icons">cast</i>
-                        </a>
+
+                        {% if extended_controls is defined %}
+                            <a class="btn btn-xs btn-primary waves-effect" target="_blank" href="{{ path('timer_front_embed', {'id': timer.id, 'player': player.player}) }}">
+                                <i class="material-icons">cast</i>
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
