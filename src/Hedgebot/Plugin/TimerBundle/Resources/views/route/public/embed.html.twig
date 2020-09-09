@@ -69,10 +69,24 @@
         <script type="text/javascript">
             $(function()
             {
-                // Initialize SocketIO event manager
-                EventManager.init({
-                    eventRelayConfig: {{ eventManager|json_encode()|raw }}
-                });
+                // Initialize event manager and its relay client
+                EventManager.init();
+
+                switch(parameters.eventRelayConfig.type) {
+                    case "socketio":
+                        SocketIOClient.init({
+                            eventManager: EventManager,
+                            config: parameters.eventRelayConfig
+                        });
+                        break;
+                    
+                        case "mercure":
+                            MercureClient.init({
+                                eventManager: EventManager,
+                                config: parameters.eventRelayConfig
+                            });
+                            break;
+                }
 
                 var options = {
                     timerBlockSelector: '.timer-widget',
