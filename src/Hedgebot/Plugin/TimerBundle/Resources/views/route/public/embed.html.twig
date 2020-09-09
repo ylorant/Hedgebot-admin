@@ -78,14 +78,14 @@
                     case "socketio":
                         SocketIOClient.init({
                             eventManager: EventManager,
-                            config: parameters.eventRelayConfig
+                            config: parameters
                         });
                         break;
                     
                         case "mercure":
                             MercureClient.init({
                                 eventManager: EventManager,
-                                config: parameters.eventRelayConfig
+                                config: parameters
                             });
                             break;
                 }
