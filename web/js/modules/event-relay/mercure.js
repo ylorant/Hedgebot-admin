@@ -38,7 +38,10 @@ var MercureClient = {
             esOptions = { withCredentials: true };
             var expireDate = new Date(new Date().getTime() + 3600000 * 24 * 30);
 
-            document.cookie = "mercureAuthorization=" + this.options.config.jwt + "; path=/; expires=" + expireDate.toUTCString() + ";";
+            document.cookie = "mercureAuthorization=" + this.options.config.jwt + "; "
+                            + "domain=" + url.host + "; "
+                            + "path=/; "
+                            + "expires=" + expireDate.toUTCString() + ";";
         }
 
         this.eventSource = new EventSource(url, esOptions);
