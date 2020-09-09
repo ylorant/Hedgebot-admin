@@ -35,16 +35,14 @@ var MercureClient = {
         var esOptions = {};
 
         if(this.options.config.jwt) {
-            esOptions = { withCredentials: true };
-            var expireDate = new Date(new Date().getTime() + 3600000 * 24 * 30);
-
-            document.cookie = "mercureAuthorization=" + this.options.config.jwt + "; "
-                            + "domain=" + url.host + "; "
-                            + "path=/; "
-                            + "expires=" + expireDate.toUTCString() + ";";
+            esOptions = { 
+                headers: {
+                    'Authorization': 'Bearer ' + this.options.config.jwt
+                }
+            };
         }
 
-        this.eventSource = new EventSource(url, esOptions);
+        this.eventSource = new EventSourcePolyfill(url, esOptions);
         this.eventSource.onmessage = this.onMessageReceived.bind(this);
 
         $(window).on('beforeunload', this.onUnload.bind(this));

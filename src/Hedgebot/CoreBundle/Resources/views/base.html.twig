@@ -246,6 +246,9 @@
                 {% endif %}
                 <script src="{{ asset('js/modules/event-relay/socketio.js') }}"></script>
             {% elseif eventManager.type == "mercure" %}
+                <!-- Eventsource polyfill with headers -->
+                <script src="{{ asset('js/eventsource.min.js') }}"></script>
+                <!-- Mercure JS module -->
                 <script src="{{ asset('js/modules/event-relay/mercure.js') }}"></script>
             {% endif %}
 
