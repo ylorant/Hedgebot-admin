@@ -74,7 +74,7 @@
                 // Initialize event manager and its relay client
                 EventManager.init();
 
-                switch(parameters.eventRelayConfig.type) {
+                switch(parameters.type) {
                     case "socketio":
                         SocketIOClient.init({
                             eventManager: EventManager,
