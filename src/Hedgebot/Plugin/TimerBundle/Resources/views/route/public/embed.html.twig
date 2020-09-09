@@ -48,12 +48,20 @@
 
         <!-- Jquery Core Js -->
         <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
-        <!-- SocketIO base library -->
-        {# if we're on the dev environment, we load the local socket.io #}
-        {% if app.environment == "dev" %}
-            <script src="{{ eventManagerIOHost }}/socket.io/socket.io.js"></script>
-        {% else %}
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+        {% if eventManager.type == "socketio" %}
+            <!-- SocketIO base library -->
+            {# if we're on the dev environment, we load the local socket.io #}
+            {% if app.environment == "dev" %}
+                <script src="{{ eventManager.host }}/socket.io/socket.io.js"></script>
+            {% else %}
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+            {% endif %}
+            <script src="{{ asset('js/modules/event-relay/socketio.js') }}"></script>
+        {% elseif eventManager.type == "mercure" %}
+            <!-- Eventsource polyfill with headers -->
+            <script src="{{ asset('js/eventsource.min.js') }}"></script>
+            <!-- Mercure JS module -->
+            <script src="{{ asset('js/modules/event-relay/mercure.js') }}"></script>
         {% endif %}
 
         <script src="{{ asset('js/modules/event-manager.js') }}"></script>
@@ -63,7 +71,7 @@
             {
                 // Initialize SocketIO event manager
                 EventManager.init({
-                    socketHost: '{{ eventManagerIOHost }}'
+                    eventRelayConfig: {{ eventManager|json_encode()|raw }}
                 });
 
                 var options = {
