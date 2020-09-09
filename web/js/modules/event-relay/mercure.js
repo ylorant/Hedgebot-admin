@@ -31,7 +31,17 @@ var MercureClient = {
 
     initEvents: function(url)
     {
-        this.eventSource = new EventSource(url);
+        // Set the JWT as cookie before initializing the eventsource
+        var esOptions = {};
+
+        if(this.options.config.jwt) {
+            esOptions = { withCredentials: true };
+            var expireDate = new Date(new Date().getTime() + 3600000 * 24 * 30);
+
+            document.cookie = "mercureAuthorization=" + this.options.config.jwt + "; path=/; expires=" + expireDate.toUTCString() + ";";
+        }
+
+        this.eventSource = new EventSource(url, esOptions);
         this.eventSource.onmessage = this.onMessageReceived.bind(this);
 
         $(window).on('beforeunload', this.onUnload.bind(this));
