@@ -236,12 +236,17 @@
             <!-- Rivets.js binding library -->
             <script src="{{ asset('js/rivets.bundled.min.js') }}"></script>
 
-            <!-- SocketIO base library -->
-            {# if we're on the dev environment, we load the local socket.io #}
-            {% if app.environment == "dev" %}
-                <script src="{{ eventManagerIOHost }}/socket.io/socket.io.js"></script>
-            {% else %}
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+            {% if eventManager.type == "socketio" %}
+                <!-- SocketIO base library -->
+                {# if we're on the dev environment, we load the local socket.io #}
+                {% if app.environment == "dev" %}
+                    <script src="{{ eventManager.host }}/socket.io/socket.io.js"></script>
+                {% else %}
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+                {% endif %}
+                <script src="{{ asset('js/modules/event-relay/socketio.js') }}"></script>
+            {% elseif eventManager.type == "mercure" %}
+                <script src="{{ asset('js/modules/event-relay/mercure.js') }}"></script>
             {% endif %}
 
             <!-- Admin base Js -->
@@ -258,7 +263,7 @@
             <!-- Global parameters initialization -->
             <script type="text/javascript">
                 const parameters = {
-                    eventManagerIOHost: "{{ eventManagerIOHost }}"
+                    eventRelayConfig: {{ eventManager|json_encode()|raw }}
                 };
             </script>
 

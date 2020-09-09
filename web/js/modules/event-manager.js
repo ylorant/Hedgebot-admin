@@ -1,9 +1,5 @@
 var EventManager = {
     defaultOptions: {
-        /**
-         * @var string Socket.IO server URL
-         */
-        socketHost: null
     },
 
     options: {},
@@ -16,17 +12,6 @@ var EventManager = {
     init: function(options)
     {
         this.options = $.extend(this.defaultOptions, options);
-
-        // Initialize only if Socket.IO is loaded
-        if(typeof(io) !== "undefined") {
-            this.io = io(this.options.socketHost);
-            this.initIOEvents();
-        }
-    },
-
-    initIOEvents: function()
-    {
-        this.io.on('event', this.onEventReceived.bind(this));
     },
 
     bind: function(event, callback)
