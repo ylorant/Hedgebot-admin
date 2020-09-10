@@ -24,6 +24,11 @@ $(function()
 {
     RivetsFormatters.init(rivets);
     Hedgebot.init();
+
+    // Tooltips
+    $('[data-toggle="tooltip"]').tooltip({
+        container: 'body'
+    });
     
     // Initialize event manager and its relay client
     EventManager.init();

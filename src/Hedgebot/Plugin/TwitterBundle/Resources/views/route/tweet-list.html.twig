@@ -21,9 +21,18 @@
 {% block content %}
     <div class="row">
         {% for tweet in tweets %}
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="header">
+                        <div class="pull-right">
+                            {% if tweet.trigger == "datetime" %}
+                                <span class="text-muted" data-toggle="tooltip" title="Scheduled to be sent on this date and time">
+                                    <i class="zmdi zmdi-time"></i>
+                                    {{ tweet.sendTime|date('Y-m-d H:i') }}
+                                </span>
+                            {% endif %}
+                        </div>
+
                         <h2>{{ tweet.account }}</h2>
                     </div>
 
