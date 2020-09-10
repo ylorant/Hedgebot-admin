@@ -502,3 +502,8 @@ input.form-control[type="file"]
 {
     margin-bottom: 0px;
 }
+
+.tooltip-inner
+{
+    max-width: initial !important;
+}

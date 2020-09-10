@@ -24,15 +24,6 @@
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="header">
-                        <div class="pull-right">
-                            {% if tweet.trigger == "datetime" %}
-                                <span class="text-muted" data-toggle="tooltip" title="Scheduled to be sent on this date and time">
-                                    <i class="zmdi zmdi-time"></i>
-                                    {{ tweet.sendTime|date('Y-m-d H:i') }}
-                                </span>
-                            {% endif %}
-                        </div>
-
                         <h2>{{ tweet.account }}</h2>
                     </div>
 
@@ -51,6 +42,27 @@
 
                     </div>
                     <div class="body text-right">
+                        <div class="pull-left text-left m-t--5">
+                            {% if tweet.trigger == "datetime" %}
+                                <span class="text-muted" data-toggle="tooltip" title="Scheduled on this date and time">
+                                    <i class="zmdi zmdi-time"></i>
+                                    {{ tweet.sendTime|date('Y-m-d H:i') }}
+                                </span>
+                            {% elseif tweet.trigger == "event" %}
+                                <span class="text-muted" data-toggle="tooltip" title="Scheduled when this event happens">
+                                    <i class="zmdi zmdi-flash"></i>
+                                    {{ tweet.event }}
+                                </span>
+                            {% endif %}
+
+                            {% for constraint in tweet.constraints %}
+                                <br />
+                                <span class="text-muted" data-toggle="tooltip" data-placement="bottom" title="{{ constraint.type|capitalize }}: {{ constraint.lval }}">
+                                    <i class="zmdi zmdi-link"></i>
+                                    {{ constraint.rval }}
+                                </span>
+                            {% endfor %}
+                        </div>
                         <a href="{{ path('twitter_tweet_edit', {'tweetId': tweet.id}) }}" class="btn btn-primary"><i class="material-icons">create</i> <span>Edit</span></a>
                         <a href="{{ path('twitter_tweet_delete', {'tweetId': tweet.id}) }}" class="btn btn-danger"><i class="material-icons">delete</i> <span>Delete</span></a>
                     </div>

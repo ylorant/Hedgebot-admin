@@ -206,6 +206,11 @@ code
 
 /* UTIL CLASSES */
 
+.text-muted
+{
+    color: #999;
+}
+
 .bg-blue
 {
     background-color: #0D47A1 !important;
