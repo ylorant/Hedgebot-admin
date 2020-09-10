@@ -119,6 +119,14 @@ code
     color: #aaaaaa;
 }
 
+/* THUMBNAILS */
+
+.thumbnail
+{
+    background-color: transparent;
+    border-color: #646464;
+}
+
 /* TABLES */
 
 .table tbody tr td, .table tbody tr th, .table thead tr th
