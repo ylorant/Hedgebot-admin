@@ -19,6 +19,11 @@ var Horaro = {
          * @var string Next button selector
          */
         nextButtonSelector: null,
+        
+        /**
+         * @var string Refresh schedule button selector.
+         */
+        refreshDataButtonSelector: null,
 
         /**
          * @var string Paused schedule indicator selector
@@ -76,6 +81,7 @@ var Horaro = {
 
         this.initElements();
         this.bindUIActions();
+        this.bindRelayEvents();
 
         this.refreshSchedule();
     },
@@ -88,10 +94,16 @@ var Horaro = {
         this.elements.buttons.previous = $(this.options.previousButtonSelector);
         this.elements.buttons.pause = $(this.options.pauseButtonSelector);
         this.elements.buttons.next = $(this.options.nextButtonSelector);
+        this.elements.buttons.refreshData = $(this.options.refreshDataButtonSelector);
         this.elements.pausedScheduleBlock = $(this.options.pausedScheduleSelector);
         this.elements.controlBlock = $(this.options.controlBlockSelector);
         this.elements.scheduleView = $(this.options.scheduleViewSelector);
         this.elements.currentItem = $(this.options.currentItemSelector);
+    },
+
+    bindRelayEvents: function()
+    {
+        EventManager.bind("horaro/*", this.onHoraroEvent.bind(this));
     },
 
     /**
@@ -102,31 +114,41 @@ var Horaro = {
         this.elements.buttons.previous.on('click', this.onPreviousButtonClick.bind(this));
         this.elements.buttons.pause.on('click', this.onPauseButtonClick.bind(this));
         this.elements.buttons.next.on('click', this.onNextButtonClick.bind(this));
+        this.elements.buttons.refreshData.on('click', this.onRefreshDataButtonClick.bind(this));
         this.elements.scheduleView.on('click', '[data-action="goto"]', this.onGoToItemClick.bind(this));
 
-        this.refreshScheduleInterval = setInterval(this.refreshSchedule.bind(this), 30000);
+        // this.refreshScheduleInterval = setInterval(this.refreshSchedule.bind(this), 30000);
+    },
+
+    onHoraroEvent: function(ev)
+    {
+        this.updateScheduleView(ev.schedule);
     },
 
     onPreviousButtonClick: function(ev)
     {
-        this.executeAction('previous', this.refreshSchedule.bind(this));
+        this.executeAction('previous');
         return false;
     },
 
     onPauseButtonClick: function(ev)
     {
-        var pauseCallback = function()
-        {
-            this.refreshSchedule();
-        };
-
-        this.executeAction('pause', pauseCallback.bind(this));
+        this.executeAction('pause');
         return false;
     },
 
     onNextButtonClick: function(ev)
     {
-        this.executeAction('next', this.refreshSchedule.bind(this));
+        this.executeAction('next');
+        return false;
+    },
+
+    onRefreshDataButtonClick: function(ev)
+    {
+        this.executeAction('refreshData', (function() {
+            $.notify({message: "Schedule update triggered, it will be updated shortly."});
+            this.loadingAnimation.waitMe('hide');
+        }).bind(this));
         return false;
     },
 
@@ -150,7 +172,7 @@ var Horaro = {
             if(cb) {
                 var data = jqXHR.responseJSON;
                 cb(textStatus == "success" && data === true);
-            } else {
+            } else if(this.loadingAnimation) {
                 this.loadingAnimation.waitMe('hide');
             }
         };
@@ -191,14 +213,15 @@ var Horaro = {
             url: Routing.generate(this.options.getScheduleRoute, {identSlug: this.options.identSlug}, true),
             type: 'post',
             dataType: 'json',
-            complete: this.updateScheduleView.bind(this)
+            complete: (function(jqXHR) {
+                this.updateScheduleView(jqXHR.responseJSON);
+            }).bind(this)
         });
     },
     
-    updateScheduleView: function(jqXHR, textStatus)
+    updateScheduleView: function(schedule)
     {
-        var schedule = jqXHR.responseJSON.schedule;
-        var scheduleData = jqXHR.responseJSON.scheduleData;
+        var scheduleData = schedule.data;
         var scheduleTime = new Date(scheduleData.start);
         this.elements.buttons.pause.text(schedule.paused ? 'Resume schedule' : 'Pause schedule');
 
@@ -271,7 +294,7 @@ var Horaro = {
                     if(mdMatch != null) {
                         for(var k = 0; k < mdMatch.length; k++) {
                             var mdItemMatch = mdMatch[k].match(/\[(.+?)\]\((.+?)\)/);
-                            itemData[j] = itemData[j].replace(mdMatch[k], '<a href="' + mdItemMatch[2] + '">' + mdItemMatch[1] + '</a>');
+                            itemData[j] = itemData[j].replace(mdMatch[k], mdItemMatch[1]);
                         }
                     }
 
@@ -299,11 +322,23 @@ var Horaro = {
 
             $('[data-column]', this.elements.currentItem).each(function() {
                 var columnIndex = $(this).data('column');
-                $('.item-value', this).html(scheduleData.items[schedule.currentIndex].data[columnIndex]);
+                var itemData = scheduleData.items[schedule.currentIndex].data[columnIndex];
+
+                // Markdown
+                var mdMatch = itemData.match(/\[(.+?)\]\((.+?)\)/g);
+
+                if(mdMatch != null) {
+                    for(var k = 0; k < mdMatch.length; k++) {
+                        var mdItemMatch = mdMatch[k].match(/\[(.+?)\]\((.+?)\)/);
+                        itemData = itemData.replace(mdMatch[k], mdItemMatch[1]);
+                    }
+                }
+
+                $('.item-value', this).html(itemData);
             });
         }
     },
-    
+
     secondsToTime: function(time)
     {
         time = Math.abs(time);

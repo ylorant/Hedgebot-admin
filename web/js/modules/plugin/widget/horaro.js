@@ -6,7 +6,7 @@ $(function()
         pauseButtonSelector: '#pause-button',
         nextButtonSelector: '#next-button',
         pausedScheduleSelector: '#schedule-paused',
-        controlBlockSelector: '.schedule actions',
+        controlBlockSelector: '.schedule-actions',
         actionRoute: 'horaro_ajax_schedule_action',
         getScheduleRoute: 'horaro_ajax_get_schedule',
         currentItemSelector: '#current-item-data',

@@ -16,19 +16,15 @@ class HoraroAjaxController extends BaseController
         $markdownParser = $this->get('markdown.parser');
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/horaro');
         $schedule = $endpoint->getSchedule($identSlug);
-        $scheduleData = $endpoint->getScheduleData($identSlug);
         
-        foreach($scheduleData->items as &$item) {
+        foreach($schedule->data->items as &$item) {
             foreach($item->data as &$itemData) {
                 $itemData = strip_tags($markdownParser->transformMarkdown($itemData));
             }
         }
 
         $response = new JsonResponse();
-        $response->setData([
-            'scheduleData' => $scheduleData,
-            'schedule' => $schedule 
-        ]);
+        $response->setData($schedule);
 
         return $response;
     }
@@ -74,6 +70,11 @@ class HoraroAjaxController extends BaseController
                 } else {
                     $result = false;
                 }
+                break;
+            
+            // Refresh schedule data
+            case 'refreshData':
+                $result = $endpoint->refreshScheduleData($identSlug);
                 break;
         }
         

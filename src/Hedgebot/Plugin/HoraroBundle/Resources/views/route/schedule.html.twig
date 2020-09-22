@@ -77,6 +77,12 @@
 
             <div class="card">
                 <div class="header">
+                    <div class="pull-right m-t--5">
+                        <button class="btn btn-primary" id="refresh-data-button">
+                            Refresh schedule data
+                        </button>
+                    </div>
+
                     <h2>Schedule view</h2>
                 </div>
 
@@ -101,6 +107,7 @@
                 previousButtonSelector: '#previous-button',
                 pauseButtonSelector: '#pause-button',
                 nextButtonSelector: '#next-button',
+                refreshDataButtonSelector: '#refresh-data-button',
                 pausedScheduleSelector: '#schedule-paused',
                 controlBlockSelector: '#actions-card',
                 actionRoute: 'horaro_ajax_schedule_action',
