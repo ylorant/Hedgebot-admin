@@ -70,8 +70,11 @@ class HoraroController extends BaseController
         $breadcrumbs = $this->get('white_october_breadcrumbs');
         $breadcrumbs->addItem("Edit schedule: ". $identSlug);
 
+        $formSchedule = clone $templateVars['schedule'];
+        unset($formSchedule->data);
+
         // Create and handle the form
-        $form = $this->createForm(ScheduleType::class, $templateVars['schedule'], ['channels' => $channels]);
+        $form = $this->createForm(ScheduleType::class, $formSchedule, ['channels' => $channels]);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
