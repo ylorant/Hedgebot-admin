@@ -3,9 +3,7 @@ namespace Hedgebot\Plugin\HoraroBundle\Controller;
 
 use Hedgebot\CoreBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Hedgebot\Plugin\HoraroBundle\Form\ScheduleType;
 use Hedgebot\Plugin\HoraroBundle\Form\ScheduleURLType;
 
