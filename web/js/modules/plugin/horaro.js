@@ -122,7 +122,9 @@ var Horaro = {
 
     onHoraroEvent: function(ev)
     {
-        this.updateScheduleView(ev.schedule);
+        if(ev.schedule.identSlug == this.options.identSlug) {
+            this.updateScheduleView(ev.schedule);
+        }
     },
 
     onPreviousButtonClick: function(ev)
