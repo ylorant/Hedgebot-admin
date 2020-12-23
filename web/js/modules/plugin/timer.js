@@ -47,6 +47,9 @@ var Timer = {
     },
 
     options: {},
+
+    timeDiff: null,
+
     elements: {
         timerBlocks: null,
     },
@@ -102,6 +105,17 @@ var Timer = {
     onTimerEvent: function(ev)
     {
         var timer = this.elements.timerBlocks.filter('[data-id="' + ev.timer.id + '"]');
+
+        // Update remote time if present
+        if(ev.localTime) {
+            var localTime = Date.now();
+            var remoteTime = new Date(ev.localTime);
+            remoteTime.setMilliseconds(ev.msec);
+
+            this.timeDiff = localTime - remoteTime;
+            
+            console.log("Time diff is (msec) ", this.timeDiff);
+        }
 
         if(timer.length) {
             this.updateTimerInfo(timer, ev.timer);
@@ -333,7 +347,8 @@ var Timer = {
 
         if(started && !paused) {
             var now = new Date();
-            elapsed += (now.getTime() / 1000) - startTime;
+            var currentTimestamp = now.getTime() - this.timeDiff;
+            elapsed += (currentTimestamp / 1000) - startTime;
         }
 
         if(countdownAmount != null) {
