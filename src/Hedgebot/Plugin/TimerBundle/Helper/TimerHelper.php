@@ -1,6 +1,8 @@
 <?php
 namespace Hedgebot\Plugin\TimerBundle\Helper;
 
+use DateTime;
+
 class TimerHelper
 {
     /**
@@ -9,10 +11,10 @@ class TimerHelper
      * @param stdClass $timer Th timer to prepare.
      * @return stdClass The prepared timer.
      */
-    public static function prepareTimer($timer)
+    public static function prepareTimer($timer, DateTime $remoteTime = null)
     {
         // Format the time
-        $timer->formattedTime = self::formatTimerTime($timer);
+        $timer->formattedTime = self::formatTimerTime($timer, null, false, $remoteTime);
 
         if($timer->type == "race-timer") {
             // Set the players as an actual array to allow iterating on it from Twig
@@ -35,16 +37,25 @@ class TimerHelper
      * @param stdClass $timer The timer to get the elapsed time for.
      * @return float The timer's elapsed time.
      */
-    public static function getTimerElapsedTime($timer, $player = null)
+    public static function getTimerElapsedTime($timer, $player = null, DateTime $remoteTime = null)
     {
         if(!empty($player)) {
             $elapsed = $timer->players[$player]->elapsed;
         } else {
             $elapsed = $timer->offset;
         }
+        
+        $diff = 0;
+        $now = microtime(true);
+
+        // If the remote time is present, we compute the diff and substract it to the time
+        if(!empty($remoteTime)) {
+            $diff = $now - floatval($remoteTime->format("U.u"));
+            $timer->srvDiff = $diff;
+        }
 
         if($timer->started && !$timer->paused) {
-            $elapsed += microtime(true) - $timer->startTime;
+            $elapsed += $now - $diff - $timer->startTime;
         }
         
         return $elapsed;
@@ -57,9 +68,9 @@ class TimerHelper
      * @param bool $milliseconds Wether to show milliseconds or not.
      * @return string The timer's time.
      */
-    public static function formatTimerTime($timer, $player = null, bool $milliseconds = false)
+    public static function formatTimerTime($timer, $player = null, bool $milliseconds = false, DateTime $remoteTime = null)
     {
-        $elapsed = self::getTimerElapsedTime($timer, $player);
+        $elapsed = self::getTimerElapsedTime($timer, $player, $remoteTime);
         $output = "";
         
         if($timer->countdown && $timer->countdownAmount > 0) {

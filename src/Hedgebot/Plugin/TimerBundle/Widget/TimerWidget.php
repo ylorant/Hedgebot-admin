@@ -1,6 +1,7 @@
 <?php
 namespace Hedgebot\Plugin\TimerBundle\Widget;
 
+use DateTime;
 use Hedgebot\CoreBundle\Interfaces\DashboardWidgetInterface;
 use Hedgebot\CoreBundle\Service\ApiClientService;
 use Hedgebot\Plugin\TimerBundle\Helper\TimerHelper;
@@ -21,6 +22,8 @@ class TimerWidget implements DashboardWidgetInterface
 
     /** @var ApiClientService $hedgebotApi */
     protected $hedgebotApi;
+    /** @var DateTime $remoteTime */
+    protected static $remoteTime;
 
     public function __construct(ApiClientService $hedgebotApi)
     {
@@ -85,7 +88,16 @@ class TimerWidget implements DashboardWidgetInterface
     {
         $endpoint = $this->hedgebotApi->endpoint('/plugin/timer');
         $timer = $endpoint->getTimerById($settings['timer']);
-        $timer = TimerHelper::prepareTimer($timer);
+
+        // Creating the datetime for the remote time, but we can't directly use the ISO8601 shorthand
+        
+        if(empty(self::$remoteTime)) {
+            $remoteTimeInfo = $endpoint->getLocalTime(); // Gets the remote time, despite the method name
+            self::$remoteTime = DateTime::createFromFormat("Y-m-d\TH:i:sO v", join(' ', (array) $remoteTimeInfo));
+        }
+        
+
+        $timer = TimerHelper::prepareTimer($timer, self::$remoteTime);
 
         return [
             'settings' => $settings,

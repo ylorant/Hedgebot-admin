@@ -68,7 +68,7 @@ var Timer = {
             var remoteTime = new Date(ev.localTime);
             remoteTime.setMilliseconds(ev.msec);
 
-            this.timeDiff = localTime - remoteTime;
+            ev.timer.srvDiff = localTime - remoteTime;
         }
 
         if(timer.length) {
@@ -114,6 +114,7 @@ var Timer = {
             timerInfo.offset, 
             timerInfo.paused, 
             timerInfo.started,
+            timerInfo.srvDiff,
             timerInfo.countdown ? timerInfo.countdownAmount : null,
         );
 
@@ -161,7 +162,8 @@ var Timer = {
         timerInfoBlock.data('paused', data.paused);
         timerInfoBlock.data('started', data.started);
         timerInfoBlock.data('countdown', data.countdown);
-        timerInfoBlock.data('countdownAmount', data.countdownAmount);
+        timerInfoBlock.data('countdown-amount', data.countdownAmount);
+        timerInfoBlock.data('srv-diff', data.srvDiff / 1000);
 
         if(data.players) {
             for(var playerName in data.players) {
@@ -190,6 +192,7 @@ var Timer = {
         timerInfo.started = timerInfoBlock.data('started');
         timerInfo.countdown = timerInfoBlock.data('countdown');
         timerInfo.countdownAmount = timerInfoBlock.data('countdown-amount');
+        timerInfo.srvDiff = timerInfoBlock.data('srv-diff') * 1000;
         timerInfo.players = [];
 
         playersBlocks.each((function(index, playerElement) {
@@ -208,13 +211,13 @@ var Timer = {
     /**
      * Gets the elapsed time on the given timer.
      */
-    getTimerElapsedTime: function(startTime, offset = 0, paused = false, started = false, countdownAmount = null)
+    getTimerElapsedTime: function(startTime, offset = 0, paused = false, started = false, srvDiff = 0, countdownAmount = null)
     {
         var elapsed = offset;
 
         if(started && !paused) {
             var now = new Date();
-            var currentTimestamp = now.getTime() - this.timeDiff;
+            var currentTimestamp = now.getTime() - srvDiff;
             elapsed += (currentTimestamp / 1000) - startTime;
         }
 
