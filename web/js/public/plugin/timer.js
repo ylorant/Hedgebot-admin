@@ -44,6 +44,12 @@ var Timer = {
     {
         this.elements.timerBlocks = $(this.options.timerBlockSelector);
 
+        var remoteTimeElement = $(this.options.remoteTimeSelector);
+        var remoteTime = remoteTimeElement.data('remote-time');
+        var remoteMsec = remoteTimeElement.data('remote-msec');
+
+        this.computeTimeDiff(remoteTime, remoteMsec);
+
         setInterval(this.refreshAllTimers.bind(this), 250);
     },
 
@@ -64,11 +70,7 @@ var Timer = {
 
         // Update remote time if present
         if(ev.localTime) {
-            var localTime = Date.now();
-            var remoteTime = new Date(ev.localTime);
-            remoteTime.setMilliseconds(ev.msec);
-
-            ev.timer.srvDiff = localTime - remoteTime;
+            this.computeTimeDiff(ev.localTime, ev.msec);
         }
 
         if(timer.length) {
@@ -114,7 +116,6 @@ var Timer = {
             timerInfo.offset, 
             timerInfo.paused, 
             timerInfo.started,
-            timerInfo.srvDiff,
             timerInfo.countdown ? timerInfo.countdownAmount : null,
         );
 
@@ -163,7 +164,6 @@ var Timer = {
         timerInfoBlock.data('started', data.started);
         timerInfoBlock.data('countdown', data.countdown);
         timerInfoBlock.data('countdown-amount', data.countdownAmount);
-        timerInfoBlock.data('srv-diff', data.srvDiff / 1000);
 
         if(data.players) {
             for(var playerName in data.players) {
@@ -192,7 +192,6 @@ var Timer = {
         timerInfo.started = timerInfoBlock.data('started');
         timerInfo.countdown = timerInfoBlock.data('countdown');
         timerInfo.countdownAmount = timerInfoBlock.data('countdown-amount');
-        timerInfo.srvDiff = timerInfoBlock.data('srv-diff') * 1000;
         timerInfo.players = [];
 
         playersBlocks.each((function(index, playerElement) {
@@ -211,13 +210,13 @@ var Timer = {
     /**
      * Gets the elapsed time on the given timer.
      */
-    getTimerElapsedTime: function(startTime, offset = 0, paused = false, started = false, srvDiff = 0, countdownAmount = null)
+    getTimerElapsedTime: function(startTime, offset = 0, paused = false, started = false, countdownAmount = null)
     {
         var elapsed = offset;
 
         if(started && !paused) {
             var now = new Date();
-            var currentTimestamp = now.getTime() - srvDiff;
+            var currentTimestamp = now.getTime() - this.timeDiff;
             elapsed += (currentTimestamp / 1000) - startTime;
         }
 
@@ -258,5 +257,19 @@ var Timer = {
         }
         
         return output;
+    },
+
+    /**
+     * Computes and stores the time difference with the remote server
+     */
+    computeTimeDiff: function(time, msec)
+    {
+        var localTime = Date.now();
+        var remoteTime = new Date(time);
+        remoteTime.setMilliseconds(msec);
+
+        this.timeDiff = localTime - remoteTime;
+        
+        console.log("Time diff w/ server is (msec) ", this.timeDiff);
     }
 };

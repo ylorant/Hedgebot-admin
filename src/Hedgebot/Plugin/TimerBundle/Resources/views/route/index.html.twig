@@ -15,8 +15,10 @@
     <div class="row">
         {% for currentTimer in timers %}
             <div class="col-xs-12 col-lg-4">
-                {% include 'HedgebotTimerBundle::widget/timer.html.twig' with {'timer': currentTimer, 'settings': {}, 'extended_controls': true} %}
+                {% include 'HedgebotTimerBundle::widget/timer.html.twig' with {'timer': currentTimer, 'remoteTime': remoteTime, 'remoteMsec': remoteMsec, 'settings': {}, 'extended_controls': true} %}
             </div>
+            {% set remoteTime = null %}
+            {% set remoteMsec = null %}
         {% endfor %}
     </div>
 {% endblock %}

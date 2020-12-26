@@ -1,3 +1,7 @@
+{% if remoteTime is not empty %}
+    <span class="remote-time" data-remote-time="{{ remoteTime }}" data-remote-msec="{{ remoteMsec }}"></span>
+{% endif %}
+
 <div class="card timer-widget" data-id="{{ timer.id }}">
     {% if settings.hide_title_bar is not defined or settings.hide_title_bar != "1" %}
         <div class="header {{ settings.background_color ?? ''}}">
@@ -11,7 +15,6 @@
           data-paused="{{ timer.paused ? "true" : "false" }}"
           data-start-time="{{ timer.startTime }}"
           data-offset="{{ timer.offset }}"
-          data-srv-diff="{{ timer.srvDiff ?? 0 }}"
           data-countdown="{{ timer.countdown ? "true" : "false" }}"
           data-countdown-amount="{{ timer.countdownAmount }}"
     >

@@ -88,18 +88,22 @@ class TimerWidget implements DashboardWidgetInterface
     {
         $endpoint = $this->hedgebotApi->endpoint('/plugin/timer');
         $timer = $endpoint->getTimerById($settings['timer']);
+        $remoteTime = null;
+        $remoteMsec = null;
 
         // Creating the datetime for the remote time, but we can't directly use the ISO8601 shorthand
-        
         if(empty(self::$remoteTime)) {
             $remoteTimeInfo = $endpoint->getLocalTime(); // Gets the remote time, despite the method name
             self::$remoteTime = DateTime::createFromFormat("Y-m-d\TH:i:sO v", join(' ', (array) $remoteTimeInfo));
+            $remoteTime = self::$remoteTime->format("c");
+            $remoteMsec = self::$remoteTime->format("v");
         }
-        
 
         $timer = TimerHelper::prepareTimer($timer, self::$remoteTime);
 
         return [
+            'remoteTime' => $remoteTime,
+            'remoteMsec' => $remoteMsec,
             'settings' => $settings,
             'timer' => $timer
         ];

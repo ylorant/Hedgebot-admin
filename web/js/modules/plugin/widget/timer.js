@@ -7,6 +7,7 @@ $(function()
         resetButtonSelector: '.timer-reset-button',
         timerInfoSelector: '.timer-info',
         timerTimeDisplaySelector: '.timer-time',
+        remoteTimeSelector: '.remote-time',
         playerSelector: '.timer-player',
         playerInfoSelector: '.timer-player-info',
         playerStopButtonSelector: '.timer-player-stop-button',

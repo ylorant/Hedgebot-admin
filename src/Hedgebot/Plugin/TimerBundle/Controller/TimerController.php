@@ -1,6 +1,7 @@
 <?php
 namespace Hedgebot\Plugin\TimerBundle\Controller;
 
+use DateTime;
 use Hedgebot\CoreBundle\Controller\BaseController;
 use Hedgebot\Plugin\TimerBundle\Helper\TimerHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,12 +29,18 @@ class TimerController extends BaseController
 
         $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/timer');
         $timers = $endpoint->getTimers();
+        $remoteTimeInfo = $endpoint->getLocalTime(); // Gets the remote time, despite the method name
+
+        // Creating the datetime for the remote time, but we can't directly use the ISO8601 shorthand
+        $remoteTime = DateTime::createFromFormat("Y-m-d\TH:i:sO v", join(' ', (array) $remoteTimeInfo));
 
         foreach($timers as &$timer) {
-            $timer = TimerHelper::prepareTimer($timer);
+            $timer = TimerHelper::prepareTimer($timer, $remoteTime);
         }
 
         $templateVars['timers'] = $timers;
+        $templateVars['remoteTime'] = $remoteTime->format("c");
+        $templateVars['remoteMsec'] = $remoteTime->format("v");
 
         return $this->render('HedgebotTimerBundle::route/index.html.twig', $templateVars);
     }

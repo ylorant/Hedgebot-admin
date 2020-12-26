@@ -44,14 +44,13 @@ class TimerHelper
         } else {
             $elapsed = $timer->offset;
         }
-        
+
         $diff = 0;
         $now = microtime(true);
 
         // If the remote time is present, we compute the diff and substract it to the time
         if(!empty($remoteTime)) {
             $diff = $now - floatval($remoteTime->format("U.u"));
-            $timer->srvDiff = $diff;
         }
 
         if($timer->started && !$timer->paused) {

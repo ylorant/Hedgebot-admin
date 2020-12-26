@@ -8,6 +8,9 @@
     </head>
 
     <body>
+        {% if remoteTime is not empty %}
+            <span class="remote-time" data-remote-time="{{ remoteTime }}" data-remote-msec="{{ remoteMsec }}"></span>
+        {% endif %}
         <div class="timer-widget" data-id="{{ timer.id }}">
             <span class="hidden timer-info" 
                 data-started="{{ timer.started ? "true" : "false" }}"
@@ -94,6 +97,7 @@
                     timerBlockSelector: '.timer-widget',
                     timerInfoSelector: '.timer-info',
                     timerTimeDisplaySelector: '.timer-time',
+                    remoteTimeSelector: '.remote-time',
                     playerSelector: '.timer-player',
                     playerInfoSelector: '.timer-player-info',
                     playerTimeDisplaySelector: '.timer-player-time',
