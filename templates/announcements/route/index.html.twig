@@ -1,0 +1,94 @@
+{% extends 'core/base.html.twig' %}
+{% block title %}{% trans from 'announcements' %}announcements{% endtrans %}{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/plugin/announcements.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block main_title %}
+    <h3>
+        {% trans from 'announcements' %}announcements{% endtrans %}
+
+        <div class="pull-right">
+            <a class="btn btn-primary waves-effect" data-action="new-message">
+                <i class="material-icons">add</i>
+                <span>{% trans from 'announcements' %}button.new_message{% endtrans %}</span>
+            </a>
+        </div>
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#announcements-messages" data-toggle="tab">{% trans from 'announcements' %}title.messages{% endtrans %}</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#announcements-intervals" data-toggle="tab">{% trans from 'announcements' %}title.channels{% endtrans %}</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="announcements-messages" class="tab-pane fade in active">
+                        <div class="hidden" id="block-message-template">
+                            {% set templateMessage = {'id': '', 'message': '', 'channels': []} %}
+                            {% include 'announcements/route/message.html.twig' with {'isTemplate': true, 'message': templateMessage, 'availableChannels': availableChannels} %}
+                        </div>
+
+                        <div id="messages">
+                            {% for message in messages %}
+                                {% include 'announcements/route/message.html.twig' with {'isTemplate': false, 'message': message, 'availableChannels': availableChannels} %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div id="announcements-intervals" class="tab-pane fade">
+                        <div id="intervals">
+                            {% for interval in intervals %}
+                                {% include 'announcements/route/interval.html.twig' with {'isTemplate': false, 'interval': interval, 'availableChannels': availableChannels} %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{# Scripts, load additional scripts needed for this route, and initialize main module #}
+{% block scripts %}
+    <script src="{{ asset('js/modules/plugin/announcements.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            const options = {
+                messageContainerSelector: "#messages",
+                messageTemplateSelector: "#block-message-template > div",
+                messageSelector: ".message",
+                addMessageSelector: '[data-action="new-message"]',
+                deleteMessageRoute: "announcements_message_delete",
+                saveMessageRoute: "announcements_message_save",
+                messageFieldNames: {
+                    id: "id",
+                    message: "message",
+                    channels: "channels"
+                },
+
+                intervalContainerSelector: "#intervals",
+                intervalSelector: ".interval",
+                saveIntervalRoute: "announcements_interval_save",
+                intervalFieldNames: {
+                    enabled: "enabled",
+                    time: "time",
+                    messages: "messages",
+                    channel: "channel"
+                }
+            };
+
+            Announcements.init(options);
+        });
+    </script>
+{% endblock %}

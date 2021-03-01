@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="announcements">
+                <source>announcements</source>
+                <target>Annonces</target>
+            </trans-unit>
+            <trans-unit id="button.new_message">
+                <source>button.new_message</source>
+                <target>Nouveau message</target>
+            </trans-unit>
+            <trans-unit id="title.messages">
+                <source>title.messages</source>
+                <target>Messages</target>
+            </trans-unit>
+            <trans-unit id="tab.messages">
+                <source>tab.messages</source>
+                <target>Messages</target>
+            </trans-unit>
+            <trans-unit id="tab.channels">
+                <source>title.channels</source>
+                <target>Chaînes</target>
+            </trans-unit>
+            <trans-unit id="form.text_to_display">
+                <source>form.text_to_display</source>
+                <target>Texte à afficher</target>
+            </trans-unit>
+            <trans-unit id="form.message_count">
+                <source>form.message_count</source>
+                <target>Nombre de messages min avant affichage</target>
+            </trans-unit>
+            <trans-unit id="form.time_interval">
+                <source>form.time_interval</source>
+                <target>Intervalle de temps</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

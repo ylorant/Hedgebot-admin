@@ -1,0 +1,71 @@
+layouts:
+  default:
+    name: 1 block
+    blocks:
+      main:
+        title: Main block
+        width: 12
+        class: main-zone
+  4-8:
+    name: 2 blocks 25/75
+    blocks:
+      left-zone:
+        title: Left zone (25%)
+        width: 4
+        class: left-zone
+      right-zone:
+        title: Right zone (75%)
+        width: 8
+        class: right-zone
+  8-4:
+    name: 2 blocks 75/25
+    blocks:
+      left-zone:
+        title: Left zone (75%)
+        width: 8
+        class: left-zone
+      right-zone:
+        title: Right zone (25%)
+        width: 4
+        class: right-zone
+  6-6:
+    name: 2 blocks 50/50
+    blocks:
+      left-zone:
+        title: Left zone
+        width: 6
+        class: left-zone
+      right-zone:
+        title: Right zone
+        width: 6
+        class: right-zone
+  4-4-4:
+    name: 3 blocks
+    blocks:
+      left-zone:
+        title: Left zone
+        width: 4
+        class: left-zone
+      middle-zone:
+        title: Middle zone
+        width: 4
+        class: middle-zone
+      right-zone:
+        title: Right zone
+        width: 4
+        class: right-zone
+  4-4-12:
+    name: 2+1 blocks
+    blocks:
+      left-zone:
+        title: Left zone
+        width: 4
+        class: left-zone
+      right-zone:
+        title: Right zone
+        width: 8
+        class: right-zone
+      bottom-zone:
+        title: Bottom zone
+        width: 12
+        class: bottom-zone

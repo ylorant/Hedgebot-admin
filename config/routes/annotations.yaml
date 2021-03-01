@@ -1,0 +1,35 @@
+controllers:
+    resource: ../../src/Controller/
+    type: annotation
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation
+
+announcements:
+    resource: ../../src/Modules/HedgebotAnnouncementsBundle/Controller/
+    type:     annotation
+
+autohost:
+    resource: ../../src/Modules/HedgebotAutoHostBundle/Controller/
+    type:     annotation
+
+custom_commands:
+    resource: ../../src/Modules/HedgebotCustomCommandsBundle/Controller/
+    type: annotation
+
+horaro:
+    resource: ../../src/Modules/HedgebotHoraroBundle/Controller/
+    type:     annotation
+
+streamcontrol:
+    resource: ../../src/Modules/HedgebotStreamControlBundle/Controller/
+    type:     annotation
+
+timer:
+    resource: ../../src/Modules/HedgebotTimerBundle/Controller/
+    type:     annotation
+
+twitter:
+    resource: ../../src/Modules/HedgebotTwitterBundle/Controller/
+    type:     annotation

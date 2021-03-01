@@ -1,0 +1,67 @@
+{% extends 'core/base.html.twig' %}
+{% block title %}Custom commands{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/plugin/customcommands.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block main_title %}
+    <h3>
+        Custom commands
+
+        <div class="pull-right">
+            <a class="btn btn-primary waves-effect" data-action="new-command">
+                <i class="material-icons">add</i>
+                <span>New command</span>
+            </a>
+        </div>
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Commands</h2>
+                </div>
+                    <div class="hidden" id="block-command-template">
+                        {% set command = {'name': '', 'text': '', 'channels': []} %}
+                        {% include 'customcommands/route/command.html.twig' with {'isTemplate': true, 'command': command, 'availableChannels': availableChannels} %}
+                    </div>
+
+                    <div id="commands">
+                        {% for command in commands %}
+                            {% include 'customcommands/route/command.html.twig' with {'isTemplate': false, 'command': command, 'availableChannels': availableChannels} %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{# Scripts, load additional scripts needed for this route, and initialize main module #}
+{% block scripts %}
+    <script src="{{ asset('js/modules/plugin/custom-commands.js') }}"></script>
+    <script type="text/javascript">
+        $(function()
+        {
+            var options = {
+                commandContainerSelector: "#commands",
+                commandTemplateSelector: "#block-command-template > div",
+                commandSelector: ".command",
+                addSelector: '[data-action="new-command"]',
+                deleteRoute: "custom_commands_delete",
+                saveRoute: "custom_commands_save",
+                fieldNames: {
+                    name: "name",
+                    text: "text",
+                    channels: "channels"
+                }
+            };
+
+            CustomCommands.init(options);
+        });
+    </script>
+{% endblock %}

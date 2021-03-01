@@ -1,0 +1,32 @@
+{% extends 'core/base.html.twig' %}
+{% form_theme newTokenForm with ['core/form/material_form.html.twig'] %}
+{% block title %}Twitch API - New token - Hedgebot{% endblock %}
+
+{% block main_title %}
+    <h3>
+        Twitch API - New token
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>New access token</h2>
+                </div>
+
+                <div class="body">
+                    <p>
+                        Now that you've authorized the bot to access your account, you just need to set the channel on which this token will be used.
+                    </p>
+
+                    {{ form_start(newTokenForm) }}
+                    {{ form_row(newTokenForm.channel) }}
+                    {{ form_row(newTokenForm.submit) }}
+                    {{ form_end(newTokenForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

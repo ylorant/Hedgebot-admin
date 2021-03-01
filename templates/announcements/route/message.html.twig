@@ -1,0 +1,41 @@
+<div class="header message" id="message-{{ message.id }}" data-saved="true">
+    <div class="row clearfix">
+        <div class="col-lg-8 col-xs-12">
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <input type="text"
+                           name="message"
+                           class="form-control store-autocomplete"
+                           data-channel-ref="select.channel-selector"
+                           data-context=".message"
+                           value="{{ message.message }}"
+                    />
+                    <label class="form-label">{% trans from 'announcements' %}form.text_to_display{% endtrans %}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-xs-12">
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <select name="channels" class="form-control {{ isTemplate ? "ms" : "" }} channel-selector" multiple>
+                        {% for channel in availableChannels %}
+                            <option value="{{ channel }}" {{ channel in message.channels ? "selected" : "" }}>{{ channel }}</option>
+                        {% endfor %}
+                    </select>
+                    <label class="form-label">{% trans from 'core' %}form.channels{% endtrans %}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-1 col-xs-12 text-right">
+            <a data-action="save" data-target="#message-{{ message.id }}" title="Update" class="btn btn-success">
+                <i class="material-icons md-18">done</i>
+            </a>
+
+            <a data-action="delete" data-target="#message-{{ message.id }}" title="Delete" class="btn btn-danger">
+                <i class="material-icons md-18">clear</i>
+            </a>
+        </div>
+    </div>
+</div>

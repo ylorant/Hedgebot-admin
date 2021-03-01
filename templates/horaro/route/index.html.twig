@@ -1,0 +1,96 @@
+{% extends 'core/base.html.twig' %}
+{% block title %}Schedules - Horaro{% endblock %}
+{% form_theme newScheduleForm with ['core/form/material_form.html.twig'] %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/plugin/customcommands.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block main_title %}
+    <h3>
+        Horaro - Schedules
+
+        <div class="pull-right">
+            <a class="btn btn-primary waves-effect" data-toggle="modal" data-target="#new-schedule-modal">
+                <i class="material-icons">add</i>
+                <span>New schedule</span>
+            </a>
+        </div>
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Schedules</h2>
+                </div>
+
+                <div class="body table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ident slug</th>
+                                <th>Event ID</th>
+                                <th>Schedule ID</th>
+                                <th>Channel</th>
+                                <th>Enabled</th>
+                                <th class="col-lg-2">Open</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for slug, schedule in schedules %}
+                                <tr>
+                                    <td>{{ slug }}</td>
+                                    <td><code>{{ schedule.eventId }}</code></td>
+                                    <td><code>{{ schedule.scheduleId }}</code></td>
+                                    <td>{{ schedule.channel }}</td>
+                                    <td><i class="material-icons">{{ schedule.enabled ? "done" : "clear" }}</i></td>
+                                    <td class="col-lg-2">
+                                            <a class="btn btn-primary m-r-20" target="_blank" title="Go to schedule"
+                                               href="https://horaro.org/{{ schedule.eventId }}/{{ schedule.scheduleId }}">
+                                                <i class="material-icons md-18">exit_to_app</i>
+                                            </a>
+                                        <div class="pull-right">
+                                            <a class="btn btn-success" href="{{ path('horaro_schedule_edit', {'identSlug': slug }) }}">
+                                                <i class="material-icons md-18">edit</i>
+                                            </a>
+
+                                            <a class="btn btn-danger" href="{{ path('horaro_schedule_delete', {'identSlug': slug }) }}">
+                                                <i class="material-icons md-18">clear</i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# New schedule modal #}
+    <div id="new-schedule-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {{ form_start(newScheduleForm) }}
+                    <div class="modal-header">
+                        <h4 class="modal-title">Load a new schedule</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        {{ form_row(newScheduleForm.url) }}
+                    </div>
+
+                    <div class="modal-footer">
+                        {{ form_widget(newScheduleForm.submit) }}
+                        <a class="btn btn-link text-danger waves-effect" data-dismiss="modal">Cancel</a>
+                    </div>
+                {{ form_end(newScheduleForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
