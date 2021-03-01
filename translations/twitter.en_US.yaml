@@ -1,0 +1,11 @@
+# Twitter module translation file
+# Locale: en-US, English (United States)
+---
+title:
+  twitter: Twitter
+  accounts: Accounts
+  tokens: Tokens
+  tweets: Tweets
+button:
+  link_account: Link new account
+...

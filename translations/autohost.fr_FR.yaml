@@ -1,0 +1,17 @@
+# AutoHost module translation file
+# Locale: fr-FR, French (France)
+---
+title:
+  autohost: AutoHost
+  channels_to_host: Chaînes à héberger
+  configuration: Configuration
+button:
+    new_channel_to_host: Nouvelle chaîne à héberger
+form:
+  time_interval: Intervalle de changement
+  black_list: Liste noire
+  white_list: Liste blanche
+  channel_hosted: Chaîne hébergée
+  priority: Priorité (%)
+no_channel: Pas de chaîne à configurer
+...

@@ -1,0 +1,24 @@
+# Main translation file (WebAdmin core, basic forms, ...)
+# Locale: fr-FR, French (France)
+---
+login:
+  start_session: Se connecter pour démarrer votre session
+  username: Identifiant
+  password: Mot de passe
+title:
+  dashboard: Tableau de bord
+  permissions: Droits
+  twitch: Jetons Twitch
+  settings: Réglages admin.
+form:
+  enabled: Activé
+  channel: Chaîne
+  channels: Chaînes
+button:
+  new_role: Nouveau rôle
+  edit: Modifier
+  delete: Supprimer
+label:
+  title: Titre
+  game: Jeu
+...

@@ -1,5 +1,5 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}{% trans from 'announcements' %}announcements{% endtrans %}{% endblock %}
+{% block title %}{% trans from 'announcements' %}title.announcements{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/pages/plugin/announcements.css') }}" rel="stylesheet"/>
@@ -7,7 +7,7 @@
 
 {% block main_title %}
     <h3>
-        {% trans from 'announcements' %}announcements{% endtrans %}
+        {% trans from 'announcements' %}title.announcements{% endtrans %}
 
         <div class="pull-right">
             <a class="btn btn-primary waves-effect" data-action="new-message">
@@ -24,10 +24,10 @@
             <div class="card">
                 <ul class="nav nav-tabs tab-nav-right" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#announcements-messages" data-toggle="tab">{% trans from 'announcements' %}title.messages{% endtrans %}</a>
+                        <a href="#announcements-messages" data-toggle="tab">{% trans from 'announcements' %}tab.messages{% endtrans %}</a>
                     </li>
                     <li role="presentation">
-                        <a href="#announcements-intervals" data-toggle="tab">{% trans from 'announcements' %}title.channels{% endtrans %}</a>
+                        <a href="#announcements-intervals" data-toggle="tab">{% trans from 'announcements' %}tab.channels{% endtrans %}</a>
                     </li>
                 </ul>
 

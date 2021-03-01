@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use TwitchApi\Exceptions\ClientIdRequiredException;
 
 class DashboardController extends BaseController
@@ -27,6 +28,7 @@ class DashboardController extends BaseController
      * @param RouterInterface $router
      * @param KernelInterface $kernel
      * @param FileLocator $fileLocator
+     * @param TranslatorInterface $translator
      * @param $layoutPath
      * @param $apiBaseUrl
      * @param $apiAccessToken
@@ -36,11 +38,12 @@ class DashboardController extends BaseController
         RouterInterface $router,
         KernelInterface $kernel,
         FileLocator $fileLocator,
+        TranslatorInterface $translator,
         $layoutPath,
         $apiBaseUrl,
         $apiAccessToken
     ) {
-        parent::__construct($router, $apiBaseUrl, $apiAccessToken);
+        parent::__construct($router, $translator, $apiBaseUrl, $apiAccessToken);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,

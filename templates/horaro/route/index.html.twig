@@ -1,5 +1,5 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}Schedules - Horaro{% endblock %}
+{% block title %}{% trans from 'horaro' %}title.horaro{% endtrans %} - {% trans from 'horaro' %}title.schedules{% endtrans %}{% endblock %}
 {% form_theme newScheduleForm with ['core/form/material_form.html.twig'] %}
 
 {% block stylesheets %}
@@ -8,8 +8,7 @@
 
 {% block main_title %}
     <h3>
-        Horaro - Schedules
-
+        {% trans from 'horaro' %}title.horaro{% endtrans %} - {% trans from 'horaro' %}title.schedules{% endtrans %}
         <div class="pull-right">
             <a class="btn btn-primary waves-effect" data-toggle="modal" data-target="#new-schedule-modal">
                 <i class="material-icons">add</i>

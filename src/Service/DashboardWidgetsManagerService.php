@@ -2,6 +2,9 @@
 namespace App\Service;
 
 use App\Interfaces\DashboardWidgetsProviderInterface;
+use App\Widget\ChatWidget\ChatWidget;
+use App\Widget\CustomCallWidget\CustomCallWidget;
+use App\Widget\DefaultWidget\DefaultWidget;
 use Exception;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpKernel\Config\FileLocator;
@@ -70,7 +73,7 @@ class DashboardWidgetsManagerService
     public function getAvailableWidgets(): array
     {
         $bundles = $this->kernel->getBundles();
-        $availableWidgets = [];
+        $availableWidgets = $this->getDefaultWidgets();
 
         foreach ($bundles as $bundle) {
             // Keep only bundles that are plugin bundles
@@ -83,6 +86,20 @@ class DashboardWidgetsManagerService
         }
 
         return $availableWidgets;
+    }
+
+    /**
+     * Return widgets always loaded
+     *
+     * @return array
+     */
+    public function getDefaultWidgets(): array
+    {
+        return [
+            new ChatWidget(),
+            new DefaultWidget(),
+            new CustomCallWidget()
+        ];
     }
 
     /**
@@ -110,7 +127,7 @@ class DashboardWidgetsManagerService
      * @param string $id The layout to fetch's ID.
      * @return array|null The layout model if found, null otherwise.
      */
-    public function getLayoutById($id)
+    public function getLayoutById(string $id)
     {
         $layouts = $this->getLayouts();
 
@@ -145,7 +162,7 @@ class DashboardWidgetsManagerService
      * @return string The unique generated widget ID.
      * @throws Exception
      */
-    public function generateWidgetID()
+    public function generateWidgetID(): string
     {
         $uuid = Uuid::uuid4();
         return $uuid->toString();

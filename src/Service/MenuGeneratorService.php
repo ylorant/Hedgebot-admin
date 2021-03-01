@@ -6,6 +6,7 @@ use App\Plugin\Menu\MenuItemList;
 use App\Interfaces\MenuProviderInterface;
 use App\Plugin\Menu\MenuItem;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuGeneratorService
 {
@@ -15,15 +16,21 @@ class MenuGeneratorService
      * @var KernelInterface
      */
     private $kernel;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /**
      * Constructor.
      *
      * @param KernelInterface $kernel
+     * @param TranslatorInterface $translator
      */
-    public function __construct(KernelInterface $kernel)
+    public function __construct(KernelInterface $kernel, TranslatorInterface $translator)
     {
         $this->kernel = $kernel;
+        $this->translator = $translator;
     }
 
     /**
@@ -31,11 +38,11 @@ class MenuGeneratorService
      *
      * @return MenuItemList
      */
-    public function generate()
+    public function generate(): MenuItemList
     {
         // Fetch all menus into a MenuItemList;
         $bundles = $this->kernel->getBundles();
-        $itemList = new MenuItemList(null);
+        $itemList = $this->getDefaultMenuItems();
 
         foreach ($bundles as $bundle) {
             // Keep only bundles that are plugin bundles
@@ -52,5 +59,30 @@ class MenuGeneratorService
         }
 
         return $itemList;
+    }
+
+    /**
+     * @return MenuItemList
+     */
+    public function getDefaultMenuItems(): MenuItemList
+    {
+        $baseItem = new MenuItemList();
+
+        // Sub-menu
+        $baseItem
+            ->header('Core')->end()
+            ->item($this->translator->trans('title.dashboard'), 'dashboard', 'dashboard')->end()
+            ->item($this->translator->trans('title.permissions'), 'security_index', 'lock')->end()
+            ->item($this->translator->trans('title.twitch'), 'twitch_index', "zmdi:twitch")->end()
+            ->item($this->translator->trans('title.settings'), null, 'settings')
+            ->children()
+            ->item('Widgets', 'settings_widgets')->end()
+            ->item('Custom calls', 'custom_calls_index')->end()
+            ->end()
+            ->end()
+            ->header('Modules')->end()
+            ->end();
+
+        return $baseItem;
     }
 }

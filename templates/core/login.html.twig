@@ -21,7 +21,7 @@
         <div class="card">
             <div class="body">
                 <form action="{{ path('login') }}" method="post">
-                    <div class="msg">Log in to start your session</div>
+                    <div class="msg">{% trans %}login.start_session{% endtrans %}</div>
                     {% if error %}
                         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
@@ -30,7 +30,7 @@
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" id="username" name="_username" class="form-control" placeholder="Username" required autofocus value="{{ last_username }}" />
+                            <input type="text" id="username" name="_username" class="form-control" placeholder="{% trans %}login.username{% endtrans %}" required autofocus value="{{ last_username }}" />
                         </div>
                     </div>
                     <div class="input-group">
@@ -38,7 +38,7 @@
                             <i class="material-icons">lock</i>
                         </span>
                         <div class="form-line">
-                            <input type="password" id="password" name="_password" class="form-control" placeholder="Password" required />
+                            <input type="password" id="password" name="_password" class="form-control" placeholder="{% trans %}login.password{% endtrans %}" required />
                         </div>
                     </div>
                     <div class="row">

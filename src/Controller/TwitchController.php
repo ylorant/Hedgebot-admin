@@ -18,7 +18,10 @@ class TwitchController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("Twitch API", $this->generateUrl("twitch_index"));
+        $this->breadcrumbs->addItem(
+            $this->translator->trans('title.twitch'),
+            $this->generateUrl("twitch_index")
+        );
     }
 
     /** Twitch index page.

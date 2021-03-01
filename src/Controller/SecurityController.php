@@ -17,7 +17,10 @@ class SecurityController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("Permissions", $this->get("router")->generate("security_index"));
+        $this->breadcrumbs->addItem(
+            $this->translator->trans('title.permissions'),
+            $this->get("router")->generate("security_index")
+        );
     }
 
     /** Security index page.

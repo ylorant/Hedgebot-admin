@@ -1,5 +1,5 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}Tweets - Twitter{% endblock %}
+{% block title %}{% trans from 'twitter' %}title.twitter{% endtrans %} - {% trans from 'twitter' %}title.tweets{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/pages/plugin/customcommands.css') }}" rel="stylesheet" />
@@ -7,8 +7,7 @@
 
 {% block main_title %}
     <h3>
-        Twitter - Tweets
-
+        {% trans from 'twitter' %}title.twitter{% endtrans %} - {% trans from 'twitter' %}title.tweets{% endtrans %}
         <div class="pull-right">
             <a class="btn btn-primary waves-effect" href="{{ path("twitter_tweet_new") }}">
                 <i class="material-icons">add</i>

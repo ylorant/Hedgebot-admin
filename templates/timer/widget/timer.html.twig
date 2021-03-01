@@ -5,7 +5,7 @@
 <div class="card timer-widget" data-id="{{ timer.id }}">
     {% if settings.hide_title_bar is not defined or settings.hide_title_bar != "1" %}
         <div class="header {{ settings.background_color ?? ''}}">
-            <h2>Timer - {{ timer.title }}</h2>
+            <h2>{% trans from 'timer' %}title.timer{% endtrans %} - {{ timer.title }}</h2>
         </div>
     {% endif %}
 
@@ -19,7 +19,7 @@
           data-countdown-amount="{{ timer.countdownAmount }}"
     >
     </span>
-          
+
 
     <div class="{{ extended_controls is defined or timer.type == "race-timer" ? "header" : "body" }} text-center {{ settings.background_color ?? ''}}">
         <div class="row">
@@ -33,7 +33,7 @@
                 <button class="btn bg-green timer-start-button waves-effect" title="Start/Stop">
                     <i class="material-icons">play_arrow</i>
                 </button>
-                
+
                 <button class="btn bg-blue timer-pause-button waves-effect" title="Pause/Resume">
                     <i class="material-icons">pause</i>
                 </button>
@@ -55,7 +55,7 @@
                     </div>
 
                     <span class="hidden timer-player-info"
-                          data-elapsed="{{ player.elapsed is defined ? player.elapsed : "null" }}"    
+                          data-elapsed="{{ player.elapsed is defined ? player.elapsed : "null" }}"
                     >
                     </span>
 
@@ -86,19 +86,19 @@
     {% if extended_controls is defined %}
         <div class="body text-center {{ settings.background_color ?? '' }}">
             <a class="btn btn-primary waves-effect" title="Embed" target="_blank" href="{{ path('timer_front_embed', {'id': timer.id }) }}">
-                <i class="material-icons">cast</i> 
+                <i class="material-icons">cast</i>
                 <span>Embed</span>
             </a>
 
             <a class="btn btn-success waves-effect" title="Edit">
                 <i class="material-icons">create</i>
-                <span>Edit</span>
+                <span>{% trans %}button.edit{% endtrans %}</span>
             </a>
 
             <a class="btn btn-danger waves-effect" title="Delete">
-                <i class="material-icons">delete</i> 
-                <span>Delete</span>
+                <i class="material-icons">delete</i>
+                <span>{% trans %}button.delete{% endtrans %}</span>
             </a>
-        </div> 
+        </div>
     {% endif %}
 </div>

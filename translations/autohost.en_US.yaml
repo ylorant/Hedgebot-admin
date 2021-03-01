@@ -1,0 +1,17 @@
+# AutoHost module translation file
+# Locale: en-US, English (United States)
+---
+title:
+  autohost: AutoHost
+  channels_to_host: Channels to host
+  configuration: Configuration
+button:
+  new_channel_to_host: New channel to host
+form:
+  time_interval: Change interval
+  black_list: Black list
+  white_list: White list
+  channel_hosted: Channel hosted
+  priority: Priority (%)
+no_channel: No channel to configure
+...

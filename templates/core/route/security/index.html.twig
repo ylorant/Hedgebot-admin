@@ -1,14 +1,13 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}Permissions - Hedgebot{% endblock %}
+{% block title %}{% trans %}title.permissions{% endtrans %}{% endblock %}
 
 {% block main_title %}
     <h3>
-        Permissions
-
+        {% trans %}title.permissions{% endtrans %}
         <div class="pull-right">
             <a class="btn btn-primary waves-effect" href="{{ path('security_role_new') }}">
                 <i class="material-icons">add</i>
-                <span>New role</span>
+                <span>{% trans %}button.new_role{% endtrans %}</span>
             </a>
         </div>
     </h3>

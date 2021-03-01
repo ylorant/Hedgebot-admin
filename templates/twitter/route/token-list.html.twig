@@ -1,5 +1,5 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}Tokens - Twitter{% endblock %}
+{% block title %}{% trans from 'twitter' %}title.twitter{% endtrans %} - {% trans from 'twitter' %}title.accounts{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/pages/plugin/customcommands.css') }}" rel="stylesheet" />
@@ -7,12 +7,11 @@
 
 {% block main_title %}
     <h3>
-        Twitter - Accounts
-
+        {% trans from 'twitter' %}title.twitter{% endtrans %} - {% trans from 'twitter' %}title.accounts{% endtrans %}
         <div class="pull-right">
             <a class="btn btn-primary waves-effect" data-toggle="modal" data-target="#new-token-modal">
                 <i class="material-icons">add</i>
-                <span>Link new account</span>
+                <span>{% trans from 'twitter' %}button.link_account{% endtrans %}</span>
             </a>
         </div>
     </h3>
@@ -23,7 +22,7 @@
         <div class="col-xs-12">
             <div class="card">
                 <div class="header">
-                    <h2>Tokens</h2>
+                    <h2>{% trans from 'twitter' %}title.tokens{% endtrans %}</h2>
                 </div>
 
                 <div class="body table-responsive">

@@ -1,5 +1,5 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}{% trans %}title.dashboard{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/pages/dashboard.css') }}" rel="stylesheet" />
@@ -9,7 +9,7 @@
 
 {% block content %}
     <div class="block-header">
-        <h1>Dashboard</h1>
+        <h1>{% trans %}title.dashboard{% endtrans %}</h1>
     </div>
 
     <div class="layout">

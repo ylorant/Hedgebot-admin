@@ -1,14 +1,12 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}Timers{% endblock %}
+{% block title %}{% trans from 'timer' %}title.timer{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/pages/plugin/timer.css') }}" rel="stylesheet"/>
 {% endblock %}
 
 {% block main_title %}
-    <h3>
-        Timers
-    </h3>
+    <h3>{% trans from 'timer' %}title.timers{% endtrans %}</h3>
 {% endblock %}
 
 {% block content %}

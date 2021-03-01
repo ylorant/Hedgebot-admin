@@ -1,0 +1,9 @@
+# CustomCommands module translation file
+# Locale: en-US, English (United States)
+---
+title:
+  customcommands: Custom commands
+  title: Commands
+button:
+  new_command: New command
+...

@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Entity\DashboardLayout;
 use App\Service\DashboardWidgetsManagerService;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -10,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use TwitchApi\Exceptions\ClientIdRequiredException;
 
 class SettingsController extends BaseController
@@ -24,6 +26,7 @@ class SettingsController extends BaseController
      * @param RouterInterface $router
      * @param KernelInterface $kernel
      * @param FileLocator $fileLocator
+     * @param TranslatorInterface $translator
      * @param $layoutPath
      * @param $apiBaseUrl
      * @param $apiAccessToken
@@ -33,11 +36,12 @@ class SettingsController extends BaseController
         RouterInterface $router,
         KernelInterface $kernel,
         FileLocator $fileLocator,
+        TranslatorInterface $translator,
         $layoutPath,
         $apiBaseUrl,
         $apiAccessToken
     ) {
-        parent::__construct($router, $apiBaseUrl, $apiAccessToken);
+        parent::__construct($router, $translator, $apiBaseUrl, $apiAccessToken);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,
@@ -54,13 +58,13 @@ class SettingsController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("Settings");
+        $this->breadcrumbs->addItem($this->translator->trans("title.settings"));
     }
 
     /** Widget settings page.
      * @Route("/settings/widgets", name="settings_widgets")
      */
-    public function widgetSettingsAction()
+    public function widgetSettingsAction(): Response
     {
         $router = $this->get("router");
 
@@ -84,8 +88,10 @@ class SettingsController extends BaseController
     /** AJAX: Get settings form for a widget.
      *
      * @Route("/settings/widgets/{widgetName}/form", options = { "expose"=true }, name="settings_widget_param_form")
+     * @param $widgetName
+     * @return Response
      */
-    public function widgetSettingsGetWidgetParamsFormAction($widgetName)
+    public function widgetSettingsGetWidgetParamsFormAction($widgetName): Response
     {
         $viewParams = [];
 
@@ -115,6 +121,8 @@ class SettingsController extends BaseController
      *
      * @Route("/settings/widgets/save", options = { "expose"=true }, name="settings_widgets_save")
      * @Method("POST")
+     * @param Request $request
+     * @return JsonResponse
      */
     public function widgetSettingsSaveAction(Request $request)
     {

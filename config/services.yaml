@@ -58,7 +58,7 @@ services:
 
     menu_generator:
         class: App\Service\MenuGeneratorService
-        arguments: [ '@kernel' ]
+        arguments: [ '@kernel', '@translator' ]
         calls:
             - [ setContainer,[ '@service_container' ] ]
 

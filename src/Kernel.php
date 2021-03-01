@@ -20,9 +20,7 @@ class Kernel extends BaseKernel
     {
         $contents = require $this->getProjectDir() .' /config/bundles.php';
 
-        // Load core + plugins routes
-        $contents[HedgebotCoreBundle::class] = ['all' => true];
-
+        // Load active modules routes
         $pluginList = new FileResource($this->getProjectDir() . '/config/hedgebot.yaml');
 
         if (is_file($pluginList)) {

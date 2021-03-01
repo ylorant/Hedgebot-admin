@@ -1,0 +1,9 @@
+# CustomCommands module translation file
+# Locale: fr-FR, English (United States)
+---
+title:
+  customcommands: "Commandes perso."
+  commands: Commandes
+button:
+  new_command: Nouvelle commande
+...
