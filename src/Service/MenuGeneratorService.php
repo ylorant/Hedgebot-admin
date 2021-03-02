@@ -1,11 +1,13 @@
 <?php
 namespace App\Service;
 
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use App\Plugin\Menu\MenuItemList;
 use App\Interfaces\MenuProviderInterface;
 use App\Plugin\Menu\MenuItem;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuGeneratorService
@@ -41,13 +43,14 @@ class MenuGeneratorService
     public function generate(): MenuItemList
     {
         // Fetch all menus into a MenuItemList;
-        $bundles = $this->kernel->getBundles();
         $itemList = $this->getDefaultMenuItems();
+        $modules = $this->getActivatedModules();
 
-        foreach ($bundles as $bundle) {
-            // Keep only bundles that are plugin bundles
-            if ($bundle instanceof MenuProviderInterface) {
-                $menu = $bundle->getMenu();
+        foreach ($modules as $module) {
+            $object = new $module();
+            // Keep only objects that are modules
+            if ($object instanceof MenuProviderInterface) {
+                $menu = $object->getMenu();
                 if ($menu instanceof MenuItemList) {
                     foreach ($menu as $item) {
                         $itemList->add($item);
@@ -84,5 +87,29 @@ class MenuGeneratorService
             ->end();
 
         return $baseItem;
+    }
+
+    /**
+     * @TODO Redundant with DashboardWidgetManagerService. Put in in another class ? helper ?
+     *
+     * @return array
+     */
+    public function getActivatedModules(): array
+    {
+        $activatedModules = [];
+        // Load active modules routes
+        $modulesList = new FileResource($this->kernel->getProjectDir() . '/config/hedgebot.yaml');
+
+        if (is_file($modulesList)) {
+            $yamlContent = Yaml::parse(file_get_contents($modulesList));
+            if (!empty($yamlContent['modules'])) {
+                foreach ($yamlContent['modules'] as $moduleName => $module) {
+                    $activatedModules[] = $module;
+                    //$activatedModules[] = $module::class; //only for PHP 8+
+                }
+            }
+        }
+
+        return $activatedModules;
     }
 }

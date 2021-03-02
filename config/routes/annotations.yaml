@@ -7,29 +7,29 @@ kernel:
     type: annotation
 
 announcements:
-    resource: ../../src/Modules/HedgebotAnnouncementsBundle/Controller/
+    resource: ../../src/Modules/Announcements/Controller/
     type:     annotation
 
 autohost:
-    resource: ../../src/Modules/HedgebotAutoHostBundle/Controller/
+    resource: ../../src/Modules/AutoHost/Controller/
     type:     annotation
 
 custom_commands:
-    resource: ../../src/Modules/HedgebotCustomCommandsBundle/Controller/
+    resource: ../../src/Modules/CustomCommands/Controller/
     type: annotation
 
 horaro:
-    resource: ../../src/Modules/HedgebotHoraroBundle/Controller/
+    resource: ../../src/Modules/Horaro/Controller/
     type:     annotation
 
 streamcontrol:
-    resource: ../../src/Modules/HedgebotStreamControlBundle/Controller/
+    resource: ../../src/Modules/StreamControl/Controller/
     type:     annotation
 
 timer:
-    resource: ../../src/Modules/HedgebotTimerBundle/Controller/
+    resource: ../../src/Modules/Timer/Controller/
     type:     annotation
 
 twitter:
-    resource: ../../src/Modules/HedgebotTwitterBundle/Controller/
+    resource: ../../src/Modules/Twitter/Controller/
     type:     annotation

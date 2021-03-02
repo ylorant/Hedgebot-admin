@@ -6,6 +6,7 @@ use App\Widget\ChatWidget\ChatWidget;
 use App\Widget\CustomCallWidget\CustomCallWidget;
 use App\Widget\DefaultWidget\DefaultWidget;
 use Exception;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -72,20 +73,45 @@ class DashboardWidgetsManagerService
      */
     public function getAvailableWidgets(): array
     {
-        $bundles = $this->kernel->getBundles();
         $availableWidgets = $this->getDefaultWidgets();
+        $modules = $this->getActivatedModules();
 
-        foreach ($bundles as $bundle) {
+        foreach ($modules as $module) {
+            $object = new $module();
             // Keep only bundles that are plugin bundles
-            if ($bundle instanceof DashboardWidgetsProviderInterface) {
+            if ($object instanceof DashboardWidgetsProviderInterface) {
                 $availableWidgets = array_merge(
                     $availableWidgets,
-                    $bundle->getDashboardWidgets($this->apiClientService)
+                    $object->getDashboardWidgets($this->apiClientService)
                 );
             }
         }
 
         return $availableWidgets;
+    }
+
+    /**
+     * @TODO Redundant with MenuGeneratorService. Put in in another class ? helper ?
+     *
+     * @return array
+     */
+    public function getActivatedModules(): array
+    {
+        $activatedModules = [];
+        // Load active modules routes
+        $modulesList = new FileResource($this->kernel->getProjectDir() . '/config/hedgebot.yaml');
+
+        if (is_file($modulesList)) {
+            $yamlContent = Yaml::parse(file_get_contents($modulesList));
+            if (!empty($yamlContent['modules'])) {
+                foreach ($yamlContent['modules'] as $moduleName => $module) {
+                    $activatedModules[] = $module;
+                    //$activatedModules[] = $module::class; //only for PHP 8+
+                }
+            }
+        }
+
+        return $activatedModules;
     }
 
     /**

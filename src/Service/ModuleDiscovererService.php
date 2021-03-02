@@ -7,14 +7,14 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use App\Routing\ModuleRouteLoader;
-use App\Interfaces\PluginInterface;
+use App\Interfaces\ModuleInterface;
 
 class ModuleDiscovererService
 {
     protected $apiClient;
     protected $apiConfigPath;
     protected $clearCache;
-    protected $bundlesModulesToLoad;
+    protected $modulesToLoad;
 
     use ContainerAwareTrait;
 
@@ -23,7 +23,7 @@ class ModuleDiscovererService
         $this->apiClient = $apiClient;
         $this->apiConfigPath = new FileResource($apiConfigPath);
         $this->clearCache = false;
-        $this->bundlesModulesToLoad = [];
+        $this->modulesToLoad = [];
     }
 
     /**
@@ -33,25 +33,25 @@ class ModuleDiscovererService
      */
     public function discoverModules(): bool
     {
-        $modulesBundles = [];
+        $modulesClasses = [];
 
         // Getting all plugins' bundles
         $finder = new Finder();
         $modulesPath = DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . ModuleRouteLoader::MODULES_NAMESPACE;
         $directory = $this->container->get('kernel')->getProjectDir()
             . $modulesPath . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR;
-        $files = $finder->in($directory)->files()->name('*Bundle.php');
+        $files = $finder->in($directory)->depth('== 0')->files()->name('*.php');
 
         foreach ($files as $file) {
             $filePath = str_replace(DIRECTORY_SEPARATOR, "/", $file->getPath());
             $pathParts = explode("/", trim($filePath, "/"));
-            $bundleName = end($pathParts);
+            $moduleName = end($pathParts);
 
-            $class = 'App\\' . ModuleRouteLoader::MODULES_NAMESPACE . '\\' . $bundleName . '\\'
+            $class = 'App\\' . ModuleRouteLoader::MODULES_NAMESPACE . '\\' . $moduleName . '\\'
                 . $file->getBasename('.php');
-            if (is_subclass_of($class, PluginInterface::class)) {
-                $module = $class::getPluginName();
-                $modulesBundles[$module] = $class;
+            if (is_subclass_of($class, ModuleInterface::class)) {
+                $module = $class::getModuleName();
+                $modulesClasses[$module] = $class;
             }
         }
 
@@ -65,16 +65,16 @@ class ModuleDiscovererService
         };
 
 
-        $this->bundlesModulesToLoad = array_filter($modulesBundles, $filterFunction, ARRAY_FILTER_USE_KEY);
+        $this->modulesToLoad = array_filter($modulesClasses, $filterFunction, ARRAY_FILTER_USE_KEY);
 
         // Updating the config with the new bundles
         if (is_file($this->apiConfigPath)) {
             $config = Yaml::parse(file_get_contents($this->apiConfigPath));
         } else {
-            $config = ['bundles' => []];
+            $config = ['modules' => []];
         }
 
-        $config['bundles'] = $this->bundlesModulesToLoad;
+        $config['modules'] = $this->modulesToLoad;
         $yaml = Yaml::dump($config);
         file_put_contents($this->apiConfigPath, $yaml);
 

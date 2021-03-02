@@ -80,7 +80,7 @@ class SetupCommand extends Command
         file_put_contents($envFilePath, $parametersYaml);
 
         // Writing the bot's interface extended configuration file
-        $defaultBaseConfig = ["bundles" => [], "settings" => []];
+        $defaultBaseConfig = ["modules" => [], "settings" => []];
         $defaultBaseConfigYaml = Yaml::dump($defaultBaseConfig);
         file_put_contents($kernel->getRootDir(). '/config/hedgebot.yaml', $defaultBaseConfigYaml);
 

@@ -19,21 +19,6 @@ class Kernel extends BaseKernel
     public function registerBundles(): iterable
     {
         $contents = require $this->getProjectDir() .' /config/bundles.php';
-
-        // Load active modules routes
-        $pluginList = new FileResource($this->getProjectDir() . '/config/hedgebot.yaml');
-
-        if (is_file($pluginList)) {
-            $yamlContent = Yaml::parse(file_get_contents($pluginList));
-            if (!empty($yamlContent['bundles'])) {
-                foreach ($yamlContent['bundles'] as $pluginName => $bundle) {
-                    $object = new $bundle;
-                    $contents[get_class($object)] = ['all' => true];
-                    //$bundles[$bundle::class] = ['all' => true]; //only for PHP 8+
-                }
-            }
-        }
-
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
