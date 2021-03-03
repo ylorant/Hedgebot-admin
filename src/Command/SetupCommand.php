@@ -9,6 +9,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
 use App\Service\ApiClientService;
 use App\Exception\RPCException;
@@ -16,7 +17,8 @@ use App\Exception\RPCException;
 class SetupCommand extends Command
 {
     const REQUIRED_EXTENSIONS = ["pdo_sqlite"];
-    const ENV_FILE = '.env.local';
+    const ENV_FILE = '.env';
+    const ENV_LOCAL_FILE = '.env.local';
 
     protected function configure()
     {
@@ -34,8 +36,9 @@ class SetupCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): bool
     {
+        /** @var Kernel $kernel */
         $kernel = $this->getContainer()->get('kernel');
-        $envFilePath = $kernel->getRootDir() . DIRECTORY_SEPARATOR . self::ENV_FILE;
+        $envFilePath = $kernel->getProjectDir() . DIRECTORY_SEPARATOR . self::ENV_FILE;
 
         $output->writeln([
             "Hedgebot admin panel setup",
@@ -67,6 +70,7 @@ class SetupCommand extends Command
 
         // Generating parameters.yaml from the dist
         $output->write('Generating environment file...');
+
         $settings = Yaml::parse(file_get_contents($envFilePath));
 
         $settings['parameters']['database_path'] = $dbLocation;
@@ -82,7 +86,7 @@ class SetupCommand extends Command
         // Writing the bot's interface extended configuration file
         $defaultBaseConfig = ["modules" => [], "settings" => []];
         $defaultBaseConfigYaml = Yaml::dump($defaultBaseConfig);
-        file_put_contents($kernel->getRootDir(). '/config/hedgebot.yaml', $defaultBaseConfigYaml);
+        file_put_contents($kernel->getProjectDir(). '/config/hedgebot.yaml', $defaultBaseConfigYaml);
 
         // Flushing cache
         $output->writeln("OK");
@@ -104,6 +108,7 @@ class SetupCommand extends Command
     protected function askForDBLocation(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
+        /** @var Kernel $kernel */
         $kernel = $this->getContainer()->get('kernel');
 
         // Creating questions
@@ -125,8 +130,10 @@ class SetupCommand extends Command
 
             // Set the basedir for the location if it isn't an absolute location
             if ((PHP_OS == 'WINNT' && !preg_match('#^[a-zA-Z]:\\\\#', $dbLocation)) || $dbLocation[0] != '/') {
-                $dbTestLocation = $kernel->getRootDir() . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR. $dbLocation;
-                $dbLocation = '%kernel.project_dir%'. DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . $dbLocation;
+                $dbTestLocation = $kernel->getProjectDir() .
+                    DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR. $dbLocation;
+                $dbLocation = $kernel->getProjectDir() .
+                    DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . $dbLocation;
             } else {
                 $dbTestLocation = $dbLocation;
             }
