@@ -63,7 +63,7 @@ class AutoHostController extends BaseController
         $dateTimeHelper = new DateTimeHelper();
         $endpoint = $this->apiClientService->endpoint($this::ENDPOINT_PATH);
         $data = $request->request->all();
-        $enabled = (bool) $data['enabled'];
+        $enabled = $data['enabled'] == 'true';
         $timeInterval= $dateTimeHelper->convertHumanReadableToTime($data['timeInterval']);
         $whiteList = explode(',', $data['whiteList']);
         $blackList = explode(',', $data['blackList']);
@@ -87,7 +87,7 @@ class AutoHostController extends BaseController
         $endpoint = $this->apiClientService->endpoint($this::ENDPOINT_PATH);
         $data = $request->request->all();
         $newHostedId = null;
-        $enabled = $data['enabled'] == "true";
+        $enabled = $data['enabled'] == 'true';
 
         if (empty($data['id'])) {
             $newHostedId = $endpoint->addHostedChannel($data['channel'], $data['hosted'], $data['priority'], $enabled);
