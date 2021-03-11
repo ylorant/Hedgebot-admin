@@ -35,3 +35,6 @@
     text-align: center;
     white-space: nowrap;
 }
+.bootstrap-tagsinput {
+    background-color: unset;
+}

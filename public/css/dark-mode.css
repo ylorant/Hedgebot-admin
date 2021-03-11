@@ -71,7 +71,7 @@ code
     color: #fdfdfd;
 }
 
-.theme-indigo .sidebar .menu .list li.active > :first-child i, 
+.theme-indigo .sidebar .menu .list li.active > :first-child i,
 .theme-indigo .sidebar .menu .list li.active > :first-child span
 {
     color: #5C6BC0;
@@ -146,10 +146,14 @@ code
 {
     border-bottom: 1px solid #646464;
 }
-
 .form-group .form-line::after
 {
     border-bottom: 2px solid #0D47A1;
+}
+.form-group .switch.form-line,
+.form-group .switch.form-line::after
+{
+    border-bottom: unset;
 }
 
 .form-float .bootstrap-select > .dropdown-toggle
