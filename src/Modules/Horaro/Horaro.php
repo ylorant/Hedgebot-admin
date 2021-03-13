@@ -23,7 +23,7 @@ class Horaro implements ModuleInterface, MenuProviderInterface, DashboardWidgets
      */
     public function getMenu()
     {
-        return new MenuItem('Horaro', 'horaro_schedule_list', 'date_range');
+        return new MenuItem('title.horaro', 'horaro_schedule_list', 'date_range');
     }
 
     /**

@@ -23,7 +23,7 @@ class Timer implements ModuleInterface, MenuProviderInterface, DashboardWidgetsP
      */
     public function getMenu()
     {
-        return new MenuItem('Timers', 'timer_list', 'alarm');
+        return new MenuItem('title.timers', 'timer_list', 'alarm');
     }
 
     /**

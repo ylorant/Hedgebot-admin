@@ -23,7 +23,7 @@ class Announcements implements ModuleInterface, MenuProviderInterface, Dashboard
      */
     public function getMenu()
     {
-        return new MenuItem('Announcements', 'announcements_list', 'message');
+        return new MenuItem('title.announcements', 'announcements_list', 'message');
     }
 
     /**

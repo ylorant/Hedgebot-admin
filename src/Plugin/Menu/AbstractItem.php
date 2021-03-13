@@ -23,6 +23,11 @@ abstract class AbstractItem
         return $this->title;
     }
 
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
     public function end()
     {
         return $this->parent;

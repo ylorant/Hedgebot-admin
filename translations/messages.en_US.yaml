@@ -10,6 +10,8 @@ title:
   permissions: Permissions
   twitch: Twitch tokens
   settings: Admin settings
+  widgets: Widgets
+  customcalls: Custom calls
 form:
   enabled: Enabled
   channel: Channel

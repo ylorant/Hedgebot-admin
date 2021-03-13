@@ -23,7 +23,7 @@ class AutoHost implements ModuleInterface, MenuProviderInterface, DashboardWidge
      */
     public function getMenu()
     {
-        return new MenuItem('AutoHost', 'autohost_list', 'live_tv');
+        return new MenuItem('title.autohost', 'autohost_list', 'live_tv');
     }
 
     /**

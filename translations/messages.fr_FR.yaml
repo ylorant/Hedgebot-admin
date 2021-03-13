@@ -10,6 +10,8 @@ title:
   permissions: Droits
   twitch: Jetons Twitch
   settings: Réglages admin.
+  widgets: Widgets
+  customcalls: Appels perso.
 form:
   enabled: Activé
   channel: Chaîne

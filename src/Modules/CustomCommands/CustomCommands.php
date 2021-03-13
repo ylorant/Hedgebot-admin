@@ -23,7 +23,7 @@ class CustomCommands implements ModuleInterface, MenuProviderInterface, Dashboar
      */
     public function getMenu()
     {
-        return new MenuItem('Custom commands', 'custom_commands_list', 'list');
+        return new MenuItem('title.customcommands', 'custom_commands_list', 'list');
     }
 
     /**

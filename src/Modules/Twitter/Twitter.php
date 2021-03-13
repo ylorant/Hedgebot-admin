@@ -22,7 +22,7 @@ class Twitter implements ModuleInterface, MenuProviderInterface, DashboardWidget
      */
     public function getMenu()
     {
-        $baseItem = new MenuItem('Twitter', null, 'zmdi:twitter');
+        $baseItem = new MenuItem('title.twitter', null, 'zmdi:twitter');
 
         $baseItem
             ->children()

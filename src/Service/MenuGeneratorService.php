@@ -56,6 +56,11 @@ class MenuGeneratorService
                         $itemList->add($item);
                     }
                 } elseif ($menu instanceof MenuItem) {
+                    $menu->setTitle($this->translator->trans(
+                        $menu->getTitle(),
+                        [],
+                        strtolower($object->getModuleName())
+                    ));
                     $itemList->add($menu);
                 }
             }
@@ -79,8 +84,8 @@ class MenuGeneratorService
             ->item($this->translator->trans('title.twitch'), 'twitch_index', "zmdi:twitch")->end()
             ->item($this->translator->trans('title.settings'), null, 'settings')
             ->children()
-            ->item('Widgets', 'settings_widgets')->end()
-            ->item('Custom calls', 'custom_calls_index')->end()
+            ->item($this->translator->trans('title.widgets'), 'settings_widgets')->end()
+            ->item($this->translator->trans('title.customcalls'), 'custom_calls_index')->end()
             ->end()
             ->end()
             ->header('Modules')->end()
