@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Command;
 
 use Doctrine\ORM\EntityRepository;
@@ -12,10 +13,11 @@ use App\Entity\User;
 
 class CreateUserCommand extends Command
 {
+    protected static $defaultName = 'user:create';
+
     protected function configure()
     {
         $this
-            ->setName('user:create')
             ->setDescription('Creates an user on the public admin.')
             ->setHelp('Use this command to create an user on Hedgebot\'s public admin.');
     }
@@ -25,7 +27,7 @@ class CreateUserCommand extends Command
         $credentials = $this->askForCredentials($input, $output);
 
         // Check if database exists
-        $databasePath = $this->getContainer()->getParameter('database_path');
+        $databasePath = $this->getContainer()->getParameter('DATABASE_URL');
 
         if (!is_file($databasePath)) {
             $output->writeln(["", "Notice: Database has not been found. Creating it.", ""]);

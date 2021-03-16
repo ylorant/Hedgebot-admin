@@ -21,6 +21,7 @@
     "composer/composer": "^2.0.9",
     "symfony/flex": "^1.12.2",
     "symfony/framework-bundle": "^4.4.19",
+    "symfony/dotenv": "^4.4.19",
     "symfony/console": "^4.4.19",
     "symfony/yaml": "^4.4.19",
     "symfony/apache-pack": "^1.0.1",
@@ -44,7 +45,6 @@
     "ylorant/hedgebot-api-client": "^1.0"
   },
   "require-dev": {
-    "symfony/dotenv": "^4.4.19",
     "symfony/phpunit-bridge": "^4.4.19",
     "symfony/profiler-pack": "^v1.0.5",
     "squizlabs/php_codesniffer": "*"
@@ -56,9 +56,11 @@
       "assets:install %PUBLIC_DIR%": "symfony-cmd"
     },
     "post-install-cmd": [
+      "@php bin/console app:setup",
       "@auto-scripts"
     ],
     "post-update-cmd": [
+      "@php bin/console app:setup",
       "@auto-scripts"
     ]
   }

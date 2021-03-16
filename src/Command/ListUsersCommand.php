@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -10,10 +11,11 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class ListUsersCommand extends Command
 {
+    protected static $defaultName = 'user:list';
+
     protected function configure()
     {
         $this
-            ->setName('user:list')
             ->setDescription('Lists users registered on the public admin.')
             ->setHelp('Use this command to list currently registered users on Hedgebot\'s public admin.');
     }
@@ -22,8 +24,7 @@ class ListUsersCommand extends Command
     {
 
         // Check if database exists
-        $databasePath = $this->getContainer()->getParameter('database_path');
-
+        $databasePath = $this->getContainer()->getParameter('DATABASE_URL');
         if (!is_file($databasePath)) {
             throw new RuntimeException("Database does not exist. Create an user first to create the database.");
         }
@@ -31,12 +32,11 @@ class ListUsersCommand extends Command
         /** @var Registry $doctrine */
         $doctrine = $this->getContainer()->get('doctrine');
         $repository = $doctrine->getRepository(User::class);
-
         $userList = $repository->findAll();
 
         /** @var User $user */
         foreach ($userList as $user) {
-            $output->writeln($user->getUsername(). ": ". join(', ', $user->getRoles()));
+            $output->writeln($user->getUsername() . ": " . join(', ', $user->getRoles()));
         }
     }
 }

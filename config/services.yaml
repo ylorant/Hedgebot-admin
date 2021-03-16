@@ -34,6 +34,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Command\SetupCommand:
+        arguments: [ '@kernel', '%env(DATABASE_URL)%' ]
 
     hedgebot_api:
         class: App\Service\ApiClientService
