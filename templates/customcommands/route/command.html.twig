@@ -15,10 +15,10 @@
         <div class="col-lg-6 col-xs-12">
             <div class="form-group form-float">
                 <div class="form-line">
-                    <input type="text" 
-                           name="text" 
-                           class="form-control store-autocomplete" 
-                           data-channel-ref="select.channel-selector" 
+                    <input type="text"
+                           name="text"
+                           class="form-control store-autocomplete"
+                           data-channel-ref="select.channel-selector"
                            data-context=".command"
                            value="{{ command.text }}"
                     />
@@ -39,13 +39,13 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-lg-1 col-xs-12 text-right">
-            <a data-action="save" data-target="#command-{{ command.name }}" title="Update" class="btn btn-success">
+            <a data-action="save" data-target="#command-{{ command.name }}" title="{% trans %}button.update{% endtrans %}" class="btn btn-success">
                 <i class="material-icons md-18">done</i>
             </a>
 
-            <a data-action="delete" data-target="#command-{{ command.name }}" title="Delete" class="btn btn-danger">
+            <a data-action="delete" data-target="#command-{{ command.name }}" title="{% trans %}button.delete{% endtrans %}" class="btn btn-danger">
                 <i class="material-icons md-18">clear</i>
             </a>
         </div>

@@ -11,6 +11,7 @@ title:
   twitch: Jetons Twitch
   settings: Réglages admin.
   widgets: Widgets
+  twitch_chat: Chat Twitch
   customcalls: Appels perso.
 form:
   enabled: Activé

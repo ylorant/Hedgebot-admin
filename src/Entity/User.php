@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,23 +18,19 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
     /**
      * @ORM\Column(type="string", length=255)
-     *
      */
     protected $username;
-
     /**
      * @ORM\Column(type="string", length=255)
      */
     protected $password;
-
+    protected $salt;
     /**
      * @ORM\Column(type="array", length=255)
      */
     protected $roles;
-
     /**
      * @ORM\Column(type="object", nullable=true)
      */
@@ -95,7 +92,8 @@ class User implements UserInterface
 
     public function getSalt()
     {
-        return null; // Using bcrypt, so salt isn't needed
+        // Using bcrypt, so salt isn't needed
+        return null;
     }
 
     public function eraseCredentials()
@@ -103,7 +101,7 @@ class User implements UserInterface
     }
 
     /** @see \Serializable::serialize() */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize([
             $this->id,
@@ -113,7 +111,10 @@ class User implements UserInterface
         ]);
     }
 
-    /** @see \Serializable::unserialize() */
+    /**
+     * @param $serialized
+     * @see \Serializable::unserialize()
+     */
     public function unserialize($serialized)
     {
         list(

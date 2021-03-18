@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -16,28 +17,24 @@ class CustomCall
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * @ORM\Column(type="string", length=255)
-     *
      */
     protected $method;
-
     /**
      * @ORM\Column(type="string", length=255)
      *
      */
     protected $url;
-
     /**
      * @ORM\Column(type="object", nullable=true)
      */
     protected $parameters;
 
-    const METHOD_GET = "GET";
-    const METHOD_POST = "POST";
-    const METHOD_PUT = "PUT";
-    const METHOD_DELETE = "DELETE";
+    public const METHOD_GET = "GET";
+    public const METHOD_POST = "POST";
+    public const METHOD_PUT = "PUT";
+    public const METHOD_DELETE = "DELETE";
 
     /**
      * Constructor
@@ -63,7 +60,6 @@ class CustomCall
     public function setId($id)
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -83,7 +79,6 @@ class CustomCall
     public function setMethod($method)
     {
         $this->method = $method;
-
         return $this;
     }
 
@@ -103,7 +98,6 @@ class CustomCall
     public function setUrl($url)
     {
         $this->url = $url;
-
         return $this;
     }
 
@@ -123,7 +117,6 @@ class CustomCall
     public function setParameters($parameters)
     {
         $this->parameters = $parameters;
-
         return $this;
     }
 }

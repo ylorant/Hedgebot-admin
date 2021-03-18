@@ -11,6 +11,7 @@ title:
   twitch: Twitch tokens
   settings: Admin settings
   widgets: Widgets
+  twitch_chat: Twitch chat
   customcalls: Custom calls
 form:
   enabled: Enabled

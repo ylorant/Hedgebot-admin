@@ -62,6 +62,19 @@
     "doctrine/doctrine-cache-bundle": {
         "version": "1.4.0"
     },
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.2",
+            "ref": "baaa439e3e3179e69e3da84b671f0a3e4a2f56ad"
+        },
+        "files": [
+            "./config/packages/doctrine_migrations.yaml",
+            "./migrations/.gitignore"
+        ]
+    },
     "doctrine/event-manager": {
         "version": "1.1.1"
     },
@@ -74,6 +87,9 @@
     "doctrine/lexer": {
         "version": "1.2.1"
     },
+    "doctrine/migrations": {
+        "version": "3.1.1"
+    },
     "doctrine/orm": {
         "version": "2.7.5"
     },
@@ -85,6 +101,9 @@
     },
     "egulias/email-validator": {
         "version": "2.1.25"
+    },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.3"
     },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.3",
@@ -119,6 +138,15 @@
     "knplabs/knp-markdown-bundle": {
         "version": "1.8.1"
     },
+    "laminas/laminas-code": {
+        "version": "4.0.0"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.3.1"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.2.0"
+    },
     "mhujer/breadcrumbs-bundle": {
         "version": "1.5.5"
     },
@@ -130,6 +158,9 @@
     },
     "nicklaw5/twitch-api-php": {
         "version": "v1.2.2"
+    },
+    "nikic/php-parser": {
+        "version": "v4.10.4"
     },
     "paragonie/random_compat": {
         "version": "v9.99.99"
@@ -300,6 +331,15 @@
     "symfony/lts": {
         "version": "4-dev"
     },
+    "symfony/maker-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
+        }
+    },
     "symfony/mime": {
         "version": "v5.2.3"
     },
@@ -323,6 +363,9 @@
     },
     "symfony/options-resolver": {
         "version": "v5.2.3"
+    },
+    "symfony/orm-pack": {
+        "version": "v2.1.0"
     },
     "symfony/phpunit-bridge": {
         "version": "4.3",
@@ -383,6 +426,9 @@
     },
     "symfony/property-info": {
         "version": "v5.2.3"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v4.4.20"
     },
     "symfony/routing": {
         "version": "4.2",

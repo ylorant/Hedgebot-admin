@@ -55,10 +55,12 @@
                                         <div class="pull-right">
                                             <a class="btn btn-success" href="{{ path('horaro_schedule_edit', {'identSlug': slug }) }}">
                                                 <i class="material-icons md-18">edit</i>
+                                                <span>{% trans %}button.update{% endtrans %}</span>
                                             </a>
 
                                             <a class="btn btn-danger" href="{{ path('horaro_schedule_delete', {'identSlug': slug }) }}">
                                                 <i class="material-icons md-18">clear</i>
+                                                <span>{% trans %}button.delete{% endtrans %}</span>
                                             </a>
                                         </div>
                                     </td>
