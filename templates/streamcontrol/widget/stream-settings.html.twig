@@ -1,6 +1,6 @@
 <div class="card stream-settings-widget">
     <div class="header">
-        <h2>Stream settings - {{ settings.channel }}</h2>
+        <h2>{% trans from 'streamcontrol' %}title.streamcontrol{% endtrans %} - {{ settings.channel }}</h2>
     </div>
     {% if info is not empty %}
         <div class="header">
@@ -20,8 +20,8 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary pull-right update-btn">Update</button>
-                <button class="btn bg-purple start-ads">Start 1m30s ads</button>
+                <button class="btn btn-primary pull-right update-btn">{% trans %}button.update{% endtrans %}</button>
+                <button class="btn bg-purple start-ads">{% trans from 'streamcontrol' %}button.ads{% endtrans %}</button>
                 <div class="clearfix"></div>
             </form>
         </div>
@@ -33,12 +33,16 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input class="form-control host-channel-name" type="text" name="host" />
-                                <label class="form-label">Host channel</label>
+                                <label class="form-label">
+                                    {% trans from 'streamcontrol' %}label.host_channel{% endtrans %}
+                                </label>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-3 p-l-0 p-t-10 text-right">
-                        <button type="button" class="btn bg-purple waves-effect host-channel-submit">Host</button>
+                        <button type="button" class="btn bg-purple waves-effect host-channel-submit">
+                            {% trans from 'streamcontrol' %}button.host{% endtrans %}
+                        </button>
                     </div>
                 </div>
 
@@ -47,13 +51,17 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input class="form-control raid-channel-name" type="text" name="raid" />
-                                <label class="form-label">Raid channel</label>
+                                <label class="form-label">
+                                    {% trans from 'streamcontrol' %}label.raid_channel{% endtrans %}
+                                </label>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-xs-3 p-l-0 p-t-10 text-right">
-                        <button type="button" class="btn bg-purple waves-effect raid-channel-submit">Raid</button>
+                        <button type="button" class="btn bg-purple waves-effect raid-channel-submit">
+                            {% trans from 'streamcontrol' %}button.raid{% endtrans %}
+                        </button>
                     </div>
                 </div>
             </form>

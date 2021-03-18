@@ -20,6 +20,7 @@ button:
   new_role: Nouveau rôle
   edit: Modifier
   delete: Supprimer
+  update: Mettre à jour
 label:
   title: Titre
   game: Jeu

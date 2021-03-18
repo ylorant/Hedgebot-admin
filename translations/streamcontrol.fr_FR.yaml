@@ -3,4 +3,11 @@
 ---
 title:
   streamcontrol: Contrôle du stream
+button:
+  ads: Lancer 1m30s de pub
+  host: Héberger
+  raid: Raid
+label:
+  host_channel: Chaîne à héberger
+  raid_channel: Chaîne à raid
 ...
