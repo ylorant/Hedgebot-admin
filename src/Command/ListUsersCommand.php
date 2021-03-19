@@ -11,7 +11,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class ListUsersCommand extends Command
 {
-    protected static $defaultName = 'user:list';
+    protected static $defaultName = 'app:list-users';
 
     protected function configure()
     {

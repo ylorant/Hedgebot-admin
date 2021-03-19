@@ -13,7 +13,7 @@ use App\Entity\User;
 
 class CreateUserCommand extends Command
 {
-    protected static $defaultName = 'user:create';
+    protected static $defaultName = 'app:create-user';
 
     protected function configure()
     {
@@ -57,7 +57,7 @@ class CreateUserCommand extends Command
         $encodedPassword = $encoder->encodePassword($user, $credentials["password"]);
 
         $user->setPassword($encodedPassword);
-        $user->setRoles(["ROLE_USER"]);
+        //$user->setRoles(["ROLE_USER"]);
 
         $em = $this->getContainer()->get('doctrine')->getManager();
         $em->persist($user);

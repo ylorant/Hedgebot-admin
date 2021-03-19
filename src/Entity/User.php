@@ -2,126 +2,138 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Serializable;
 use stdClass;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="user")
  */
 class User implements UserInterface
 {
     /**
-     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
+
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
-    protected $username;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $password;
-    protected $salt;
+    private $username;
+
     /**
      * @ORM\Column(type="array", length=255)
      */
-    protected $roles;
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
+
     /**
      * @ORM\Column(type="object", nullable=true)
      */
-    protected $settings;
+    private $settings;
 
     public function __construct()
     {
         $this->settings = new stdClass();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername()
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        return $this->username;
+        return (string) $this->username;
     }
 
-    public function setUsername($username)
+    public function setUsername(string $username): self
     {
         $this->username = $username;
+
         return $this;
     }
 
-    public function getPassword()
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        return $this->password;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function setPassword($password)
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+
         return $this;
     }
 
-    public function getSettings()
+    /**
+     * @see UserInterface
+     */
+    public function getSettings(): stdClass
     {
         return $this->settings;
     }
 
-    public function setSettings($settings)
+    public function setSettings($settings): self
     {
         $this->settings = $settings;
         return $this;
     }
 
-    public function getRoles()
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
     {
-        return $this->roles;
-    }
-
-
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
-    }
-
-    public function getSalt()
-    {
-        // Using bcrypt, so salt isn't needed
         return null;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function eraseCredentials()
     {
-    }
-
-    /** @see \Serializable::serialize() */
-    public function serialize(): string
-    {
-        return serialize([
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->salt,
-        ]);
-    }
-
-    /**
-     * @param $serialized
-     * @see \Serializable::unserialize()
-     */
-    public function unserialize($serialized)
-    {
-        list(
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->salt
-        ) = unserialize($serialized);
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }

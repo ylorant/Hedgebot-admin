@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,7 +17,6 @@ class SecurityController extends BaseController
     public function beforeActionHook()
     {
         parent::beforeActionHook();
-
         $this->breadcrumbs->addItem(
             $this->translator->trans('title.permissions'),
             $this->get("router")->generate("security_index")
@@ -31,10 +31,8 @@ class SecurityController extends BaseController
     public function indexAction()
     {
         $templateVars = [];
-
         $securityEndpoint = $this->apiClientService->endpoint('/security');
         $templateVars['roles'] = (array) $securityEndpoint->getRoles();
-
         return $this->render('core/route/security/index.html.twig', $templateVars);
     }
 
@@ -78,7 +76,6 @@ class SecurityController extends BaseController
 
         // Handle the form
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $roleData = $form->getData();
             $roleCreated = true;
@@ -96,7 +93,6 @@ class SecurityController extends BaseController
 
             if ($roleCreated) {
                 $roleSaved = $securityEndpoint->saveRole($roleId, $roleData);
-
                 if ($roleSaved) {
                     $this->addFlash('success', 'Role saved.');
                 } else {
@@ -113,7 +109,6 @@ class SecurityController extends BaseController
             'rights' => $rights,
             'form' => $form->createView()
         ];
-
         return $this->render('core/route/security/role.html.twig', $templateVars);
     }
 
@@ -129,7 +124,6 @@ class SecurityController extends BaseController
         $router = $this->get("router");
         $securityEndpoint = $this->apiClientService->endpoint('/security');
         $roleDeleted = $securityEndpoint->deleteRole($roleId);
-
         if ($roleDeleted) {
             $this->addFlash('success', "Role deleted.");
         } else {

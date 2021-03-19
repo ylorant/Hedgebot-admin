@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Kernel;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,6 +11,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 use App\Service\ApiClientService;
 use App\Exception\RPCException;
@@ -28,7 +28,13 @@ class SetupCommand extends Command
     private $apiConfigPath;
     private $databaseUrl;
 
-    public function __construct(Kernel $kernel, string $databaseUrl, string $apiConfigPath)
+    /**
+     * SetupCommand constructor.
+     * @param KernelInterface $kernel
+     * @param string $databaseUrl
+     * @param string $apiConfigPath
+     */
+    public function __construct(KernelInterface $kernel, string $databaseUrl, string $apiConfigPath)
     {
         parent::__construct();
         $this->kernel = $kernel;
@@ -133,18 +139,9 @@ class SetupCommand extends Command
         }
         $output->writeln("<info>OK</info>");
 
-        // Generating database tables and columns
-        $output->write('Generating database tables and columns...');
-        $makeMigrationCommand = $this->getApplication()->find('make:migration');
-        $makeMigration = $makeMigrationCommand->run($input, $output);
-        if ($makeMigration === 0) {
-            $migrateCommand = $this->getApplication()->find('doctrine:migrations:migrate');
-            $migrateCommand->run($input, $output);
-            $output->writeln("");
-        } else {
-            $output->writeln("<error>Failed</error>");
-            return 134;
-        }
+        // Updating database schema
+        $migrateCommand = $this->getApplication()->find('doctrine:schema:update');
+        $migrateCommand->run(new ArrayInput(['command' => 'doctrine:schema:update', '--force' => true]), $output);
 
         // Flushing cache
         $output->write("Flushing cache...");
@@ -154,7 +151,7 @@ class SetupCommand extends Command
         $output->writeln([
             "Now, you're almost ready to go. One last step is to create the first user account.",
             "To do that, just use the following command:",
-            "", "php bin/console user:create", "",
+            "", "php bin/console app:create-user", "",
             "You will be able to use this command in the future each time you want to create an user."
         ]);
 
@@ -293,13 +290,13 @@ class SetupCommand extends Command
         }
 
         $botEnvQuestion = new Question(
-            "Environment type ('prod' per default, can be 'dev' or 'test'): ",
+            "<question>Environment type ('prod' per default, can be 'dev' or 'test'):</question> ",
             "prod"
         );
         $botEnv = $helper->ask($input, $output, $botEnvQuestion);
 
         $botLocaleQuestion = new Question(
-            "Locale ('en_US' per default, must be an ICU locale ID format): ",
+            "<question>Locale ('en_US' per default, must be an ICU locale ID format):</question> ",
             "en_US"
         );
         $botLocale = $helper->ask($input, $output, $botLocaleQuestion);

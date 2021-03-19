@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Service\ApiClientService;
@@ -27,7 +28,6 @@ class BaseController extends AbstractController
      * @var TwitchClientService
      */
     public $twitchClientService;
-
     /**
      * Constructor
      * @param RouterInterface $routerInterface
@@ -36,12 +36,8 @@ class BaseController extends AbstractController
      * @param $apiAccessToken
      * @throws ClientIdRequiredException
      */
-    public function __construct(
-        RouterInterface $routerInterface,
-        TranslatorInterface $translator,
-        $apiBaseUrl,
-        $apiAccessToken
-    ) {
+    public function __construct(RouterInterface $routerInterface, TranslatorInterface $translator, $apiBaseUrl, $apiAccessToken)
+    {
         $this->breadcrumbs = new Breadcrumbs();
         $this->apiClientService = new ApiClientService($apiBaseUrl, $apiAccessToken);
         $this->twitchClientService = new TwitchClientService($routerInterface);

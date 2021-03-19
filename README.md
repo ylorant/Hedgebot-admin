@@ -45,7 +45,7 @@ Or you can also directly edit the file `app/parameters.yml` and set the variable
 
 To create a new interface user in command line, use this command :
 
-`php bin/console user:create`
+`php bin/console app:create-user`
 
 It will launch a friendly command-line form to create your user, similar to the one used in the setup procedure.
 
