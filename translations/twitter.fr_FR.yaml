@@ -7,6 +7,11 @@ title:
   scheduledtweets: Tweets programmés
   tokens: Jetons
   tweets: Tweets
+tab:
+  account: Compte
+  token: Jeton d'accès
+  secret: Jeton d'accès secret
+  no_token: Pas de jetons enregistrés
 button:
   link_account: Lier un nouveau compte
 ...

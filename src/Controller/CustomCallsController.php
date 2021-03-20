@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\CustomCall;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use App\Form\CustomCallType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Curl\Curl;
+use Symfony\Component\HttpFoundation\Response;
 
 class CustomCallsController extends BaseController
 {
@@ -16,7 +19,6 @@ class CustomCallsController extends BaseController
     public function beforeActionHook()
     {
         parent::beforeActionHook();
-
         $this->breadcrumbs->addItem("Custom calls", $this->get("router")->generate("custom_calls_index"));
     }
 
@@ -25,11 +27,10 @@ class CustomCallsController extends BaseController
      *
      * @Route("/custom-calls", name="custom_calls_index")
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $repo = $this->get('doctrine')->getRepository(CustomCall::class);
         $callList = $repo->findAll();
-
         return $this->render('core/route/custom-calls/index.html.twig', [
             "calls" => $callList
         ]);
@@ -40,6 +41,9 @@ class CustomCallsController extends BaseController
      *
      * @Route("/custom-calls/new", name="custom_calls_new")
      * @Route("/custom-calls/edit/{id}", name="custom_calls_edit")
+     * @param Request $request
+     * @param null $id
+     * @return RedirectResponse|Response
      */
     public function editCallAction(Request $request, $id = null)
     {
@@ -57,7 +61,6 @@ class CustomCallsController extends BaseController
         // Get the edited entity if ID is present
         if (!empty($id)) {
             $call = $repo->find($id);
-
             if (empty($call)) {
                 $this->addFlash('danger', 'Call not found.');
                 return $this->redirect($this->generateUrl('custom_calls_index'));
@@ -68,12 +71,10 @@ class CustomCallsController extends BaseController
 
         // Handle the form
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($call);
             $em->flush();
-
             $this->addFlash('success', 'The call was successfully saved.');
 
             // Redirect the user to the call page
@@ -87,7 +88,6 @@ class CustomCallsController extends BaseController
             'call' => $call,
             'form' => $form->createView()
         ];
-
         return $this->render('core/route/custom-calls/call.html.twig', $templateVars);
     }
 
@@ -95,12 +95,13 @@ class CustomCallsController extends BaseController
      * Deletes a call.
      *
      * @Route("/custom-calls/delete/{id}", name="custom_calls_delete")
+     * @param $id
+     * @return RedirectResponse
      */
-    public function deleteCallAction($id)
+    public function deleteCallAction($id): RedirectResponse
     {
         $repository = $this->getDoctrine()->getRepository(CustomCall::class);
         $call = $repository->find($id);
-
         if (empty($call)) {
             $this->addFlash('danger', 'Call not found.');
             $this->redirect($this->generateUrl('custom_calls_index'));
@@ -109,7 +110,6 @@ class CustomCallsController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $em->remove($call);
         $em->flush();
-
         $this->addFlash('success', 'Call deleted.');
         return $this->redirect($this->generateUrl('custom_calls_index'));
     }
@@ -118,19 +118,20 @@ class CustomCallsController extends BaseController
      * Executes a call.
      *
      * @Route("/custom-calls/execute/{id}", name="custom_calls_execute")
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
      */
-    public function executeCallAction(Request $request, $id)
+    public function executeCallAction(Request $request, $id): RedirectResponse
     {
         /** @var CustomCall $call */
         $repository = $this->getDoctrine()->getRepository(CustomCall::class);
         $call = $repository->find($id);
-
         if (empty($call)) {
             throw $this->createNotFoundException("Call not found.");
         }
 
         $query = new Curl();
-
         switch ($call->getMethod()) {
             case CustomCall::METHOD_GET:
                 $query->get($call->getUrl(), $call->getParameters());

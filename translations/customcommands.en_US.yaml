@@ -6,4 +6,7 @@ title:
   title: Commands
 button:
   new_command: New command
+form:
+  command: Command
+  reply_text: Reply text
 ...

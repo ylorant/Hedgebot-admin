@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Twig\TwigTest;
 
 class UtilitiesExtension extends AbstractExtension
 {
@@ -12,7 +14,7 @@ class UtilitiesExtension extends AbstractExtension
     public function getTests()
     {
         return [
-            new \Twig_SimpleTest('instanceof', [$this, 'isInstanceOf'])
+            new TwigTest('instanceof', [$this, 'isInstanceOf'])
         ];
     }
 
@@ -38,7 +40,7 @@ class UtilitiesExtension extends AbstractExtension
     public function anonymize($input)
     {
         $charactersToShow = strlen($input) > 16 ? 4 : ceil(strlen($input) / 4);
-        return substr($input, 0, $charactersToShow). '***'. substr($input, -1 * $charactersToShow);
+        return substr($input, 0, $charactersToShow) . '***' . substr($input, -1 * $charactersToShow);
     }
 
     public function toArray($input)
@@ -52,27 +54,26 @@ class UtilitiesExtension extends AbstractExtension
     public function iconize($input)
     {
         $iconParts = explode(':', $input, 2);
-
-        // Default type: material_icons
+// Default type: material_icons
         if (count($iconParts) == 1) {
             array_unshift($iconParts, 'material-icons');
         }
 
         $classes = $iconParts[0];
         $content = '';
-
-        // Handling all types of icons that the admin is able to generate
+// Handling all types of icons that the admin is able to generate
         switch ($iconParts[0]) {
             case 'zmdi':
-                $classes .= ' zmdi-' . $iconParts[1];
-                break;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 $classes .= ' zmdi-' . $iconParts[1];
 
+                break;
             case 'material-icons':
-                $content = $iconParts[1];
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 $content = $iconParts[1];
+
                 break;
         }
 
-        return '<i class="' . $classes. '">' . $content. '</i>';
+        return '<i class="' . $classes . '">' . $content . '</i>';
     }
 
     /**

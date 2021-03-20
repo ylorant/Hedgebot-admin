@@ -40,11 +40,11 @@
                                 <td>{{ role.parent is not empty ? roles[role.parent].name : "-" }}</td>
                                 <td>{{ role.default ? "Yes" : "No" }}</td>
                                 <td class="text-right">
-                                    <a href="{{ path('security_role_edit', {'roleId': role.id}) }}" title="Edit" class="btn btn-success">
+                                    <a href="{{ path('security_role_edit', {'roleId': role.id}) }}" title="{% trans %}button.edit{% endtrans %}" class="btn btn-success">
                                         <i class="material-icons md-18">edit</i>
                                     </a>
 
-                                    <a href="{{ path('security_role_delete', {'roleId': role.id}) }}" title="Delete" class="btn btn-danger">
+                                    <a href="{{ path('security_role_delete', {'roleId': role.id}) }}" title="{% trans %}button.delete{% endtrans %}" class="btn btn-danger">
                                         <i class="material-icons md-18">clear</i>
                                     </a>
                                 </td>

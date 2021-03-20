@@ -7,6 +7,11 @@ title:
   scheduledtweets: Scheduled tweets
   tokens: Tokens
   tweets: Tweets
+tab:
+  account: Account
+  token: Token
+  secret: Secret
+  no_token: No token registered
 button:
   link_account: Link new account
 ...

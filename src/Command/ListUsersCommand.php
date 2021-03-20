@@ -9,6 +9,11 @@ use App\Entity\User;
 use RuntimeException;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
+/**
+ * @TODO Delete it (because not very secure) ? a template display it now if you are ROLE_ADMIN
+ * Class ListUsersCommand
+ * @package App\Command
+ */
 class ListUsersCommand extends Command
 {
     protected static $defaultName = 'app:list-users';

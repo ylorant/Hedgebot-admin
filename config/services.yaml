@@ -37,6 +37,16 @@ services:
     App\Command\SetupCommand:
         arguments: [ '@kernel', '%env(DATABASE_URL)%' ]
 
+    App\Command\CreateUserCommand:
+        arguments: [ '@user']
+
+    App\EventListener\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
+
+    user:
+        class: App\Service\UserService
+
     hedgebot_api:
         class: App\Service\ApiClientService
 
@@ -63,7 +73,7 @@ services:
 
     menu_generator:
         class: App\Service\MenuGeneratorService
-        arguments: [ '@kernel', '@translator' ]
+        arguments: [ '@kernel', '@security.helper', '@translator' ]
         calls:
             - [ setContainer,[ '@service_container' ] ]
 

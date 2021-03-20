@@ -39,11 +39,11 @@
                                     <td>{{ call.method }}</td>
                                     <td>{{ call.url }}</td>
                                     <td class="text-right">
-                                        <a href="{{ path('custom_calls_edit', {'id': call.id}) }}" title="Edit" class="btn btn-success">
+                                        <a href="{{ path('custom_calls_edit', {'id': call.id}) }}" title="{% trans %}button.edit{% endtrans %}" class="btn btn-success">
                                             <i class="material-icons md-18">edit</i>
                                         </a>
 
-                                        <a href="{{ path('custom_calls_delete', {'id': call.id}) }}" title="Delete" class="btn btn-danger">
+                                        <a href="{{ path('custom_calls_delete', {'id': call.id}) }}" title="{% trans %}button.delete{% endtrans %}" class="btn btn-danger">
                                             <i class="material-icons md-18">clear</i>
                                         </a>
                                     </td>

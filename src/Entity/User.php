@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use stdClass;
@@ -14,6 +15,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface
 {
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,7 +28,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $username;
+    public $username;
 
     /**
      * @ORM\Column(type="array", length=255)
@@ -41,6 +45,11 @@ class User implements UserInterface
      * @ORM\Column(type="object", nullable=true)
      */
     private $settings;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
 
     public function __construct()
     {
@@ -76,7 +85,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -114,6 +123,20 @@ class User implements UserInterface
     public function setSettings($settings): self
     {
         $this->settings = $settings;
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getLastLogin(): ?DateTime
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(): self
+    {
+        $this->lastLogin = new DateTime();
         return $this;
     }
 

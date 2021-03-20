@@ -29,9 +29,9 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Account</th>
-                                <th>Token</th>
-                                <th>Secret</th>
+                                <th>{% trans from 'twitter' %}tab.account{% endtrans %}</th>
+                                <th>{% trans from 'twitter' %}tab.token{% endtrans %}</th>
+                                <th>{% trans from 'twitter' %}tab.secret{% endtrans %}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -50,16 +50,15 @@
                                         <a href="https://twitter.com/{{ account }}" class="btn btn-primary" target="_blank">
                                             <i class="material-icons md-18">exit_to_app</i>
                                         </a>
-                                        <a href="{{ path('twitter_token_delete', {account: account}) }}" class="btn btn-danger">
+                                        <a href="{{ path('twitter_token_delete', {account: account}) }}" title="{% trans %}button.delete{% endtrans %}" class="btn btn-danger">
                                             <i class="material-icons md-18">clear</i>
-                                            <span>{% trans %}button.delete{% endtrans %}</span>
                                         </a>
                                     </td>
                                 </tr>
                             {% else %}
                                 <tr>
                                     <td colspan="4" class="text-center">
-                                        <em>No token registered</em>
+                                        <em>{% trans from 'twitter' %}tab.no_token{% endtrans %}</em>
                                     </td>
                                 </tr>
                             {% endfor %}

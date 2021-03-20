@@ -111,11 +111,13 @@
                                 <div class="info-container">
                                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</div>
                                     <div class="btn-group user-helper-dropdown">
-
-                                        <a href="{{ path('toggle-dark-mode') }}" class=" m-r-10" title="Toggle dark mode">
+                                        <a href="{{ path('user_edit', {'userId': app.user.id}) }}" class=" m-r-10" title="{% trans %}button.account{% endtrans %}">
+                                            <i class="material-icons">account_circle</i>
+                                        </a>
+                                        <a href="{{ path('toggle-dark-mode') }}" class=" m-r-10" title="{% trans %}button.dark_mode{% endtrans %}">
                                             <i class="zmdi zmdi-brightness-4"></i>
                                         </a>
-                                        <a title="Log out" href="{{ path('logout') }}">
+                                        <a href="{{ path('logout') }}" title="{% trans %}button.logout{% endtrans %}">
                                             <i class="material-icons">power_settings_new</i>
                                         </a>
                                     </div>

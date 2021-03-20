@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Routing;
 
 use Symfony\Component\Config\Loader\Loader;
@@ -11,8 +12,8 @@ abstract class AbstractModuleRouteLoader extends Loader
     private $modules;
     private $kernel;
 
-    const MODULES_NAMESPACE = "Modules";
-    const ROUTING_YAML = null;
+    public const MODULES_NAMESPACE = "Modules";
+    protected const ROUTING_YAML = null;
 
     public function __construct($kernel, $modules)
     {
@@ -29,7 +30,7 @@ abstract class AbstractModuleRouteLoader extends Loader
             if (is_subclass_of($module, ModuleInterface::class)) {
                 $moduleParts = explode('\\', $module);
                 $class = end($moduleParts);
-                $resource = '@'. $class. static::ROUTING_YAML;
+                $resource = '@' . $class . static::ROUTING_YAML;
                 $type = 'yaml';
                 $resourceFile = null;
 

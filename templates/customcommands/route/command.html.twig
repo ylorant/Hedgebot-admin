@@ -6,7 +6,7 @@
                     <span class="input-group-addon">!</span>
                     <div class="form-line">
                         <input type="text" name="name" class="form-control" value="{{ command.name }}" />
-                        <label class="form-label">Command</label>
+                        <label class="form-label">{% trans from 'customcommands' %}form.command{% endtrans %}</label>
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                            data-context=".command"
                            value="{{ command.text }}"
                     />
-                    <label class="form-label">Reply text</label>
+                    <label class="form-label">{% trans from 'customcommands' %}form.reply_text{% endtrans %}</label>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                             <option value="{{ channel }}" {{ channel in command.channels ? "selected" : "" }}>{{ channel }}</option>
                         {% endfor %}
                     </select>
-                    <label class="form-label">Channels</label>
+                    <label class="form-label">{% trans %}form.channels{% endtrans %}</label>
                 </div>
             </div>
         </div>

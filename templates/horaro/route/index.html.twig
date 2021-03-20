@@ -53,14 +53,12 @@
                                                 <i class="material-icons md-18">exit_to_app</i>
                                             </a>
                                         <div class="pull-right">
-                                            <a class="btn btn-success" href="{{ path('horaro_schedule_edit', {'identSlug': slug }) }}">
+                                            <a class="btn btn-success" title="{% trans %}button.edit{% endtrans %}" href="{{ path('horaro_schedule_edit', {'identSlug': slug }) }}">
                                                 <i class="material-icons md-18">edit</i>
-                                                <span>{% trans %}button.update{% endtrans %}</span>
                                             </a>
 
-                                            <a class="btn btn-danger" href="{{ path('horaro_schedule_delete', {'identSlug': slug }) }}">
+                                            <a class="btn btn-danger" title="{% trans %}button.delete{% endtrans %}" href="{{ path('horaro_schedule_delete', {'identSlug': slug }) }}">
                                                 <i class="material-icons md-18">clear</i>
-                                                <span>{% trans %}button.delete{% endtrans %}</span>
                                             </a>
                                         </div>
                                     </td>

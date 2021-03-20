@@ -1,0 +1,58 @@
+{% extends 'core/base.html.twig' %}
+{% block title %}{% trans %}title.users{% endtrans %}{% endblock %}
+
+{% block main_title %}
+    <h3>
+        {% trans %}title.users{% endtrans %}
+        <div class="pull-right">
+            <a class="btn btn-primary waves-effect" href="{{ path('user_new') }}">
+                <i class="material-icons">add</i>
+                <span>{% trans %}button.new_user{% endtrans %}</span>
+            </a>
+        </div>
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>{% trans %}title.users{% endtrans %}</h2>
+                </div>
+
+                <div class="body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>{% trans %}tab.username{% endtrans %}</th>
+                            <th>{% trans %}tab.roles{% endtrans %}</th>
+                            <th>{% trans %}tab.last_login{% endtrans %}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.roles is not empty ? user.roles|join(', ') : "-" }}</td>
+                                <td>{{ user.lastlogin|format_datetime() }}</td>
+                                <td class="text-right">
+                                    <a href="{{ path('user_edit', {'userId': user.id}) }}" title="{% trans %}button.edit{% endtrans %}" class="btn btn-success">
+                                        <i class="material-icons md-18">edit</i>
+                                    </a>
+                                    <a href="{{ path('user_delete', {'userId': user.id}) }}" title="{% trans %}button.delete{% endtrans %}" class="btn btn-danger">
+                                        <i class="material-icons md-18">clear</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

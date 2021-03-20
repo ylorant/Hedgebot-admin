@@ -1,14 +1,13 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}Twitch API - Tokens - Hedgebot{% endblock %}
+{% block title %}{% trans %}title.twitch_api{% endtrans %}{% endblock %}
 
 {% block main_title %}
     <h3>
-        Twitch API - Tokens
-
+        {% trans %}title.twitch_api{% endtrans %}
         <div class="pull-right">
             <a class="btn btn-primary waves-effect" data-toggle="modal" data-target="#new-token-modal">
                 <i class="material-icons">add</i>
-                <span>New access token</span>
+                <span>{% trans %}button.new_access_token{% endtrans %}</span>
             </a>
         </div>
     </h3>
@@ -19,16 +18,16 @@
         <div class="col-xs-12">
             <div class="card">
                 <div class="header">
-                    <h2>Access tokens</h2>
+                    <h2>{% trans %}title.access_tokens{% endtrans %}</h2>
                 </div>
 
                 <div class="body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Channel</th>
-                                <th>Access Token</th>
-                                <th>Refresh Token</th>
+                                <th>{% trans %}tab.channel{% endtrans %}</th>
+                                <th>{% trans %}tab.access_token{% endtrans %}</th>
+                                <th>{% trans %}tab.refresh_token{% endtrans %}</th>
                                 <th></th>
                             </tr>
                         </thead>

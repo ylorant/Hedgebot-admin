@@ -2,18 +2,28 @@
 
 namespace App\Command;
 
+use App\Service\UserService;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
-use App\Entity\User;
 
 class CreateUserCommand extends Command
 {
     protected static $defaultName = 'app:create-user';
+
+    /**
+     * @var UserService
+     */
+    private $userService;
+
+    public function __construct(UserService $userService)
+    {
+        parent::__construct();
+        $this->userService = $userService;
+    }
 
     protected function configure()
     {
@@ -22,100 +32,58 @@ class CreateUserCommand extends Command
             ->setHelp('Use this command to create an user on Hedgebot\'s public admin.');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|void
+     * @throws ORMException
+     */
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $credentials = $this->askForCredentials($input, $output);
-
-        // Check if database exists
-        $databasePath = $this->getContainer()->getParameter('DATABASE_URL');
-
-        if (!is_file($databasePath)) {
-            $output->writeln(["", "Notice: Database has not been found. Creating it.", ""]);
-            $output->write("Creating database...");
-
-            $command = $this->getApplication()->find('doctrine:database:create');
-            $command->run(new ArrayInput(['command' => 'doctrine:database:create']), new NullOutput());
-
-            // Updating schema (tables)
-            $output->writeln("OK");
-            $output->write("Creating schema...");
-
-            $command = $this->getApplication()->find('doctrine:schema:update');
-            $command->run(new ArrayInput(['command' => 'doctrine:schema:update', '--force' => true]), new NullOutput());
-
-            $output->writeln("OK");
-        }
 
         // Creating the user
         $output->write("Creating user...");
 
-        $user = new User();
-        $user->setUsername($credentials["username"]);
+        if (!$this->userService->create($credentials)) {
+            $output->writeln("<error>Failed</error>");
+            $errors = $this->userService->getErrors();
+            foreach ($errors as $error) {
+                $output->writeln($error);
+            }
+            return 134;
+        }
 
-        // Hashing the password using the password_encoder
-        $encoder = $this->getContainer()->get('security.password_encoder');
-        $encodedPassword = $encoder->encodePassword($user, $credentials["password"]);
-
-        $user->setPassword($encodedPassword);
-        //$user->setRoles(["ROLE_USER"]);
-
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $em->persist($user);
-        $em->flush();
-
-        $output->writeln("OK");
+        $output->writeln("<info>OK</info>");
+        return 0;
     }
 
-
-    protected function askForCredentials(InputInterface $input, OutputInterface $output)
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return array
+     */
+    protected function askForCredentials(InputInterface $input, OutputInterface $output): array
     {
         $helper = $this->getHelper('question');
 
-        $loginQuestion = new Question("Username (admin): ", "admin");
-        $passwordQuestion = new Question("Password: ");
-        $passwordConfirmQuestion = new Question("Confirm password: ");
+        $loginQuestion = new Question("<question>Username (admin):</question> ", "admin");
+        $passwordQuestion = new Question("<question>Password:</question> ");
+        $passwordConfirmQuestion = new Question("<question>Confirm password:</question> ");
 
         $passwordQuestion->setHidden(true);
         $passwordConfirmQuestion->setHidden(true);
 
         $output->writeln(["Enter new user's credentials below.", ""]);
 
-        $login = null;
-        $password = null;
-
-        /** @var EntityRepository $userRepository */
-        $userRepository = $this->getContainer()->get('doctrine')->getRepository(User::class);
-
-        while (true) {
-            $login = $helper->ask($input, $output, $loginQuestion);
-            $user = $userRepository->findOneBy(['username' => $login]);
-
-            if (empty($user)) {
-                break;
-            } else {
-                $output->writeln(["This username already exists.", ""]);
-            }
-        }
-
-        while (true) {
-            $password = $helper->ask($input, $output, $passwordQuestion);
-            $passwordConfirmation = $helper->ask($input, $output, $passwordConfirmQuestion);
-
-            // Exit the loop when the passwords are good
-            if ($password == $passwordConfirmation) {
-                break;
-            } else {
-                // Passwords are incorrect, show the error and loop
-                $output->writeln([
-                    "The password do not match.",
-                    ""
-                ]);
-            }
-        }
+        $login = $helper->ask($input, $output, $loginQuestion);
+        $password = $helper->ask($input, $output, $passwordQuestion);
+        $passwordConfirmation = $helper->ask($input, $output, $passwordConfirmQuestion);
 
         return [
             "username" => $login,
-            "password" => $password
+            "password" => $password,
+            "password_confirmation" => $passwordConfirmation
         ];
     }
 }

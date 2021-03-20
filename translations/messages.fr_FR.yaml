@@ -7,21 +7,40 @@ login:
   password: Mot de passe
 title:
   dashboard: Tableau de bord
-  permissions: Droits
-  twitch: Jetons Twitch
+  permissions: Autorisations
+  roles: Rôles
+  users: Utilisateurs
+  twitch_api: API Twitch
+  access_tokens: Jetons d'accès
   settings: Réglages admin.
   widgets: Widgets
   twitch_chat: Chat Twitch
   customcalls: Appels perso.
+tab:
+  role: Rôle
+  roles: Rôles
+  rights: Droits
+  twitch_nicknames: Noms Twitch
+  channel: Chaîne
+  access_token: Jeton d'accès utilisateur
+  refresh_token: Jeton d'accès applicatif
+  username: Identifiant de connexion
+  last_login: Dernière connexion
 form:
   enabled: Activé
   channel: Chaîne
   channels: Chaînes
 button:
+  new_user: Nouvel utilisateur
   new_role: Nouveau rôle
+  new_access_token: Nouveau token d'accès
   edit: Modifier
+  save: Enregistrer
   delete: Supprimer
   update: Mettre à jour
+  account: Compte
+  dark_mode: Basculer en mode sombre
+  logout: Déconnexion
 label:
   title: Titre
   game: Jeu

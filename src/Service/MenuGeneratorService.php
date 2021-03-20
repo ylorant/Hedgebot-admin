@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use Symfony\Component\Config\Resource\FileResource;
@@ -7,6 +8,7 @@ use App\Plugin\Menu\MenuItemList;
 use App\Interfaces\MenuProviderInterface;
 use App\Plugin\Menu\MenuItem;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -19,6 +21,10 @@ class MenuGeneratorService
      */
     private $kernel;
     /**
+     * @var Security
+     */
+    private $security;
+    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -27,11 +33,13 @@ class MenuGeneratorService
      * Constructor.
      *
      * @param KernelInterface $kernel
+     * @param Security $security
      * @param TranslatorInterface $translator
      */
-    public function __construct(KernelInterface $kernel, TranslatorInterface $translator)
+    public function __construct(KernelInterface $kernel, Security $security, TranslatorInterface $translator)
     {
         $this->kernel = $kernel;
+        $this->security = $security;
         $this->translator = $translator;
     }
 
@@ -79,9 +87,14 @@ class MenuGeneratorService
         // Sub-menu
         $baseItem
             ->header('Core')->end()
-            ->item($this->translator->trans('title.dashboard'), 'dashboard', 'dashboard')->end()
-            ->item($this->translator->trans('title.permissions'), 'security_index', 'lock')->end()
-            ->item($this->translator->trans('title.twitch'), 'twitch_index', "zmdi:twitch")->end()
+            ->item($this->translator->trans('title.dashboard'), 'dashboard', 'dashboard')->end();
+
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $baseItem->item($this->translator->trans('title.users'), 'users_index', 'account_box')->end();
+        }
+
+        $baseItem->item($this->translator->trans('title.permissions'), 'security_index', 'lock')->end()
+            ->item($this->translator->trans('title.twitch_api'), 'twitch_index', "zmdi:twitch")->end()
             ->item($this->translator->trans('title.settings'), null, 'settings')
             ->children()
             ->item($this->translator->trans('title.widgets'), 'settings_widgets')->end()
