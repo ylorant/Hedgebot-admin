@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Service\TwitchClientService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use App\Form\TwitchTokenType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

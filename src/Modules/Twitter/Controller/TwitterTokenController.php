@@ -2,7 +2,7 @@
 namespace App\Modules\Twitter\Controller;
 
 use App\Controller\BaseController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class TwitterTokenController extends BaseController

@@ -4,7 +4,7 @@ namespace App\Modules\Timer\Controller\Front;
 use App\Controller\BaseController;
 use DateTime;
 use App\Modules\Timer\Helper\TimerHelper;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;

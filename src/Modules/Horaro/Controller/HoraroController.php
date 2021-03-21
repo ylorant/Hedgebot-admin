@@ -2,7 +2,7 @@
 namespace App\Modules\Horaro\Controller;
 
 use App\Controller\BaseController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Modules\Horaro\Form\ScheduleType;
 use App\Modules\Horaro\Form\ScheduleURLType;

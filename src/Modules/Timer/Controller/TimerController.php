@@ -4,7 +4,7 @@ namespace App\Modules\Timer\Controller;
 use DateTime;
 use App\Controller\BaseController;
 use App\Modules\Timer\Helper\TimerHelper;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class TimerController extends BaseController

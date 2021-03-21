@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\DashboardLayout;
@@ -7,8 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -119,8 +119,7 @@ class SettingsController extends BaseController
      * using Javascript. And anyway, we mainly save the settings as a JSON
      * object anyway.
      *
-     * @Route("/settings/widgets/save", options = { "expose"=true }, name="settings_widgets_save")
-     * @Method("POST")
+     * @Route("/settings/widgets/save", options = { "expose"=true }, name="settings_widgets_save", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */

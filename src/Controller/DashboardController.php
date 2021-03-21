@@ -4,7 +4,7 @@ namespace App\Controller;
 use App\Entity\DashboardLayout;
 use App\Service\DashboardWidgetsManagerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Widget\DefaultWidget\DefaultWidget;
 use Symfony\Component\HttpFoundation\Cookie;

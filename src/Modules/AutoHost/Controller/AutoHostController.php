@@ -3,7 +3,7 @@ namespace App\Modules\AutoHost\Controller;
 
 use App\Controller\BaseController;
 use App\Helper\DateTimeHelper;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

@@ -2,7 +2,7 @@
 namespace App\Modules\StreamControl\Controller;
 
 use App\Controller\BaseController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
