@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\UserType;
 use App\Service\UserService;
+use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -39,38 +43,114 @@ class UserController extends BaseController
     }
 
     // @TODO find a way to block access to edit if user connected is different that userId asked
+
     /**
      * @Route ("/user/new", name="user_new")
      * @Route ("/user/edit/{userId}", name="user_edit")
+     * @param Request $request
      * @param UserService $userService
      * @param int|null $userId
      * @return RedirectResponse|Response
+     * @throws ORMException
      */
-    public function setUser(UserService $userService, int $userId = null): Response
+    public function setUser(Request $request, UserService $userService, int $userId = null): Response
     {
-        $user = $userService->findOneById($userId);
-
-        // Add breadcrumb
+        // Add breadcrumb + allow "new user" only for admins
         $router = $this->get('router');
         if (!empty($userId)) {
-            $this->breadcrumbs->addItem($user->username, $router->generate("user_edit", ['userId' => $userId]));
+            $this->breadcrumbs->addItem("form.edit_user", $router->generate("user_edit", ['userId' => $userId]));
         } else {
-            $this->breadcrumbs->addItem("New user", $router->generate("user_new"));
+            $this->denyAccessUnlessGranted(User::ROLE_ADMIN);
+            $this->breadcrumbs->addItem("form.new_user", $router->generate("user_new"));
         }
 
-        return false;
+        $user = new User();
+        $isAdmin = $this->isGranted(User::ROLE_ADMIN);
+
+        // Get the edited entity if ID is present
+        if (!empty($userId)) {
+            $user = $userService->findOneById($userId);
+            if (empty($user)) {
+                $this->addFlash('danger', $this->translator->trans('flash.user_not_found'));
+                return $this->redirect($this->generateUrl('users_index'));
+            }
+            if ($user !== $this->getUser() && !$isAdmin) {
+                // Non-admin user attempt to edit another user. No specific message for security purposes.
+                return $this->redirect($this->generateUrl('dashboard'));
+            }
+        }
+
+        // Create the form
+        $form = $this->createForm(UserType::class, $user, [
+            'appRoles' => $userService->getAvailableAppRoles(),
+            'isNew' => empty($userId),
+            'allowAdminEdit' => $isAdmin
+        ]);
+
+        // Handle the form
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userData = $form->getData();
+
+            if (empty($userId)) {
+                $userCreated = $userService->create($userData);
+                if ($userCreated) {
+                    $this->addFlash('success', $this->translator->trans('flash.user_created'));
+                    return $this->redirect($this->generateUrl('users_index'));
+                } else {
+                    $errors = '';
+                    foreach ($userService->getErrors() as $error) {
+                        $errors .= $error . ', ';
+                    }
+                    $this->addFlash('danger', 'User cannot be created. Reasons: ' . substr($errors, 0, -2));
+                    return $this->redirect($router->generate('users_index'));
+                }
+            } else {
+                $userSaved = $userService->update($userData);
+                if ($userSaved) {
+                    $this->addFlash('success', $this->translator->trans('flash.user_saved'));
+                } else {
+                    $errors = '';
+                    foreach ($userService->getErrors() as $error) {
+                        $errors .= $error . ', ';
+                    }
+                    $this->addFlash('danger', 'Cannot save user. Reasons: ' . substr($errors, 0, -2));
+                }
+            }
+
+            return $this->redirect($router->generate("user_edit", ['userId' => $userId]));
+        }
+
+        // Fill template vars
+        $templateVars = [
+            'user' => $user,
+            'form' => $form->createView()
+        ];
+        return $this->render('core/route/users/user.html.twig', $templateVars);
     }
 
     /**
      * @Route ("/user/delete/{userId}", name="user_delete")
+     * @IsGranted("ROLE_ADMIN")
      * @param UserService $userService
      * @param int $userId
      * @return RedirectResponse|Response
+     * @throws ORMException
      */
     public function deleteUser(UserService $userService, int $userId): Response
     {
-        $user = $userService->findOneById($userId);
+        $userDeleted = $userService->delete($userId);
 
-        return false;
+        if ($userDeleted) {
+            $this->addFlash('success', $this->translator->trans('flash.user_deleted'));
+        } else {
+            $errors = '';
+            foreach ($userService->getErrors() as $error) {
+                $errors .= $error . ', ';
+            }
+            $this->addFlash('danger', 'Cannot delete user. Reasons: ' . substr($errors, 0, -2));
+        }
+
+        return $this->redirect($this->generateUrl('users_index'));
     }
 }

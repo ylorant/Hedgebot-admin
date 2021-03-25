@@ -2,12 +2,13 @@
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Service\UserService;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 class CreateUserCommand extends Command
@@ -41,11 +42,17 @@ class CreateUserCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $credentials = $this->askForCredentials($input, $output);
+        $roles = $this->askForRoles($input, $output);
 
         // Creating the user
         $output->write("Creating user...");
 
-        if (!$this->userService->create($credentials)) {
+        $user = new User();
+        $user->setUsername($credentials['username']);
+        $user->setPlainPassword($credentials['password']);
+        $user->setRoles($roles);
+
+        if (!$this->userService->create($user)) {
             $output->writeln("<error>Failed</error>");
             $errors = $this->userService->getErrors();
             foreach ($errors as $error) {
@@ -85,5 +92,28 @@ class CreateUserCommand extends Command
             "password" => $password,
             "password_confirmation" => $passwordConfirmation
         ];
+    }
+
+    /**
+     * @TODO find a way to ask roles like web interface (multi-select depends of predefined list)
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return array
+     */
+    protected function askForRoles(InputInterface $input, OutputInterface $output): array
+    {
+        $roles = [];
+        $helper = $this->getHelper('question');
+
+        $rolesQuestion = new ConfirmationQuestion(
+            "<question>This user must be an admin user ? (n)</question> ",
+            false
+        );
+
+        if ($helper->ask($input, $output, $rolesQuestion)) {
+            $roles[] = User::ROLE_ADMIN;
+        }
+
+        return $roles;
     }
 }

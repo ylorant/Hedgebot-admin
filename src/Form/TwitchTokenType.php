@@ -17,7 +17,7 @@ class TwitchTokenType extends AbstractType
             ->add('refresh_token', HiddenType::class)
             ->add('channel', TextType::class, ['label' => 'Channel'])
             ->add('submit', SubmitType::class, [
-                'label' => 'Save',
+                'label' => 'button.save',
                 'attr' => [
                     'class' => 'btn-primary waves-effect'
                 ]

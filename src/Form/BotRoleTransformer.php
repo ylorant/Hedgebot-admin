@@ -1,14 +1,14 @@
 <?php
+
 namespace App\Form;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use stdClass;
 
 /** Role data transformer.
- * Transforms the data from the role representation given by the API (the norm model)
+ * Transforms the data from the role representation given by the Bot API (the norm model)
  * to the data that will be useful for the form to be rendered correctly.
  */
-class RoleTransformer implements DataTransformerInterface
+class BotRoleTransformer implements DataTransformerInterface
 {
     protected $availableRights;
     protected $roles;
@@ -18,6 +18,7 @@ class RoleTransformer implements DataTransformerInterface
      *
      * @param array $availableRights A simple array containing the available rights that have to be listed
      *                               in the right list field.
+     * @param array $roles
      */
     public function __construct(array $availableRights, array $roles)
     {
@@ -32,20 +33,19 @@ class RoleTransformer implements DataTransformerInterface
      * set on the given data.
      *
      * @param object $data The data to transform into its form view.
-     * @return object The transformed data.
+     * @return object|array The transformed data.
      */
     public function transform($data)
     {
         $rights = [];
         $setRights = $data->rights ?? [];
         $inheritedRights = $data->inheritedRights ?? [];
-
         // Cycle through the available rights to create each row for the rights list
         foreach ($this->availableRights as $right) {
             $normalizedRight = self::normalizeRight($right);
             $rights[$normalizedRight] = [
                 'override' => isset($setRights[$right]),
-                'grant' => !empty($setRights[$right]) || !empty($inheritedRights[$right]) ? true : false
+                'grant' => !empty($setRights[$right]) || !empty($inheritedRights[$right])
             ];
         }
 
@@ -69,7 +69,6 @@ class RoleTransformer implements DataTransformerInterface
     {
         $roleRights = [];
         $data = (object) $data;
-
         // Cycle through all the rights in the data to keep only the overriden ones
         foreach ($data->rights as $rightName => $right) {
             $rightName = self::denormalizeRight($rightName);
@@ -79,7 +78,6 @@ class RoleTransformer implements DataTransformerInterface
         }
 
         $data->rights = $roleRights;
-
         return $data;
     }
 
@@ -88,12 +86,16 @@ class RoleTransformer implements DataTransformerInterface
      * @param string $right The right name to normalize.
      * @return string       The normalized right name.
      */
-    public static function normalizeRight($right)
+    public static function normalizeRight(string $right): string
     {
         return str_replace('/', '-', $right);
     }
 
-    public static function denormalizeRight($right)
+    /**
+     * @param string $right
+     * @return string
+     */
+    public static function denormalizeRight(string $right): string
     {
         return str_replace('-', '/', $right);
     }

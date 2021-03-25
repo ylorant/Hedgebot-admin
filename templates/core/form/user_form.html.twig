@@ -1,0 +1,19 @@
+{% use 'core/form/material_form.html.twig' %}
+
+{%- block right_row -%}
+    <div class="row right-row">
+        <div class="col-xs-2 text-center">
+            {{ form_widget(form.children.override) }}
+        </div>
+
+        <div class="col-xs-8">
+            <label for="{{ form.children.override.vars.id }}">
+                {{ form.vars.label }}
+            </label>
+        </div>
+
+        <div class="col-xs-2 text-right">
+            {{ form_widget(form.children.grant) }}
+        </div>
+    </div>
+{%- endblock right_row -%}

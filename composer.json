@@ -18,6 +18,9 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
+        "ext-xml": "*",
+        "ext-sqlite": "*",
+        "ext-curl": "*",
         "ext-intl": "*",
         "composer/composer": "^2.0.9",
         "symfony/flex": "^1.12.2",

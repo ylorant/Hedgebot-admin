@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\User;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use App\Plugin\Menu\MenuItemList;
@@ -89,11 +90,11 @@ class MenuGeneratorService
             ->header('Core')->end()
             ->item($this->translator->trans('title.dashboard'), 'dashboard', 'dashboard')->end();
 
-        if ($this->security->isGranted('ROLE_ADMIN')) {
+        if ($this->security->isGranted(User::ROLE_ADMIN)) {
             $baseItem->item($this->translator->trans('title.users'), 'users_index', 'account_box')->end();
         }
 
-        $baseItem->item($this->translator->trans('title.permissions'), 'security_index', 'lock')->end()
+        $baseItem->item($this->translator->trans('title.permissions'), 'permissions_index', 'lock')->end()
             ->item($this->translator->trans('title.twitch_api'), 'twitch_index', "zmdi:twitch")->end()
             ->item($this->translator->trans('title.settings'), null, 'settings')
             ->children()

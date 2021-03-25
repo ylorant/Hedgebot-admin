@@ -12,12 +12,12 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use App\Form\Type\RightType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class RoleType extends AbstractType
+class BotRoleType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('rights');
-        $resolver->setRequired('roles');
+        $resolver->setRequired('botRoles');
         $resolver->setDefault('allowIdEdit', false);
     }
 
@@ -25,7 +25,7 @@ class RoleType extends AbstractType
     {
         // Build parent roles choice list
         $rolesChoiceList = [];
-        foreach ($options['roles'] as $role) {
+        foreach ($options['botRoles'] as $role) {
             $rolesChoiceList[$role->name] = $role->id;
         }
 
@@ -52,12 +52,12 @@ class RoleType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Save',
+                'label' => 'button.save',
                 'attr' => [
                     'class' => 'btn-lg btn-primary waves-effect'
                 ]
             ]);
 
-        $builder->addModelTransformer(new RoleTransformer($options['rights'], $options['roles']));
+        $builder->addModelTransformer(new BotRoleTransformer($options['rights'], $options['botRoles']));
     }
 }

@@ -36,8 +36,12 @@ class BaseController extends AbstractController
      * @param $apiAccessToken
      * @throws ClientIdRequiredException
      */
-    public function __construct(RouterInterface $routerInterface, TranslatorInterface $translator, $apiBaseUrl, $apiAccessToken)
-    {
+    public function __construct(
+        RouterInterface $routerInterface,
+        TranslatorInterface $translator,
+        $apiBaseUrl,
+        $apiAccessToken
+    ) {
         $this->breadcrumbs = new Breadcrumbs();
         $this->apiClientService = new ApiClientService($apiBaseUrl, $apiAccessToken);
         $this->twitchClientService = new TwitchClientService($routerInterface);

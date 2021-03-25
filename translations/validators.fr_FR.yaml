@@ -1,0 +1,3 @@
+user.username.not_blank: Le champ "Identifiant de connexion" ne peut être vide.
+user.username.already_used: L'identifiant choisi est déjà utilisé.
+user.password.not_matched: Les deux champs du nouveau mot de passe doivent correspondre.

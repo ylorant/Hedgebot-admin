@@ -5,13 +5,15 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Serializable;
 use stdClass;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="user")
+ * @UniqueEntity(fields={"username"}, message="user.username.already_used")
  */
 class User implements UserInterface
 {
@@ -27,11 +29,12 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="user.username.not_blank")
      */
     public $username;
 
     /**
-     * @ORM\Column(type="array", length=255)
+     * @ORM\Column(type="json", length=255)
      */
     private $roles = [];
 
@@ -40,6 +43,13 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $password;
+
+    /**
+     * @Assert\NotBlank(allowNull = true)
+     * @Assert\Length(min=8)
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
 
     /**
      * @ORM\Column(type="object", nullable=true)
@@ -112,6 +122,16 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+    }
+
     /**
      * @see UserInterface
      */
@@ -157,6 +177,6 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 }

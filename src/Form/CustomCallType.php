@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -27,7 +28,7 @@ class CustomCallType extends AbstractType implements DataTransformerInterface
             ])
             ->add('url', TextType::class, ['label' => "URL"])
             ->add('submit', SubmitType::class, [
-                'label' => 'Save',
+                'label' => 'button.save',
                 'attr' => [
                     'class' => 'btn-lg btn-primary waves-effect'
                 ]
@@ -46,30 +47,36 @@ class CustomCallType extends AbstractType implements DataTransformerInterface
         $builder->addModelTransformer($this);
     }
 
-    public function transform($data)
+    /**
+     * {@inheritDoc}
+     */
+    public function transform($value)
     {
         $formParameters = [];
 
-        foreach($data->getParameters() as $key => $value) {
+        foreach ($value->getParameters() as $key => $val) {
             $formParameters[] = [
                 "key" => $key,
-                "value" => $value
+                "value" => $val
             ];
         }
 
-        $data->setParameters($formParameters);
-        return $data;
+        $value->setParameters($formParameters);
+        return $value;
     }
 
-    public function reverseTransform($data)
+    /**
+     * {@inheritDoc}
+     */
+    public function reverseTransform($value)
     {
         $objParameters = [];
 
-        foreach($data->getParameters() as $parameter) {
+        foreach ($value->getParameters() as $parameter) {
             $objParameters[$parameter['key']] = $parameter['value'];
         }
 
-        $data->setParameters($objParameters);
-        return $data;
+        $value->setParameters($objParameters);
+        return $value;
     }
 }

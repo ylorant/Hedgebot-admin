@@ -5,10 +5,10 @@ namespace App\Service;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 class UserService
 {
@@ -22,6 +22,11 @@ class UserService
      * @var ValidationService
      */
     private $validator;
+    /**
+     * @var RoleHierarchyInterface
+     */
+    private $roleHierarchy;
+    /**
     /**
      * @var UserPasswordEncoderInterface
      */
@@ -38,17 +43,42 @@ class UserService
     public function __construct(
         EntityManagerInterface $em,
         ValidationService $validator,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        RoleHierarchyInterface $roleHierarchy
     ) {
         $this->em = $em;
         $this->validator = $validator;
         $this->passwordEncoder = $passwordEncoder;
+        $this->roleHierarchy = $roleHierarchy;
         $this->repository = $this->em->getRepository(User::class);
     }
 
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
+    }
+
+    /**
+     * Return available app roles.
+     * Useful for app role choices on user creation/edition.
+     * @TODO find a way for modules to insert their own roles without edit this method each time
+     *
+     * @return string[]
+     */
+    public function getAvailableAppRoles(): array
+    {
+        $appRoles[User::ROLE_USER] = [
+            'name' => User::ROLE_USER,
+            'description' => 'Default user role. Access to main features.',
+            'hierarchy' => $this->roleHierarchy->getReachableRoleNames([User::ROLE_USER])
+        ];
+        $appRoles[User::ROLE_ADMIN] = [
+            'name' => User::ROLE_ADMIN,
+            'description' => 'Administrator role. Access to everything.',
+            'hierarchy' => $this->roleHierarchy->getReachableRoleNames([User::ROLE_ADMIN])
+        ];
+
+        return $appRoles;
     }
 
     /**
@@ -95,44 +125,24 @@ class UserService
 
     /**
      * Create a new user
-     * @param $credentials
+     * @param User $user
      * @return bool
      * @throws ORMException
      */
-    public function create($credentials = []): bool
+    public function create(User $user): bool
     {
-        $username = isset($credentials['username']) ? $credentials['username'] : "";
-        $password = isset($credentials['password']) ? $credentials['password'] : "";
-        $passwordConfirmation = isset($credentials['password_confirmation']) ?
-            $credentials['password_confirmation'] : "";
+        $isValid = $this->validator->validate($user);
+        if ($isValid) {
+            $password = $this->passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+            $this->repository->save($user);
 
-        $errors = [];
-        if ($this->findOneByUsername($username)) {
-            $errors[] = "This username already exists.";
-        }
-        if ($password != $passwordConfirmation) {
-            $errors[] = "Password does not match the password confirmation.";
-        }
-        if (strlen($password) < 8) {
-            $errors[] = "Password should be at least 8 characters.";
+            $this->user = $user;
+            return true;
+        } else {
+            $errors = $this->validator->getErrors();
         }
 
-        if (!$errors) {
-            $user = new User();
-            $encodedPassword = $this->passwordEncoder->encodePassword($user, $password);
-            $user->setUsername($username);
-            $user->setPassword($encodedPassword);
-
-            $isValid = $this->validator->validate($user);
-            if ($isValid) {
-                $this->repository->save($user);
-
-                $this->user = $user;
-                return true;
-            } else {
-                $errors = $this->validator->getErrors();
-            }
-        }
 
         $this->errors = $errors;
         return false;
@@ -140,12 +150,46 @@ class UserService
 
     /**
      * @param User $user
+     * @return bool
+     * @throws ORMException
      */
-    public function update(User $user): void
+    public function update(User $user): bool
     {
-        try {
-            $this->repository->save($user);
-        } catch (OptimisticLockException | ORMException $e) {
+        $userExist = $this->findOneById($user->getId());
+
+        if ($userExist instanceof User) {
+            $isValid = $this->validator->validate($user);
+            if ($isValid) {
+                if (!empty($user->getPlainPassword())) {
+                    $password = $this->passwordEncoder->encodePassword($user, $user->getPlainPassword());
+                    $user->setPassword($password);
+                }
+                $this->repository->save($user);
+                return true;
+            }
+        } else {
+            $this->errors[] = 'user does not exist';
         }
+
+        $this->errors = $this->validator->getErrors();
+        return false;
+    }
+
+
+    /**
+     * @param int $userId
+     * @return bool
+     * @throws ORMException
+     */
+    public function delete(int $userId): bool
+    {
+        $userExist = $this->findOneById($userId);
+
+        if ($userExist instanceof User) {
+            $this->repository->delete($userExist);
+            return true;
+        }
+
+        return false;
     }
 }

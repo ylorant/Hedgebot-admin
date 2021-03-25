@@ -1,10 +1,6 @@
 # Main translation file (WebAdmin core, basic forms, ...)
 # Locale: fr-FR, French (France)
 ---
-login:
-  start_session: Se connecter pour démarrer votre session
-  username: Identifiant
-  password: Mot de passe
 title:
   dashboard: Tableau de bord
   permissions: Autorisations
@@ -19,17 +15,36 @@ title:
 tab:
   role: Rôle
   roles: Rôles
+  bot_roles: Rôles du bot
+  app_roles: Rôles de l'interface web
   rights: Droits
   twitch_nicknames: Noms Twitch
   channel: Chaîne
   access_token: Jeton d'accès utilisateur
   refresh_token: Jeton d'accès applicatif
+  user_profile: Profil utilisateur
   username: Identifiant de connexion
   last_login: Dernière connexion
+  name: Nom
+  description: Description
 form:
+  start_session: Se connecter pour démarrer votre session
+  id: Id
+  username: Identifiant
   enabled: Activé
   channel: Chaîne
   channels: Chaînes
+  title: Titre
+  game: Jeu
+  new_role: Création de rôle
+  edit_role: Edition de rôle
+  new_user: Création d'un utilisateur
+  edit_user: Edition d'un utilisateur
+  password: Mot de passe
+  current_password: Mot de passe actuel
+  current_password_help: Sécurité pour valider vos modifications
+  new_password: Nouveau mot de passe
+  password_confirmation: Confirmation du mot de passe
 button:
   new_user: Nouvel utilisateur
   new_role: Nouveau rôle
@@ -40,8 +55,11 @@ button:
   update: Mettre à jour
   account: Compte
   dark_mode: Basculer en mode sombre
+  login: Connexion
   logout: Déconnexion
-label:
-  title: Titre
-  game: Jeu
+flash:
+  user_created: Utilisateur créé.
+  user_saved: Utilisateur sauvegardé.
+  user_deleted: Utilisateur supprimé.
+  user_not_found: Utilisateur introuvable.
 ...

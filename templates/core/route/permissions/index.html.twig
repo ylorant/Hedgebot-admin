@@ -5,7 +5,7 @@
     <h3>
         {% trans %}title.permissions{% endtrans %}
         <div class="pull-right">
-            <a class="btn btn-primary waves-effect" href="{{ path('security_role_new') }}">
+            <a class="btn btn-primary waves-effect" href="{{ path('permissions_role_new') }}">
                 <i class="material-icons">add</i>
                 <span>{% trans %}button.new_role{% endtrans %}</span>
             </a>
@@ -18,7 +18,7 @@
         <div class="col-xs-12">
             <div class="card">
                 <div class="header">
-                    <h2>Roles</h2>
+                    <h2>{% trans %}tab.bot_roles{% endtrans %}</h2>
                 </div>
 
                 <div class="body">
@@ -33,18 +33,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for role in roles %}
+                            {% for role in bot_roles %}
                             <tr>
                                 <td>{{ role.id }}</td>
                                 <td>{{ role.name }}</td>
                                 <td>{{ role.parent is not empty ? roles[role.parent].name : "-" }}</td>
                                 <td>{{ role.default ? "Yes" : "No" }}</td>
                                 <td class="text-right">
-                                    <a href="{{ path('security_role_edit', {'roleId': role.id}) }}" title="{% trans %}button.edit{% endtrans %}" class="btn btn-success">
+                                    <a href="{{ path('permissions_role_edit', {'roleId': role.id}) }}" title="{% trans %}button.edit{% endtrans %}" class="btn btn-success">
                                         <i class="material-icons md-18">edit</i>
                                     </a>
 
-                                    <a href="{{ path('security_role_delete', {'roleId': role.id}) }}" title="{% trans %}button.delete{% endtrans %}" class="btn btn-danger">
+                                    <a href="{{ path('permissions_role_delete', {'roleId': role.id}) }}" title="{% trans %}button.delete{% endtrans %}" class="btn btn-danger">
                                         <i class="material-icons md-18">clear</i>
                                     </a>
                                 </td>
@@ -56,4 +56,34 @@
             </div>
         </div>
     </div>
+    {% if app_roles is defined %}
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>{% trans %}tab.app_roles{% endtrans %}</h2>
+                    </div>
+
+                    <div class="body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>{% trans %}tab.name{% endtrans %}</th>
+                                <th>{% trans %}tab.description{% endtrans %}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for role in app_roles %}
+                                <tr>
+                                    <td>{{ role.name }}</td>
+                                    <td>{{ role.description }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

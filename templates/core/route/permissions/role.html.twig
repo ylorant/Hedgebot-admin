@@ -15,9 +15,9 @@
 
     <h3>
         {% if role is not empty %}
-            Edit role: {{ role.name }}
+            {% trans %}form.edit_role{% endtrans %} - {{ role.name }}
         {% else %}
-            New role
+            {% trans %}form.new_role{% endtrans %}
         {% endif %}
     </h3>
 {% endblock %}
