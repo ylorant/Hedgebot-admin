@@ -1,6 +1,4 @@
 {% if form is not empty %}
-    {% form_theme form with ['bootstrap_3_layout.html.twig', 'core/form/material_form.html.twig'] %}
-
     {{ form_start(form) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}

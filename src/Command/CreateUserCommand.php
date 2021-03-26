@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\User;
 use App\Service\UserService;
 use Doctrine\ORM\ORMException;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -74,17 +75,25 @@ class CreateUserCommand extends Command
     {
         $helper = $this->getHelper('question');
 
+        $output->writeln(["Enter new user's credentials below.", ""]);
+
         $loginQuestion = new Question("<question>Username (admin):</question> ", "admin");
         $passwordQuestion = new Question("<question>Password:</question> ");
-        $passwordConfirmQuestion = new Question("<question>Confirm password:</question> ");
-
         $passwordQuestion->setHidden(true);
-        $passwordConfirmQuestion->setHidden(true);
-
-        $output->writeln(["Enter new user's credentials below.", ""]);
 
         $login = $helper->ask($input, $output, $loginQuestion);
         $password = $helper->ask($input, $output, $passwordQuestion);
+
+        $passwordConfirmQuestion = new Question("<question>Confirm password:</question> ");
+        $passwordConfirmQuestion->setValidator(function ($value) use ($password) {
+            if (trim($value) !== $password) {
+                throw new Exception('The confirmation does not match with password.');
+            }
+
+            return $value;
+        });
+        $passwordConfirmQuestion->setHidden(true);
+
         $passwordConfirmation = $helper->ask($input, $output, $passwordConfirmQuestion);
 
         return [
