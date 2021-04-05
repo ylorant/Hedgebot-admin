@@ -27,7 +27,7 @@ class HoraroController extends BaseController
     {
         $templateVars = [];
 
-        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/horaro');
+        $endpoint = $this->apiClientService->endpoint('/plugin/horaro');
         $templateVars['schedules'] = (array) $endpoint->getSchedules();
 
         $newScheduleForm = $this->createForm(ScheduleURLType::class);
@@ -47,7 +47,7 @@ class HoraroController extends BaseController
 
         $templateVars['newScheduleForm'] = $newScheduleForm->createView();
 
-        return $this->render('Horaro::route/index.html.twig', $templateVars);
+        return $this->render('horaro/route/index.html.twig', $templateVars);
     }
 
     /**
@@ -59,8 +59,8 @@ class HoraroController extends BaseController
             'schedule' => null
         ];
 
-        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/horaro');
-        $serverEndpoint = $this->get('hedgebot_api')->endpoint('/server');
+        $endpoint = $this->apiClientService->endpoint('/plugin/horaro');
+        $serverEndpoint = $this->apiClientService->endpoint('/server');
         $channels = $serverEndpoint->getAvailableChannels();
         $templateVars['schedule'] = $endpoint->getSchedule($identSlug);
 
@@ -87,7 +87,7 @@ class HoraroController extends BaseController
 
         $templateVars['form'] = $form->createView();
 
-        return $this->render('Horaro::route/schedule.html.twig', $templateVars);
+        return $this->render('horaro/route/schedule.html.twig', $templateVars);
     }
 
     /**
@@ -95,7 +95,7 @@ class HoraroController extends BaseController
      */
     public function scheduleDeleteAction($identSlug)
     {
-        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/horaro');
+        $endpoint = $this->apiClientService->endpoint('/plugin/horaro');
         $deleted = $endpoint->deleteSchedule($identSlug);
 
         if ($deleted) {

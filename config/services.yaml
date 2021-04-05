@@ -90,11 +90,6 @@ services:
             - [ setScope, [ ['channel_editor', 'channel_commercial', 'channel_read', 'user_read', 'user:edit:broadcast'] ] ]
             - [ initFromHedgebotApiClient, ['@hedgebot_api'] ]
 
-    controller_hooks:
-        class: App\EventSubscriber\ControllerHooksSubscriber
-        tags:
-            - { name: kernel.event_subscriber }
-
     forwarded_trust:
         class: App\EventSubscriber\ForwardedTrustSubscriber
         tags:

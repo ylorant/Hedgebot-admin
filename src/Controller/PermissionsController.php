@@ -26,20 +26,44 @@ class PermissionsController extends BaseController
     {
         parent::beforeActionHook();
         $this->breadcrumbs->addItem(
-            $this->translator->trans('title.permissions'),
-            $this->get("router")->generate("permissions_index")
+            $this->translator->trans('title.permissions')
         );
+    }
+
+    /**
+     * Bot permissions index page.
+     * This page lists the available bot roles.
+     *
+     * @Route("/permissions/bot", name="permissions_bot")
+     * @param UserService $userService
+     * @return Response
+     */
+    public function bot(UserService $userService): Response
+    {
+        $this->breadcrumbs->addItem(
+            $this->translator->trans('tab.bot_roles'),
+            $this->get("router")->generate("permissions_bot")
+        );
+
+        $templateVars = [];
+        $securityEndpoint = $this->apiClientService->endpoint('/security');
+        $templateVars['bot_roles'] = (array) $securityEndpoint->getRoles();
+        if ($this->isGranted(User::ROLE_ADMIN)) {
+            $templateVars['app_roles'] = $userService->getAvailableAppRoles();
+        }
+
+        return $this->render('core/route/permissions/bot.html.twig', $templateVars);
     }
 
     /**
      * Permissions index page.
      * This page lists the available roles, Bot roles (everyone) and App roles (if you are admin).
      *
-     * @Route("/permissions", name="permissions_index")
+     * @Route("/permissions/web", name="permissions_web")
      * @param UserService $userService
      * @return Response
      */
-    public function index(UserService $userService): Response
+    public function web(UserService $userService): Response
     {
         $templateVars = [];
         $securityEndpoint = $this->apiClientService->endpoint('/security');
@@ -47,15 +71,15 @@ class PermissionsController extends BaseController
         if ($this->isGranted(User::ROLE_ADMIN)) {
             $templateVars['app_roles'] = $userService->getAvailableAppRoles();
         }
-        return $this->render('core/route/permissions/index.html.twig', $templateVars);
+        return $this->render('core/route/permissions/web.html.twig', $templateVars);
     }
 
     /**
      * Bot Role detail page.
      * This page shows the detail of a role allowing bot commands usage.
      *
-     * @Route ("/permissions/role/new", name="permissions_role_new")
-     * @Route ("/permissions/role/edit/{roleId}", name="permissions_role_edit")
+     * @Route ("/permissions/bot/role/new", name="permissions_role_new")
+     * @Route ("/permissions/bot/role/edit/{roleId}", name="permissions_role_edit")
      * @param Request $request
      * @param null $roleId
      * @return RedirectResponse|Response
@@ -131,7 +155,7 @@ class PermissionsController extends BaseController
      * Delete role action.
      * Deletes a role by its ID.
      *
-     * @Route ("/permissions/role/delete/{roleId}", name="permissions_role_delete")
+     * @Route ("/permissions/bot/role/delete/{roleId}", name="permissions_role_delete")
      * @param $roleId
      * @return RedirectResponse
      */

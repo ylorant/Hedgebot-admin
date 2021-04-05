@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use TwitchApi\Exceptions\ClientIdRequiredException;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class DashboardController extends BaseController
 {
@@ -39,11 +40,12 @@ class DashboardController extends BaseController
         KernelInterface $kernel,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
+        Breadcrumbs $breadcrumbs,
         $layoutPath,
         $apiBaseUrl,
         $apiAccessToken
     ) {
-        parent::__construct($router, $translator, $apiBaseUrl, $apiAccessToken);
+        parent::__construct($router, $translator, $breadcrumbs, $apiBaseUrl, $apiAccessToken);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,

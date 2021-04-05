@@ -2,6 +2,7 @@
 namespace App\Modules\Horaro\Controller;
 
 use App\Controller\BaseController;
+use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,10 +12,9 @@ class HoraroAjaxController extends BaseController
     /**
      * @Route("/horaro/ajax/schedule/{identSlug}", options = { "expose" = true }, name="horaro_ajax_get_schedule")
      */
-    public function getScheduleAction($identSlug)
+    public function getScheduleAction($identSlug, MarkdownParserInterface $markdownParser)
     {
-        $markdownParser = $this->get('markdown.parser');
-        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/horaro');
+        $endpoint = $this->apiClientService->endpoint('/plugin/horaro');
         $schedule = $endpoint->getSchedule($identSlug);
 
         foreach ($schedule->data->items as &$item) {
@@ -34,7 +34,7 @@ class HoraroAjaxController extends BaseController
      */
     public function actionScheduleAction(Request $request, $identSlug, $action)
     {
-        $endpoint = $this->get('hedgebot_api')->endpoint('/plugin/horaro');
+        $endpoint = $this->apiClientService->endpoint('/plugin/horaro');
 
         // Actions
         switch ($action) {

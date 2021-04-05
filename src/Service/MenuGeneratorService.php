@@ -91,16 +91,26 @@ class MenuGeneratorService
             ->item($this->translator->trans('title.dashboard'), 'dashboard', 'dashboard')->end();
 
         if ($this->security->isGranted(User::ROLE_ADMIN)) {
-            $baseItem->item($this->translator->trans('title.users'), 'users_index', 'account_box')->end();
+            $baseItem
+                ->item($this->translator->trans('title.users'), 'users_index', 'account_box')->end()
+                ->item($this->translator->trans('title.permissions'), null, 'lock')
+                    ->children()
+                        ->item($this->translator->trans('tab.bot_roles'), 'permissions_bot')->end()
+                        ->item($this->translator->trans('tab.app_roles'), 'permissions_web')->end()
+                    ->end()
+                ->end();
+        } else {
+            $baseItem
+                ->item($this->translator->trans('title.permissions'), 'permissions_bot', 'lock');
         }
 
-        $baseItem->item($this->translator->trans('title.permissions'), 'permissions_index', 'lock')->end()
+        $baseItem
             ->item($this->translator->trans('title.twitch_api'), 'twitch_index', "zmdi:twitch")->end()
             ->item($this->translator->trans('title.settings'), null, 'settings')
-            ->children()
-            ->item($this->translator->trans('title.widgets'), 'settings_widgets')->end()
-            ->item($this->translator->trans('title.customcalls'), 'custom_calls_index')->end()
-            ->end()
+                ->children()
+                    ->item($this->translator->trans('title.widgets'), 'settings_widgets')->end()
+                    ->item($this->translator->trans('title.customcalls'), 'custom_calls_index')->end()
+                ->end()
             ->end()
             ->header('Modules')->end()
             ->end();

@@ -22,7 +22,7 @@ class CustomCommandsController extends BaseController
     /**
      * @Route("/custom-commands", name="custom_commands_list")
      */
-    public function commandListAction(Request $request)
+    public function commandListAction()
     {
         $templateVars = [];
 
@@ -53,8 +53,6 @@ class CustomCommandsController extends BaseController
      */
     public function saveCommandAction($name, Request $request)
     {
-        $success = false;
-
         $endpoint = $this->apiClientService->endpoint('/plugin/custom-commands');
         $data = $request->request->all();
 

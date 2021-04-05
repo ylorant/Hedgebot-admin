@@ -12,22 +12,15 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class BaseController extends AbstractController
 {
-    /**
-     * @var Breadcrumbs
-     */
+    /** @var Breadcrumbs */
     public $breadcrumbs;
-    /**
-     * @var TranslatorInterface
-     */
+    /** @var TranslatorInterface */
     public $translator;
-    /**
-     * @var ApiClientService
-     */
+    /** @var ApiClientService */
     public $apiClientService;
-    /**
-     * @var TwitchClientService
-     */
+    /** @var TwitchClientService */
     public $twitchClientService;
+
     /**
      * Constructor
      * @param RouterInterface $routerInterface
@@ -39,15 +32,22 @@ class BaseController extends AbstractController
     public function __construct(
         RouterInterface $routerInterface,
         TranslatorInterface $translator,
+        Breadcrumbs $breadcrumbs,
         $apiBaseUrl,
         $apiAccessToken
     ) {
-        $this->breadcrumbs = new Breadcrumbs();
+        $this->breadcrumbs = $breadcrumbs;
         $this->apiClientService = new ApiClientService($apiBaseUrl, $apiAccessToken);
         $this->twitchClientService = new TwitchClientService($routerInterface);
         $this->translator = $translator;
     }
 
+    /**
+     * Base hook executed before the call of the action on the controller. Allows to
+     * define a controller-wide breadcrumbs here.
+     * 
+     * @return void 
+     */
     public function beforeActionHook()
     {
         $this->breadcrumbs->addItem(

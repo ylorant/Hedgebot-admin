@@ -3,7 +3,7 @@ namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -22,10 +22,10 @@ class ForwardedTrustSubscriber implements EventSubscriberInterface
         $this->trustedProxies = Request::getTrustedProxies();
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if (!empty($this->trustedProxies)) {
-            Request::setTrustedProxies($this->trustedProxies, Request::HEADER_X_FORWARDED_ALL);
+            Request::setTrustedProxies($this->trustedProxies, Request::HEADER_X_FORWARDED_FOR);
         }
     }
 
