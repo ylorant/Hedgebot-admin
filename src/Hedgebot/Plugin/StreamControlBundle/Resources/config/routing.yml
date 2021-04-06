@@ -1,3 +1,0 @@
-horaro_routes:
-    resource: "@HedgebotStreamControlBundle/Controller/"
-    type:     annotation

@@ -1,3 +1,0 @@
-horaro_routes:
-    resource: "@HedgebotTwitterBundle/Controller/"
-    type:     annotation

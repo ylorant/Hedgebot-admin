@@ -1,0 +1,39 @@
+{% extends 'core/base.html.twig' %}
+{% block title %}{% trans %}title.roles{% endtrans %}{% endblock %}
+
+{% block main_title %}
+    <h3>
+        {% trans %}title.roles{% endtrans %}
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>{% trans %}title.roles{% endtrans %}</h2>
+                </div>
+
+                <div class="body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>{% trans %}tab.name{% endtrans %}</th>
+                            <th>{% trans %}tab.description{% endtrans %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for role in roles %}
+                            <tr>
+                                <td>{{ role.name }}</td>
+                                <td>{{ role.description }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

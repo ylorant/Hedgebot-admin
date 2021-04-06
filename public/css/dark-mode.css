@@ -1,0 +1,275 @@
+body
+{
+    background-color: #222;
+    color: #cccccc;
+}
+
+.block-header h1
+{
+    color: #bbbbbb !important;
+    text-shadow: 0px 1px 0px #000;
+}
+
+.theme-indigo .navbar
+{
+    background-color: #283593;
+}
+
+.navbar-brand img
+{
+    opacity: 0.8;
+}
+
+code
+{
+    background-color: #3f3f3f;
+    color: #ef9a9a;
+}
+
+.login-page .logo picture
+{
+    opacity: 0.8;
+}
+
+/* SIDEBAR */
+
+.sidebar .user-info
+{
+    border-bottom: 1px solid #292929;
+    background: url("../images/diagmonds.png") #444 repeat;
+}
+
+.sidebar, .right-sidebar
+{
+    background-color: #343434;
+}
+
+.sidebar .menu .list .header,
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
+{
+    background-color: #292929;
+    color: #fdfdfd !important;
+}
+
+.nav-tabs > li > a::before
+{
+    border-bottom-color: #0D47A1;
+}
+
+.right-sidebar #settings .setting-list li
+{
+    border-top-color: rgba(204,204,204,.35);
+}
+
+.sidebar .menu .list a
+{
+    color: #adadad;
+}
+
+.sidebar .menu .list a span
+{
+    color: #fdfdfd;
+}
+
+.theme-indigo .sidebar .menu .list li.active > :first-child i,
+.theme-indigo .sidebar .menu .list li.active > :first-child span
+{
+    color: #5C6BC0;
+}
+
+/* BREADCRUMBS */
+
+.breadcrumb li a
+{
+    color: #bbbbbb;
+}
+
+/* MODALS */
+
+.modal-content.modal-col-blue
+{
+    background-color: #0D47A1;
+}
+
+.modal-content
+{
+    background-color: #363636;
+}
+
+.modal .modal-content .modal-body
+{
+    color: #cccccc;
+}
+
+/* CARDS */
+
+.card
+{
+    background-color: #363636;
+}
+
+.card .header h2,
+.card .header
+{
+    color: #eeeeee;
+}
+
+.card .body
+{
+    color: #aaaaaa;
+}
+
+/* THUMBNAILS */
+
+.thumbnail
+{
+    background-color: transparent;
+    border-color: #646464;
+}
+
+/* TABLES */
+
+.table tbody tr td, .table tbody tr th, .table thead tr th
+{
+    border-color: #494949 !important;
+}
+
+/* FORMS */
+
+.form-control
+{
+    background-color: #363636;
+    color: #aaaaaa;
+}
+
+.form-group .form-line
+{
+    border-bottom: 1px solid #646464;
+}
+.form-group .form-line::after
+{
+    border-bottom: 2px solid #0D47A1;
+}
+.form-group .switch.form-line,
+.form-group .switch.form-line::after
+{
+    border-bottom: unset;
+}
+
+.form-float .bootstrap-select > .dropdown-toggle
+{
+    background-color: transparent !important;
+    color: #aaaaaa;
+}
+
+.bootstrap-select
+{
+    border-bottom-color: #646464 !important;
+}
+
+/* BUTTONS */
+
+.btn-default, .btn-default:hover
+{
+    background-color: transparent !important;
+    color: #aaaaaa;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:focus
+{
+    background-color: #0D47A1 !important;
+}
+
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:focus
+{
+    background-color: #1B5E20 !important;
+}
+
+.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:focus
+{
+    background-color: #b71c1c !important;
+}
+
+.btn-link
+{
+    color: #cccccc;
+}
+
+.btn-link:hover
+{
+    color: #eee;
+    background-color: #454545;
+}
+
+/* TABLES */
+
+.table tbody tr.info td, .table tbody tr.info th
+{
+    background-color: #283593;
+}
+
+/* UTIL CLASSES */
+
+.text-muted
+{
+    color: #999;
+}
+
+.bg-blue
+{
+    background-color: #0D47A1 !important;
+}
+
+.bg-green
+{
+    background-color: #1B5E20 !important;
+}
+
+.bg-red
+{
+    background-color: #b71c1c !important;
+}
+
+.bg-purple
+{
+    background-color: #4A148C !important;
+}
+
+.bg-indigo
+{
+    background-color: #283593 !important;
+}
+
+.col-orange
+{
+    color: #E65100 !important;
+}
+
+a.text-danger:hover, a.text-danger:focus
+{
+    color: #e53935 !important;
+}
+
+/* WIDGET BLOCKS */
+
+.widget-block .widget-block-title
+{
+    background-color: transparent !important;
+}
+
+.widget-block .widget .header .widget-actions
+{
+    border-color: #646464 !important;
+}
+
+#widget-toolbox .widget .body
+{
+    background-color: #363636;
+}
+
+/* CUSTOM COMMANDS */
+
+.not-saved, .not-saved .form-control, .not-saved .dropdown-toggle
+{
+    background-color: #363650 !important;
+}

@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fylorant%2FHedgebot-admin.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fylorant%2FHedgebot-admin?ref=badge_shield)
+
 # HedgeBot Web Admin
 
 *Hedgebot, chatting around at the speed of sound*
@@ -43,8 +45,12 @@ Or you can also directly edit the file `app/parameters.yml` and set the variable
 
 To create a new interface user in command line, use this command :
 
-`php bin/console user:create`
+`php bin/console app:create-user`
 
 It will launch a friendly command-line form to create your user, similar to the one used in the setup procedure.
 
 Now, enjoy !
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fylorant%2FHedgebot-admin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fylorant%2FHedgebot-admin?ref=badge_large)

@@ -1,0 +1,66 @@
+# Main translation file (WebAdmin core, basic forms, ...)
+# Locale: en-US, English (United States)
+---
+title:
+  dashboard: Dashboard
+  bot_permissions: Bot permissions
+  web_permissions: Web app permissions
+  roles: Roles
+  users: Users
+  twitch_api: Twitch API
+  access_tokens: Access tokens
+  settings: Admin settings
+  widgets: Widgets
+  twitch_chat: Twitch chat
+  customcalls: Custom calls
+tab:
+  role: Role
+  roles: Roles
+  bot_roles: Bot roles
+  app_roles: Web app roles
+  rights: rights
+  twitch_nicknames: Twitch nicknames
+  channel: Channel
+  access_token: User access token
+  refresh_token: App access token
+  user_profile: User profile
+  username: Username
+  last_login: Last login
+  name: Name
+  description: Description
+form:
+  start_session: Log in to start your session
+  id: Id
+  usernarm: Username
+  enabled: Enabled
+  channel: Channel
+  channels: Channels
+  title: Title
+  game: Game
+  new_role: Role creating
+  edit_role: Role editing
+  new_user: User creating
+  edit_user: User editing
+  password: Password
+  current_password: Current password
+  current_password_help: Security to validate your modifications
+  new_password: New password
+  password_confirmation: Password confirmation
+button:
+  new_user: New user
+  new_role: New role
+  new_access_token: New access token
+  edit: Edit
+  save: Save
+  delete: Delete
+  update: Update
+  account: Account
+  dark_mode: Toggle dark mode
+  login: Login
+  logout: Log out
+flash:
+  user_created: User created.
+  user_saved: User saved.
+  user_deleted: User deleted.
+  user_not_found: User not found.
+...

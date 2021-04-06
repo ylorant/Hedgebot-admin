@@ -1,0 +1,54 @@
+{% extends 'core/base.html.twig' %}
+{% block title %}{% trans %}title.dashboard{% endtrans %}{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/dashboard.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% set widgetScripts = [] %}
+
+{% block content %}
+    <div class="block-header">
+        <h1>{% trans %}title.dashboard{% endtrans %}</h1>
+    </div>
+
+    <div class="layout">
+        {% for blockName, blockData in layout.blocks %}
+            <div class="block col-xs-12 col-lg-{{ blockData.width }} {{ blockData.class }}">
+                {% for blockWidget in userLayout.getBlockWidgets(blockName) %}
+                    <div class="widget" data-type="{{ blockWidget.type }}" data-id="{{ blockWidget.id }}">
+                        {% if widgets[blockWidget.type] is defined and widgets[blockWidget.type] is not empty %}
+                            {% include widgets[blockWidget.type].viewName with widgets[blockWidget.type].update(blockWidget.settings) %}
+                        {% else %}
+                            <i class="text-danger">No template available for this widget.</i>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('js/modules/widgets.js') }}"></script>
+
+    {% set widgetScripts = [] %}
+    {% for blockName, blockData in layout.blocks %}
+        {% for blockWidget in userLayout.getBlockWidgets(blockName) %}
+            {% if widgets[blockWidget.type] is defined and widgets[blockWidget.type] is not empty %}
+                {% set widgetScripts = widgetScripts|merge(widgets[blockWidget.type].scriptPaths)|unique %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    {% for script in widgetScripts %}
+        <script src="{{ asset(script) }}"></script>
+    {% endfor %}
+
+    <script type="text/javascript">
+        $(function()
+        {
+            Widgets.init();
+        });
+    </script>
+{% endblock %}

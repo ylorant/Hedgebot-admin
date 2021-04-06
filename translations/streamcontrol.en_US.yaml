@@ -1,0 +1,13 @@
+# StreamControl module translation file
+# Locale: en-US, English (United States)
+---
+title:
+  streamcontrol: StreamControl
+button:
+    ads: Start 1m30s ads
+    host: Host
+    raid: Raid
+label:
+  host_channel: Channel to host
+  raid_channel: Channel to raid
+...

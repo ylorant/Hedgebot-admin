@@ -1,0 +1,74 @@
+{% extends 'core/base.html.twig' %}
+{% form_theme form with ['core/form/call_form.html.twig'] %}
+{%- block title -%}
+    {% if call.id is not empty %}
+        Edit call
+    {% else %}
+        New call
+    {% endif %}
+{% endblock %}
+
+{% block main_section %}
+    {{ form_start(form) }}
+        {{ parent() }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block main_title %}
+    <div class="form-main-action pull-right">
+        {{ form_widget(form.submit) }}
+    </div>
+
+    <h3>
+        {% if call.id is not empty %}
+            Edit call (#{{ call.id }})
+        {% else %}
+            New call
+        {% endif %}
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Call base settings</h2>
+                </div>
+
+                <div class="body">
+                    {{ form_row(form.method) }}
+                    {{ form_row(form.url) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Call parameters</h2>
+                </div>
+
+                <div class="body">
+                    {{ form_widget(form.parameters) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{# Scripts, load additional scripts needed for this route, and initialize main module #}
+{% block scripts %}
+    <script src="{{ asset('js/modules/security/role.js') }}"></script>
+    <script src="{{ asset('js/modules/symfony-collections.js') }}"></script>
+    <script type="text/javascript">
+        $(function()
+        {
+            var collectionOptions = {
+                newItemInsertSelector: '.call-collection-add-container'
+            };
+            SymfonyCollections.init(collectionOptions);
+        });
+    </script>
+{% endblock %}

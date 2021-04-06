@@ -1,0 +1,16 @@
+# Announcements module translation file
+# Locale: fr-FR, French (France)
+---
+title:
+  announcements: Annonces
+  messages: Messages
+button:
+  new_message: Nouveau message
+tab:
+  messages: Messages
+  channels: Chaînes
+form:
+  text_to_display: Texte à afficher
+  message_count: Nombre de messages min avant affichage
+  time_interval: Intervalle de temps
+...

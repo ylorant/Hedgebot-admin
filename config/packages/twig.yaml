@@ -1,0 +1,13 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    exception_controller: null
+    form_themes: ['bootstrap_4_layout.html.twig']
+    globals:
+        menuGenerator: "@menu_generator"
+        eventManager:
+            type: '%env(EVENTMANAGER_TYPE)%'
+            host: '%env(resolve:EVENTMANAGER_HOST)%'
+            hubUrl: '%env(resolve:EVENTMANAGER_HUB_URL)%'
+            topic: '%env(EVENTMANAGER_TOPIC)%'

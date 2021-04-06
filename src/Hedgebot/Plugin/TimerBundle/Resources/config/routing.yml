@@ -1,3 +1,0 @@
-timer_routes:
-    resource: "@HedgebotTimerBundle/Controller/"
-    type:     annotation

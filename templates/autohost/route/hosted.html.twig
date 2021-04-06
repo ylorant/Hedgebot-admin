@@ -1,0 +1,56 @@
+{% for hostedChannel in host.hostedChannels|to_array %}
+    <div class="header hosted" id="hosted-{{ hostedChannel.channel }}" data-saved="true">
+        <div class="row clearfix m-b--20">
+
+            <div class="col-lg-1 col-xs-2">
+                <div class="form-group form-float">
+                    <div class="switch form-line focused">
+                        <label class="form-label">{% trans %}form.enabled{% endtrans %}</label>
+                        <label>
+                            <input type="checkbox" name="enabled" value="enabled"
+                                   {% if hostedChannel.enabled %}checked="checked"{% endif %} />
+                            <span class="lever"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-xs-12">
+                <div class="form-group form-float">
+                    <div class="form-line">
+                        <input type="text"
+                               name="hosted-channel"
+                               class="form-control"
+                               value="{{ hostedChannel.channel }}"
+                        />
+                        <label class="form-label">{% trans from 'autohost' %}form.channel_hosted{% endtrans %}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-xs-12">
+                <div class="form-group form-float">
+                    <div class="form-slider">
+                        <div class="priority-slider" id="slider-{{ hostedChannel.channel }}"
+                             name="priority-slider"
+                             data-priority="{{ hostedChannel.priority }}"></div>
+                        <label class="form-label">{% trans from 'autohost' %}form.priority{% endtrans %}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-xs-12 text-right">
+                <a data-action="save" data-target="#hosted-{{ hostedChannel.channel }}" title="{% trans %}button.update{% endtrans %}"
+                   class="btn btn-success">
+                    <i class="material-icons md-18">done</i>
+                </a>
+
+                <a data-action="delete" data-target="#hosted-{{ hostedChannel.channel }}" title="{% trans %}button.delete{% endtrans %}"
+                   class="btn btn-danger">
+                    <i class="material-icons md-18">clear</i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+{% endfor %}

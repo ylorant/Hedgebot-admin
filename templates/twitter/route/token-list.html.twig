@@ -1,0 +1,94 @@
+{% extends 'core/base.html.twig' %}
+{% block title %}{% trans from 'twitter' %}title.twitter{% endtrans %} - {% trans from 'twitter' %}title.accounts{% endtrans %}{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/plugin/customcommands.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block main_title %}
+    <h3>
+        {% trans from 'twitter' %}title.twitter{% endtrans %} - {% trans from 'twitter' %}title.accounts{% endtrans %}
+        <div class="pull-right">
+            <a class="btn btn-primary waves-effect" data-toggle="modal" data-target="#new-token-modal">
+                <i class="material-icons">add</i>
+                <span>{% trans from 'twitter' %}button.link_account{% endtrans %}</span>
+            </a>
+        </div>
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>{% trans from 'twitter' %}title.tokens{% endtrans %}</h2>
+                </div>
+
+                <div class="body table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{% trans from 'twitter' %}tab.account{% endtrans %}</th>
+                                <th>{% trans from 'twitter' %}tab.token{% endtrans %}</th>
+                                <th>{% trans from 'twitter' %}tab.secret{% endtrans %}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for account, token in tokens %}
+                                <tr>
+                                    <td>{{ account }}</td>
+                                    <td>
+                                        <code>{{ token.token|anonymize }}</code>
+                                    </td>
+                                    <td>
+                                        <code>{{ token.secret|anonymize }}</code>
+                                    </td>
+                                    <td class="text-right">
+                                        <a href="https://twitter.com/{{ account }}" class="btn btn-primary" target="_blank">
+                                            <i class="material-icons md-18">exit_to_app</i>
+                                        </a>
+                                        <a href="{{ path('twitter_token_delete', {account: account}) }}" title="{% trans %}button.delete{% endtrans %}" class="btn btn-danger">
+                                            <i class="material-icons md-18">clear</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <em>{% trans from 'twitter' %}tab.no_token{% endtrans %}</em>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# New token modal #}
+    <div id="new-token-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Link a new Twitter account</h4>
+                </div>
+
+                <div class="modal-body">
+                    To link an account, you will be redirected on Twitter to allow the bot to perform actions
+                    on your behalf <i>via</i> the Twitter API. Make sure you are currently authentified with the correct
+                    account you wish to give the bot access to. After allowing the bot to use your
+                    account, you will be redirected to the interface.
+                </div>
+
+                <div class="modal-footer">
+                    <a class="btn btn-link waves-effect" href="{{ path('twitter_init_oauth') }}">Authorize</a>
+                    <a class="btn btn-link text-danger waves-effect" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+controllers:
+    resource: ../../src/Controller/
+    type: annotation
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation
+
+announcements:
+    resource: ../../src/Modules/Announcements/Controller/
+    type:     annotation
+
+autohost:
+    resource: ../../src/Modules/AutoHost/Controller/
+    type:     annotation
+
+custom_commands:
+    resource: ../../src/Modules/CustomCommands/Controller/
+    type: annotation
+
+horaro:
+    resource: ../../src/Modules/Horaro/Controller/
+    type:     annotation
+
+streamcontrol:
+    resource: ../../src/Modules/StreamControl/Controller/
+    type:     annotation
+
+timer:
+    resource: ../../src/Modules/Timer/Controller/
+    type:     annotation
+
+twitter:
+    resource: ../../src/Modules/Twitter/Controller/
+    type:     annotation

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <title>Timer embed</title>
+    </head>
+
+    <body>
+        {% if remoteTime is not empty %}
+            <span class="remote-time" data-remote-time="{{ remoteTime }}" data-remote-msec="{{ remoteMsec }}"></span>
+        {% endif %}
+        <div class="timer-widget" data-id="{{ timer.id }}">
+            <span class="hidden timer-info"
+                data-started="{{ timer.started ? "true" : "false" }}"
+                data-paused="{{ timer.paused ? "true" : "false" }}"
+                data-start-time="{{ timer.startTime }}"
+                data-offset="{{ timer.offset }}"
+                data-countdown="{{ timer.countdown ? "true" : "false" }}"
+                data-countdown-amount="{{ timer.countdownAmount }}"
+            >
+            </span>
+
+            {# Display the global timer time only if the player isn't defined #}
+            {% if player is empty %}
+                <span class="timer-time">
+                    {{ timer.formattedTime }}
+                </span>
+            {% else %}
+                {# The player is defined, so we display his timer only #}
+                {% set playerObject = timer.players[player] %}
+                <div class="timer-player" data-id="{{ playerObject.player }}">
+                    <span class="hidden timer-player-info"
+                          data-elapsed="{{ playerObject.elapsed is defined ? playerObject.elapsed : "null" }}"
+                    >
+                    </span>
+
+                    <div class="timer-player-time">
+                        {% if playerObject.elapsed is not empty %}
+                            {{ playerObject.formattedTime }}
+                        {% else %}
+                            {{ timer.formattedTime }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+
+        </div>
+
+        <!-- Jquery Core Js -->
+        <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+        {% if eventManager.type == "socketio" %}
+            <!-- SocketIO base library -->
+            {# if we're on the dev environment, we load the local socket.io #}
+            {% if app.environment == "dev" %}
+                <script src="{{ eventManager.host }}/socket.io/socket.io.js"></script>
+            {% else %}
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+            {% endif %}
+            <script src="{{ asset('js/modules/event-relay/socketio.js') }}"></script>
+        {% elseif eventManager.type == "mercure" %}
+            <!-- Eventsource polyfill with headers -->
+            <script src="{{ asset('js/eventsource.min.js') }}"></script>
+            <!-- Mercure JS module -->
+            <script src="{{ asset('js/modules/event-relay/mercure.js') }}"></script>
+        {% endif %}
+
+        <script src="{{ asset('js/modules/event-manager.js') }}"></script>
+        <script src="{{ asset('js/public/plugin/timer.js') }}"></script>
+        <script type="text/javascript">
+            $(function()
+            {
+                let parameters = {{ eventManager|json_encode()|raw }};
+
+                // Initialize event manager and its relay client
+                EventManager.init();
+
+                switch(parameters.type) {
+                    case "socketio":
+                        SocketIOClient.init({
+                            eventManager: EventManager,
+                            config: parameters
+                        });
+                        break;
+
+                        case "mercure":
+                            MercureClient.init({
+                                eventManager: EventManager,
+                                config: parameters
+                            });
+                            break;
+                }
+
+                const options = {
+                    timerBlockSelector: '.timer-widget',
+                    timerInfoSelector: '.timer-info',
+                    timerTimeDisplaySelector: '.timer-time',
+                    remoteTimeSelector: '.remote-time',
+                    playerSelector: '.timer-player',
+                    playerInfoSelector: '.timer-player-info',
+                    playerTimeDisplaySelector: '.timer-player-time',
+                };
+
+                Timer.init(options);
+            });
+        </script>
+    </body>
+</html>

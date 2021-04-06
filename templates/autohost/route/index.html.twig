@@ -1,0 +1,122 @@
+{% extends 'core/base.html.twig' %}
+{% block title %}{% trans from 'autohost' %}title.autohost{% endtrans %}{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/pages/plugin/autohost.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block main_title %}
+    <h3>
+        {% trans from 'autohost' %}title.autohost{% endtrans %}
+    </h3>
+{% endblock %}
+
+{% block content %}
+    {% if availableChannels is not empty %}
+        <div class="row">
+            <div class="col-lg-4 col-xs-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="form-group form-float">
+                            <div class="form-line m-b--20">
+                                <div id="chosen-channel">
+                                    <select id="host-channels" name="host-channels" class="form-control channel-selector">
+                                        {% for channel in availableChannels %}
+                                            <option class="host-channel"
+                                                    value="{{ channel }}" {{ channel in selectedChannel ? "selected" : "" }}>{{ channel }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label class="form-label">{% trans %}form.channel{% endtrans %}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>{% trans from 'autohost' %}title.configuration{% endtrans %}</h2>
+                    </div>
+                    <div id="host-channel-configuration" class="body">
+                        {% for host in hosts %}
+                            {% if host.channel in selectedChannel %}
+                                {% include 'autohost/route/configuration.html.twig' with {'isTemplate': false, 'host': host} %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <a class="btn btn-xs btn-primary waves-effect pull-right m-t--5" data-action="new-hosted">
+                            <i class="material-icons">add</i>
+                            <span>New channel</span>
+                        </a>
+                        <h2>{% trans from 'autohost' %}title.channels_to_host{% endtrans %}</h2>
+                    </div>
+                    <div class="hidden" id="block-hosted-template">
+                        {% set templateHosted = {'channel':'', 'hostedChannels': {'': {'channel': '', 'enabled': 'enabled', 'priority': 0.5}}} %}
+                        {% include 'autohost/route/hosted.html.twig' with {'isTemplate': true, 'host': templateHosted} %}
+                    </div>
+                    <div id="hosted-channels" data-channel="{{selectedChannel}}">
+                        {% for host in hosts %}
+                            {% if host.channel in selectedChannel %}
+                                {% include 'autohost/route/hosted.html.twig' with {'isTemplate': false, 'host': host} %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-center text-muted font-italic">
+            {% trans from 'autohost' %}no_channel{% endtrans %}
+        </p>
+    {% endif %}
+{% endblock %}
+
+{# Scripts, load additional scripts needed for this route, and initialize main module #}
+{% block scripts %}
+    <script src="{{ asset('plugins/nouislider/nouislider.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ asset('js/modules/plugin/auto-host.js') }}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            const options = {
+                indexAutohostRoute: "autohost_list",
+
+                hostChannelContainerSelector: '#chosen-channel',
+                hostChannelSelector: '#host-channels',
+
+                configurationContainerSelector: '#host-channel-configuration',
+                saveConfigurationRoute: "autohost_configuration_save",
+                configurationFieldNames: {
+                    enabled: "enabled",
+                    timeInterval: "time-interval",
+                    blackList: "title-black-list",
+                    whiteList: "title-white-list"
+                },
+
+                hostedContainerSelector: '#hosted-channels',
+                addHostedSelector: '[data-action="new-hosted"]',
+                hostedTemplateSelector: '#block-hosted-template > div',
+                saveHostedRoute: "autohost_hosted_save",
+                deleteHostedRoute: "autohost_hosted_delete",
+                hostedFieldNames: {
+                    enabled: "enabled",
+                    hostedChannel: "hosted-channel",
+                    priority: "priority-slider"
+                }
+            };
+
+            AutoHost.init(options);
+        });
+    </script>
+{% endblock %}

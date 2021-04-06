@@ -1,0 +1,110 @@
+{% extends 'core/base.html.twig' %}
+{% form_theme form with ['twitter/form/tweet_form.html.twig'] %}
+{% block title %}{{ tweet is not empty ? "Edit" : "New" }} tweet - Twitter{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/plugin/customcommands.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{# Main body override, to add the global form (englobing the sidebar too). #}
+{% block main_section %}
+    {{ form_start(form) }}
+        {{ parent() }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block main_title %}
+    <div class="form-main-action pull-right">
+            <button class="btn btn-primary btn-lg waves-effect" type="submit">
+                Save tweet
+            </button>
+    </div>
+
+    <h3>
+        Twitter - {{ tweet is not empty ? "Edit" : "New" }} scheduled tweet
+    </h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row tweet-form">
+        <div class="col-md-6 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Tweet</h2>
+                </div>
+
+                <div class="body">
+                    {{ form_row(form.id) }}
+                    {{ form_row(form.account) }}
+                    {{ form_row(form.channel) }}
+                    {{ form_row(form.content) }}
+                    {{ form_row(form.media) }}
+                    {{ form_row(form.sent) }}
+                    {{ form_row(form.sentTime) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>Scheduling settings</h2>
+                </div>
+
+                <div class="body trigger-block-container">
+                    {{ form_row(form.trigger) }}
+                    <div class="trigger-block datetime">
+                        {{ form_row(form.sendTime) }}
+                    </div>
+
+                    <div class="trigger-block event">
+                        {{ form_row(form.event) }}
+                    </div>
+
+                    <h3>Constraints</h3>
+
+                    <div class="tweet-constraints">
+                        {{ form_widget(form.constraints) }}
+                    </div>
+                </div>
+            </div>
+            {% if tweet is not empty %}
+                <div class="card">
+                    <div class="header">
+                        <h2>Actions</h2>
+                    </div>
+
+                    <div class="body text-center">
+                        <a class="btn btn-primary btn-lg waves-effect" href="{{ path('twitter_tweet_send', {'tweetId': tweet.id}) }}">Send tweet now</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{# Scripts, load additional scripts needed for this route, and initialize main module #}
+{% block scripts %}
+    <script src="{{ asset('js/modules/plugin/twitter.js') }}"></script>
+    <script src="{{ asset('js/modules/symfony-collections.js') }}"></script>
+    <script type="text/javascript">
+        $(function()
+        {
+            const options = {
+                triggerBlockContainerSelector: '.trigger-block-container',
+                triggerInputSelector: 'input[name="tweet[trigger]"]',
+                triggerBlocksSelector: '.trigger-block',
+                constraintContainerSelector: '.tweet-constraints',
+                constraintTypeSelector: '.constraint-type',
+                constraintLvalSelector: '.constraint-lval'
+            };
+
+            Twitter.init(options);
+
+            const collectionOptions = {
+                newItemInsertSelector: '.constraint-collection-add-container'
+            };
+            SymfonyCollections.init(collectionOptions);
+        });
+    </script>
+{% endblock %}

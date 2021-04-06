@@ -1,0 +1,28 @@
+{% extends 'core/base.html.twig' %}
+{% block title %}{% trans from 'timer' %}title.timer{% endtrans %}{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/pages/plugin/timer.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block main_title %}
+    <h3>{% trans from 'timer' %}title.timers{% endtrans %}</h3>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% for currentTimer in timers %}
+            <div class="col-xs-12 col-lg-4">
+                {% include 'timer/widget/timer.html.twig' with {'timer': currentTimer, 'remoteTime': remoteTime, 'remoteMsec': remoteMsec, 'settings': {}, 'extended_controls': true} %}
+            </div>
+            {% set remoteTime = null %}
+            {% set remoteMsec = null %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{# Scripts, load additional scripts needed for this route, and initialize main module #}
+{% block scripts %}
+    <script src="{{ asset('js/modules/plugin/timer.js') }}"></script>
+    <script src="{{ asset('js/modules/plugin/widget/timer.js') }}"></script>
+{% endblock %}

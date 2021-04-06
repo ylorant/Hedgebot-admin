@@ -1,0 +1,17 @@
+# Twitter module translation file
+# Locale: en-US, English (United States)
+---
+title:
+  twitter: Twitter
+  accounts: Accounts
+  scheduledtweets: Scheduled tweets
+  tokens: Tokens
+  tweets: Tweets
+tab:
+  account: Account
+  token: Token
+  secret: Secret
+  no_token: No token registered
+button:
+  link_account: Link new account
+...
