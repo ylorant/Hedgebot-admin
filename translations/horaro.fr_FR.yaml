@@ -4,4 +4,10 @@
 title:
   horaro: Horaro
   schedules: Calendriers
+tab:
+  schedules: Calendriers
+  open: Ouvert
+form:
+  new_schedule: Nouveau calendrier
+  load_new_schedule: Charger un nouveau calendrier
 ...

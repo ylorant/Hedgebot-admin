@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Timer;
 
 use App\Interfaces\DashboardWidgetsProviderInterface;

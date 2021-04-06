@@ -80,15 +80,15 @@ class MenuGeneratorService
      * Processes a menu item's properties, to prepare it for inclusion in the global
      * menu object. It handles the menu title translation domain for example.
      * If the menu has a submenu, it will process its children too.
-     * 
+     *
      * @param MenuItem $menuItem The menu to process.
      * @param MenuProviderInterface $menuProvider The provider that provided the menu.
-     * @return void 
+     * @return void
      */
     protected function processMenuItem(MenuItem $menuItem, MenuProviderInterface $menuProvider)
     {
         $translationDomain = null;
-        if($menuProvider instanceof ModuleInterface) {
+        if ($menuProvider instanceof ModuleInterface) {
             $translationDomain = $menuProvider->getModuleName();
         }
 
@@ -96,8 +96,8 @@ class MenuGeneratorService
             $this->translator->trans($menuItem->getTitle(), [], strtolower($translationDomain))
         );
 
-        if(!empty($menuItem->getSubmenu()) && !empty($menuItem->getSubmenu()->count())) {
-            foreach($menuItem->getSubmenu() as $subMenuItem) {
+        if (!empty($menuItem->getSubmenu()) && !empty($menuItem->getSubmenu()->count())) {
+            foreach ($menuItem->getSubmenu() as $subMenuItem) {
                 $this->processMenuItem($subMenuItem, $menuProvider);
             }
         }

@@ -1,41 +1,39 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/security.html
 security:
-    encoders:
-        App\Entity\User:
-            algorithm: auto
-
-
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
                 class: App\Entity\User
                 property: username
-
+    encoders:
+        App\Entity\User:
+            algorithm: auto
     firewalls:
-        # disables authentication for assets and the profiler
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
         main:
-            pattern: ^/
-            anonymous: lazy
-            form_login:
-                login_path: login
-                check_path: login
-                default_target_path: dashboard
-                always_use_default_target_path: false
-
+            anonymous: true
+            lazy: true
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
             logout:
                 path: /logout
                 target: /login
 
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
 
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }

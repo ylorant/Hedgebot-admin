@@ -9,7 +9,7 @@ flexible and powerful setup for streamers and communities to improve their chatr
 
 This specific project is a user-friendly web interface administration.
 
-It requires at least PHP 7.1 to be used.
+It requires at least PHP 7.3 to be used.
 
 ## What it does
 

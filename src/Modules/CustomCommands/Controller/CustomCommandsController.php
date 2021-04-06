@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\CustomCommands\Controller;
 
 use App\Controller\BaseController;
@@ -16,13 +17,14 @@ class CustomCommandsController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("Custom commands", $this->generateUrl("custom_commands_list"));
+        // Bad "breandcrumb x translator" usage, @see https://github.com/mhujer/BreadcrumbsBundle/issues/26
+        $this->breadcrumbs->addItem($this->translator->trans('title.customcommands', [], 'customcommands'), $this->generateUrl("custom_commands_list"));
     }
 
     /**
      * @Route("/custom-commands", name="custom_commands_list")
      */
-    public function commandListAction()
+    public function commandList()
     {
         $templateVars = [];
 
@@ -36,8 +38,10 @@ class CustomCommandsController extends BaseController
 
     /**
      * @Route("/custom-commands/delete/{name}", options = { "expose" = true }, name="custom_commands_delete")
+     * @param $name
+     * @return JsonResponse
      */
-    public function deleteCommandAction($name)
+    public function deleteCommand($name)
     {
         $endpoint = $this->apiClientService->endpoint('/plugin/custom-commands');
         $deleted = $endpoint->deleteCommand($name);
@@ -50,8 +54,11 @@ class CustomCommandsController extends BaseController
 
     /**
      * @Route("/custom-commands/save/{name}", options = { "expose" = true }, name="custom_commands_save")
+     * @param $name
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function saveCommandAction($name, Request $request)
+    public function saveCommand($name, Request $request)
     {
         $endpoint = $this->apiClientService->endpoint('/plugin/custom-commands');
         $data = $request->request->all();

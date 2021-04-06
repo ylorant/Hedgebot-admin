@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Modules\AutoHost\Controller;
 
 use App\Controller\BaseController;
 use App\Helper\DateTimeHelper;
-use stdClass;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class AutoHostController extends BaseController
 {
     /** @var string */
-    const ENDPOINT_PATH = '/plugin/autohost';
+    protected const ENDPOINT_PATH = '/plugin/autohost';
 
     /**
      * Hook that is executed before the action is called.
@@ -21,13 +22,16 @@ class AutoHostController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("autohost", $this->generateUrl("autohost_list"));
+        // Bad "breandcrumb x translator" usage, @see https://github.com/mhujer/BreadcrumbsBundle/issues/26
+        $this->breadcrumbs->addItem($this->translator->trans('title.autohost', [], 'autohost'), $this->generateUrl("autohost_list"));
     }
 
     /**
      * @Route("/autohost", options = { "expose" = true }, name="autohost_list")
+     * @param Request $request
+     * @return Response
      */
-    public function autohostListAction(Request $request)
+    public function autohostList(Request $request)
     {
         $templateVars = [];
         $dateTimeHelper = new DateTimeHelper();
@@ -53,7 +57,7 @@ class AutoHostController extends BaseController
         // If the host configuration hasn't been defined for the channel yet, initialize
         // it as an empty object
         // TODO: Maybe find a way to pull the empty host config object from the bot ?
-        if(!isset($templateVars['hosts'][$templateVars['selectedChannel']])) {
+        if (!isset($templateVars['hosts'][$templateVars['selectedChannel']])) {
             $templateVars['hosts'][$templateVars['selectedChannel']] = (object) [
                 'channel' => $templateVars['selectedChannel'],
                 'enabled' => false,
@@ -77,7 +81,7 @@ class AutoHostController extends BaseController
         $endpoint = $this->apiClientService->endpoint($this::ENDPOINT_PATH);
         $data = $request->request->all();
         $enabled = $data['enabled'] == 'true';
-        $timeInterval= $dateTimeHelper->convertHumanReadableToTime($data['timeInterval']);
+        $timeInterval = $dateTimeHelper->convertHumanReadableToTime($data['timeInterval']);
         $whiteList = explode(',', $data['whiteList']);
         $blackList = explode(',', $data['blackList']);
 
