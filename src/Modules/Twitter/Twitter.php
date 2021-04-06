@@ -26,8 +26,8 @@ class Twitter implements ModuleInterface, MenuProviderInterface, DashboardWidget
 
         $baseItem
             ->children()
-                ->item('Accounts', 'twitter_token_list')->end()
-                ->item('Scheduled tweets', 'twitter_tweet_list')->end();
+                ->item('title.accounts', 'twitter_token_list')->end()
+                ->item('title.scheduledtweets', 'twitter_tweet_list')->end();
 
         return $baseItem;
     }

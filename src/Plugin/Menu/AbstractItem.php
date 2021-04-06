@@ -6,7 +6,7 @@ namespace App\Plugin\Menu;
  */
 abstract class AbstractItem
 {
-    /** @var Menu title text */
+    /** @var string title text */
     protected $title;
 
     /** @var MenuItemList Parent menu item list */
@@ -18,16 +18,33 @@ abstract class AbstractItem
         $this->parent = $parent;
     }
 
+    /**
+     * Gets the menu title.
+     * 
+     * @return string The menu title.
+     */
     public function getTitle()
     {
         return $this->title;
     }
 
+    /**
+     * Sets the menu title.
+     * 
+     * @param string $title The menu title.
+     * @return void 
+     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
+    /**
+     * Ends the definition of the menu, i.e. returns the parent menu.
+     * This is used mainly as a glue to allow chaining menu item definition.
+     * 
+     * @return MenuItemList The parent menu.
+     */
     public function end()
     {
         return $this->parent;

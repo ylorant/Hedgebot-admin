@@ -3,6 +3,7 @@ namespace App\Modules\AutoHost\Controller;
 
 use App\Controller\BaseController;
 use App\Helper\DateTimeHelper;
+use stdClass;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,9 +45,21 @@ class AutoHostController extends BaseController
 
         // Selected channel is set from the request data if a channel has been selected by the user,
         // else we default to the first available channel from the bot
-        $templateVars['channelSelected'] = !empty($templateVars['availableChannels']) ? $templateVars['availableChannels'][0] : null;
-        if (key_exists('selectedHost', $data) && isset($data['selectedHost'])) {
-            $templateVars['channelSelected'] = $data['selectedHost'];
+        $templateVars['selectedChannel'] = !empty($templateVars['availableChannels']) ? $templateVars['availableChannels'][0] : null;
+        if (key_exists('selectedHost', $data) && isset($data['selectedHost']) && in_array($data['selectedHost'], $templateVars['availableChannels'])) {
+            $templateVars['selectedChannel'] = $data['selectedHost'];
+        }
+
+        // If the host configuration hasn't been defined for the channel yet, initialize
+        // it as an empty object
+        // TODO: Maybe find a way to pull the empty host config object from the bot ?
+        if(!isset($templateVars['hosts'][$templateVars['selectedChannel']])) {
+            $templateVars['hosts'][$templateVars['selectedChannel']] = (object) [
+                'channel' => $templateVars['selectedChannel'],
+                'enabled' => false,
+                'time' => null,
+                'hostedChannels' => []
+            ];
         }
 
         return $this->render('autohost/route/index.html.twig', $templateVars);

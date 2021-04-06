@@ -1,10 +1,9 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}{% trans %}title.permissions{% endtrans %}{% endblock %}
+{% block title %}{% trans %}title.roles{% endtrans %}{% endblock %}
 
 {% block main_title %}
     <h3>
-        {% trans %}title.permissions{% endtrans %}
-        - {% trans %}tab.app_roles{% endtrans %}
+        {% trans %}title.roles{% endtrans %}
     </h3>
 {% endblock %}
 
@@ -13,7 +12,7 @@
         <div class="col-xs-12">
             <div class="card">
                 <div class="header">
-                    <h2>{% trans %}tab.app_roles{% endtrans %}</h2>
+                    <h2>{% trans %}title.roles{% endtrans %}</h2>
                 </div>
 
                 <div class="body">
@@ -25,7 +24,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for role in app_roles %}
+                        {% for role in roles %}
                             <tr>
                                 <td>{{ role.name }}</td>
                                 <td>{{ role.description }}</td>

@@ -7,6 +7,7 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use App\Plugin\Menu\MenuItemList;
 use App\Interfaces\MenuProviderInterface;
+use App\Interfaces\ModuleInterface;
 use App\Plugin\Menu\MenuItem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Security;
@@ -62,20 +63,44 @@ class MenuGeneratorService
                 $menu = $object->getMenu();
                 if ($menu instanceof MenuItemList) {
                     foreach ($menu as $item) {
+                        $this->processMenuItem($item, $object);
                         $itemList->add($item);
                     }
                 } elseif ($menu instanceof MenuItem) {
-                    $menu->setTitle($this->translator->trans(
-                        $menu->getTitle(),
-                        [],
-                        strtolower($object->getModuleName())
-                    ));
+                    $this->processMenuItem($menu, $object);
                     $itemList->add($menu);
                 }
             }
         }
 
         return $itemList;
+    }
+
+    /**
+     * Processes a menu item's properties, to prepare it for inclusion in the global
+     * menu object. It handles the menu title translation domain for example.
+     * If the menu has a submenu, it will process its children too.
+     * 
+     * @param MenuItem $menuItem The menu to process.
+     * @param MenuProviderInterface $menuProvider The provider that provided the menu.
+     * @return void 
+     */
+    protected function processMenuItem(MenuItem $menuItem, MenuProviderInterface $menuProvider)
+    {
+        $translationDomain = null;
+        if($menuProvider instanceof ModuleInterface) {
+            $translationDomain = $menuProvider->getModuleName();
+        }
+
+        $menuItem->setTitle(
+            $this->translator->trans($menuItem->getTitle(), [], strtolower($translationDomain))
+        );
+
+        if(!empty($menuItem->getSubmenu()) && !empty($menuItem->getSubmenu()->count())) {
+            foreach($menuItem->getSubmenu() as $subMenuItem) {
+                $this->processMenuItem($subMenuItem, $menuProvider);
+            }
+        }
     }
 
     /**
@@ -92,19 +117,16 @@ class MenuGeneratorService
 
         if ($this->security->isGranted(User::ROLE_ADMIN)) {
             $baseItem
-                ->item($this->translator->trans('title.users'), 'users_index', 'account_box')->end()
-                ->item($this->translator->trans('title.permissions'), null, 'lock')
+                ->item($this->translator->trans('title.web_permissions'), null, 'lock')
                     ->children()
-                        ->item($this->translator->trans('tab.bot_roles'), 'permissions_bot')->end()
-                        ->item($this->translator->trans('tab.app_roles'), 'permissions_web')->end()
+                        ->item($this->translator->trans('title.users'), 'users_index')->end()
+                        ->item($this->translator->trans('title.roles'), 'users_roles')->end()
                     ->end()
                 ->end();
-        } else {
-            $baseItem
-                ->item($this->translator->trans('title.permissions'), 'permissions_bot', 'lock');
         }
 
         $baseItem
+            ->item($this->translator->trans('title.bot_permissions'), 'permissions_index', 'lock')->end()
             ->item($this->translator->trans('title.twitch_api'), 'twitch_index', "zmdi:twitch")->end()
             ->item($this->translator->trans('title.settings'), null, 'settings')
                 ->children()

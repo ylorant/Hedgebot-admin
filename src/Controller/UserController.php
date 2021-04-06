@@ -21,15 +21,14 @@ class UserController extends BaseController
     public function beforeActionHook()
     {
         $this->breadcrumbs->addItem(
-            $this->translator->trans('title.users'),
-            $this->get('router')->generate("users_index")
+            $this->translator->trans('title.web_permissions')
         );
     }
 
     /**
      * This page display all users for admin
      *
-     * @Route("/users", name="users_index")
+     * @Route("/users/list", name="users_index")
      * @IsGranted("ROLE_ADMIN")
      *
      * @param UserService $userService
@@ -37,12 +36,17 @@ class UserController extends BaseController
      */
     public function getUsers(UserService $userService): Response
     {
+        $this->breadcrumbs->addItem(
+            $this->translator->trans('title.users'),
+            $this->get('router')->generate("users_index")
+        );
+
         $users = $userService->findAll();
 
         return $this->render('core/route/users/index.html.twig', ['users' => $users]);
     }
 
-    // @TODO find a way to block access to edit if user connected is different that userId asked
+    // TODO: find a way to block access to edit if user connected is different that userId asked
 
     /**
      * @Route ("/user/new", name="user_new")
@@ -152,5 +156,26 @@ class UserController extends BaseController
         }
 
         return $this->redirect($this->generateUrl('users_index'));
+    }
+    
+
+    /**
+     * Permissions index page.
+     * This page lists the available roles, Bot roles (everyone) and App roles (if you are admin).
+     *
+     * @Route("/users/roles", name="users_roles")
+     * @param UserService $userService
+     * @return Response
+     */
+    public function roles(UserService $userService): Response
+    {
+        $this->breadcrumbs->addItem(
+            $this->translator->trans('title.roles'),
+            $this->get("router")->generate("users_roles")
+        );
+
+        $templateVars = [];
+        $templateVars['roles'] = $userService->getAvailableAppRoles();
+        return $this->render('core/route/users/roles.html.twig', $templateVars);
     }
 }

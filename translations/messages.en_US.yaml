@@ -3,7 +3,8 @@
 ---
 title:
   dashboard: Dashboard
-  permissions: Autorisations
+  bot_permissions: Bot permissions
+  web_permissions: Web app permissions
   roles: Roles
   users: Users
   twitch_api: Twitch API

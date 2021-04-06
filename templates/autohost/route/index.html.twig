@@ -24,7 +24,7 @@
                                     <select id="host-channels" name="host-channels" class="form-control channel-selector">
                                         {% for channel in availableChannels %}
                                             <option class="host-channel"
-                                                    value="{{ channel }}" {{ channel in channelSelected ? "selected" : "" }}>{{ channel }}</option>
+                                                    value="{{ channel }}" {{ channel in selectedChannel ? "selected" : "" }}>{{ channel }}</option>
                                         {% endfor %}
                                     </select>
                                     <label class="form-label">{% trans %}form.channel{% endtrans %}</label>
@@ -44,7 +44,7 @@
                     </div>
                     <div id="host-channel-configuration" class="body">
                         {% for host in hosts %}
-                            {% if host.channel in channelSelected %}
+                            {% if host.channel in selectedChannel %}
                                 {% include 'autohost/route/configuration.html.twig' with {'isTemplate': false, 'host': host} %}
                             {% endif %}
                         {% endfor %}
@@ -64,9 +64,9 @@
                         {% set templateHosted = {'channel':'', 'hostedChannels': {'': {'channel': '', 'enabled': 'enabled', 'priority': 0.5}}} %}
                         {% include 'autohost/route/hosted.html.twig' with {'isTemplate': true, 'host': templateHosted} %}
                     </div>
-                    <div id="hosted-channels" data-channel="{{channelSelected}}">
+                    <div id="hosted-channels" data-channel="{{selectedChannel}}">
                         {% for host in hosts %}
-                            {% if host.channel in channelSelected %}
+                            {% if host.channel in selectedChannel %}
                                 {% include 'autohost/route/hosted.html.twig' with {'isTemplate': false, 'host': host} %}
                             {% endif %}
                         {% endfor %}

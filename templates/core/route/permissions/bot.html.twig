@@ -1,10 +1,9 @@
 {% extends 'core/base.html.twig' %}
-{% block title %}{% trans %}title.permissions{% endtrans %}{% endblock %}
+{% block title %}{% trans %}title.bot_permissions{% endtrans %}{% endblock %}
 
 {% block main_title %}
     <h3>
-        {% trans %}title.permissions{% endtrans %}
-        - {% trans %}tab.bot_roles{% endtrans %}
+        {% trans %}title.bot_permissions{% endtrans %}
 
         <div class="pull-right">
             <a class="btn btn-primary waves-effect" href="{{ path('permissions_role_new') }}">

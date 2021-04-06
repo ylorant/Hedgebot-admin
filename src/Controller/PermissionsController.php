@@ -26,7 +26,8 @@ class PermissionsController extends BaseController
     {
         parent::beforeActionHook();
         $this->breadcrumbs->addItem(
-            $this->translator->trans('title.permissions')
+            $this->translator->trans('title.permissions'),
+            $this->get("router")->generate("permissions_index")
         );
     }
 
@@ -34,17 +35,12 @@ class PermissionsController extends BaseController
      * Bot permissions index page.
      * This page lists the available bot roles.
      *
-     * @Route("/permissions/bot", name="permissions_bot")
+     * @Route("/permissions", name="permissions_index")
      * @param UserService $userService
      * @return Response
      */
-    public function bot(UserService $userService): Response
+    public function index(UserService $userService): Response
     {
-        $this->breadcrumbs->addItem(
-            $this->translator->trans('tab.bot_roles'),
-            $this->get("router")->generate("permissions_bot")
-        );
-
         $templateVars = [];
         $securityEndpoint = $this->apiClientService->endpoint('/security');
         $templateVars['bot_roles'] = (array) $securityEndpoint->getRoles();
@@ -53,25 +49,6 @@ class PermissionsController extends BaseController
         }
 
         return $this->render('core/route/permissions/bot.html.twig', $templateVars);
-    }
-
-    /**
-     * Permissions index page.
-     * This page lists the available roles, Bot roles (everyone) and App roles (if you are admin).
-     *
-     * @Route("/permissions/web", name="permissions_web")
-     * @param UserService $userService
-     * @return Response
-     */
-    public function web(UserService $userService): Response
-    {
-        $templateVars = [];
-        $securityEndpoint = $this->apiClientService->endpoint('/security');
-        $templateVars['bot_roles'] = (array) $securityEndpoint->getRoles();
-        if ($this->isGranted(User::ROLE_ADMIN)) {
-            $templateVars['app_roles'] = $userService->getAvailableAppRoles();
-        }
-        return $this->render('core/route/permissions/web.html.twig', $templateVars);
     }
 
     /**

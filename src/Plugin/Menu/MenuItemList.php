@@ -8,10 +8,10 @@ use Iterator;
  */
 class MenuItemList implements Iterator
 {
-    /** @var Sub-menu items */
+    /** @var array Sub-menu items */
     protected $items = [];
 
-    /** @var Parent menu */
+    /** @var MenuItem Parent menu */
     protected $parent;
 
     public function __construct(MenuItem $parent = null)
@@ -25,6 +25,11 @@ class MenuItemList implements Iterator
         $this->add($item);
 
         return $item;
+    }
+
+    public function count()
+    {
+        return count($this->items);
     }
 
     public function item($title, $href = null, $icon = null)
