@@ -7,6 +7,10 @@
 
 {% set widgetScripts = [] %}
 
+{% block breadcrumbs %}
+{# Empty breadcrumbs block to avoid displaying them on the dashboard #}
+{% endblock %}
+
 {% block content %}
     <div class="block-header">
         <h1>{% trans %}title.dashboard{% endtrans %}</h1>
