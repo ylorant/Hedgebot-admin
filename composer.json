@@ -35,7 +35,7 @@
         "symfony/swiftmailer-bundle": "^3.5.2",
         "symfony/monolog-bundle": "^3.6.0",
         "symfony/polyfill-apcu": "^1.22.1",
-        "symfony/intl": "4.4.19",
+        "symfony/intl": "^5.2",
         "twig/twig": "^3.3.0",
         "twig/extra-bundle": "^3.3.0",
         "twig/intl-extra": "^3.3",
@@ -55,7 +55,7 @@
         "composer/package-versions-deprecated": "1.11.99.1",
         "symfony/proxy-manager-bridge": "^5.2",
         "symfony/validator": "^5.2",
-        "symfony/security-csrf": "5.2.*"
+        "symfony/security-csrf": "^5.2"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^5.2",
