@@ -25,6 +25,7 @@ class BaseController extends AbstractController
      * Constructor
      * @param RouterInterface $routerInterface
      * @param TranslatorInterface $translator
+     * @param Breadcrumbs $breadcrumbs
      * @param $apiBaseUrl
      * @param $apiAccessToken
      * @throws ClientIdRequiredException
@@ -45,13 +46,13 @@ class BaseController extends AbstractController
     /**
      * Base hook executed before the call of the action on the controller. Allows to
      * define a controller-wide breadcrumbs here.
-     * 
-     * @return void 
+     *
+     * @return void
      */
     public function beforeActionHook()
     {
         $this->breadcrumbs->addItem(
-            $this->translator->trans('title.dashboard'),
+            'title.dashboard',
             $this->get('router')->generate("dashboard")
         );
     }

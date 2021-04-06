@@ -1,25 +1,26 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
 root:
-  path: /
-  defaults:
-    _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
-    path: /dashboard
-    permanent: true
+    path: /
+    defaults:
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+        path: /dashboard
+        permanent: true
 
 plugins_routes:
-  prefix: /plugins
-  resource: .
-  type: plugin_routes
+    prefix: /plugins
+    resource: .
+    type: plugin_routes
 
 plugins_public_routes:
-  prefix: /public/plugins
-  resource: .
-  type: plugin_public_routes
+    prefix: /public/plugins
+    resource: .
+    type: plugin_public_routes
 
 logout:
-  path: /logout
+    path: /logout
 
 fos_js_routing:
-  resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

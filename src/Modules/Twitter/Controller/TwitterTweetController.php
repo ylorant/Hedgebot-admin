@@ -22,8 +22,9 @@ class TwitterTweetController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("Twitter");
-        $this->breadcrumbs->addItem("Tweets", $this->generateUrl("twitter_tweet_list"));
+        // Bad "breandcrumb x translator" usage, @see https://github.com/mhujer/BreadcrumbsBundle/issues/26
+        $this->breadcrumbs->addItem($this->translator->trans('title.twitter', [], 'twitter'));
+        $this->breadcrumbs->addItem($this->translator->trans('title.tweets', [], 'twitter'), $this->generateUrl("twitter_tweet_list"));
     }
 
     /**

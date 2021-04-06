@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\CustomCommands;
 
 use App\Service\ApiClientService;

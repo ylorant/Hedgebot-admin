@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Modules\Announcements\Controller;
 
 use App\Controller\BaseController;
 use App\Helper\DateTimeHelper;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -10,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class AnnouncementsController extends BaseController
 {
     /** @var string */
-    const ENDPOINT_PATH = '/plugin/announcements';
+    protected const ENDPOINT_PATH = '/plugin/announcements';
 
     /**
      * Hook that is executed before the action is called.
@@ -20,13 +22,16 @@ class AnnouncementsController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("announcements", $this->generateUrl("announcements_list"));
+        // Bad "breandcrumb x translator" usage, @see https://github.com/mhujer/BreadcrumbsBundle/issues/26
+        $this->breadcrumbs->addItem($this->translator->trans('title.announcements', [], 'announcements'), $this->generateUrl("announcements_list"));
     }
 
     /**
      * @Route("/announcements", name="announcements_list")
+     * @param Request $request
+     * @return Response
      */
-    public function announcementsListAction(Request $request)
+    public function announcementsList(Request $request)
     {
         $templateVars = [];
 
@@ -45,7 +50,7 @@ class AnnouncementsController extends BaseController
      * @param $id
      * @return JsonResponse
      */
-    public function deleteMessageAction($id)
+    public function deleteMessage($id)
     {
         $endpoint = $this->apiClientService->endpoint($this::ENDPOINT_PATH);
         $deleted = $endpoint->deleteMessage($id);
@@ -63,7 +68,7 @@ class AnnouncementsController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveMessageAction($id, Request $request)
+    public function saveMessage($id, Request $request): JsonResponse
     {
         $endpoint = $this->apiClientService->endpoint($this::ENDPOINT_PATH);
         $data = $request->request->all();
@@ -94,7 +99,7 @@ class AnnouncementsController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveIntervalAction($channel, Request $request)
+    public function saveInterval(string $channel, Request $request): JsonResponse
     {
         $dateTimeHelper = new DateTimeHelper();
         $endpoint = $this->apiClientService->endpoint($this::ENDPOINT_PATH);
@@ -125,7 +130,7 @@ class AnnouncementsController extends BaseController
      *
      * @return array The list of intervals per channel.
      */
-    protected function getFormattedIntervals(array $channels)
+    protected function getFormattedIntervals(array $channels): array
     {
         $dateTimeHelper = new DateTimeHelper();
         $endpoint = $this->apiClientService->endpoint($this::ENDPOINT_PATH);

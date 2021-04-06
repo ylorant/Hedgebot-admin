@@ -60,7 +60,7 @@ class SettingsController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem($this->translator->trans("title.settings"));
+        $this->breadcrumbs->addItem('title.settings');
     }
 
     /** Widget settings page.

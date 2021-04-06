@@ -28,6 +28,7 @@ tab:
   last_login: Dernière connexion
   name: Nom
   description: Description
+  enabled: Actif
 form:
   start_session: Se connecter pour démarrer votre session
   id: Id
@@ -54,6 +55,8 @@ button:
   save: Enregistrer
   delete: Supprimer
   update: Mettre à jour
+  add: Ajouter
+  cancel: Annuler
   account: Compte
   dark_mode: Basculer en mode sombre
   login: Connexion

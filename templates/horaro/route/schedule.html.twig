@@ -9,7 +9,7 @@
     {% if schedule is not empty %}
         Edit schedule: {{ schedule.identSlug }}
     {% else %}
-        New schedule
+        {% trans from 'horaro' %}form.new_schedule{% endtrans %}
     {% endif %}
 {% endset %}
 
@@ -102,7 +102,7 @@
     <script type="text/javascript">
         $(function()
         {
-            var options = {
+            const options = {
                 identSlug: '{{ schedule.identSlug }}',
                 previousButtonSelector: '#previous-button',
                 pauseButtonSelector: '#pause-button',

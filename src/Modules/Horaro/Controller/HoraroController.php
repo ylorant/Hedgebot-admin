@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Modules\Horaro\Controller;
 
 use App\Controller\BaseController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Modules\Horaro\Form\ScheduleType;
@@ -17,13 +19,16 @@ class HoraroController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("Horaro", $this->generateUrl("horaro_schedule_list"));
+        // Bad "breandcrumb x translator" usage, @see https://github.com/mhujer/BreadcrumbsBundle/issues/26
+        $this->breadcrumbs->addItem($this->translator->trans('title.horaro', [], 'horaro'), $this->generateUrl("horaro_schedule_list"));
     }
 
     /**
      * @Route("/horaro", name="horaro_schedule_list")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function scheduleListAction(Request $request)
+    public function scheduleList(Request $request)
     {
         $templateVars = [];
 
@@ -52,8 +57,11 @@ class HoraroController extends BaseController
 
     /**
      * @Route("/horaro/schedule/edit/{identSlug}", name="horaro_schedule_edit")
+     * @param Request $request
+     * @param $identSlug
+     * @return Response
      */
-    public function scheduleEditAction(Request $request, $identSlug)
+    public function scheduleEdit(Request $request, $identSlug): Response
     {
         $templateVars = [
             'schedule' => null
@@ -64,7 +72,7 @@ class HoraroController extends BaseController
         $channels = $serverEndpoint->getAvailableChannels();
         $templateVars['schedule'] = $endpoint->getSchedule($identSlug);
 
-        $this->breadcrumbs->addItem("Edit schedule: ". $identSlug);
+        $this->breadcrumbs->addItem("Edit schedule: " . $identSlug);
 
         $formSchedule = clone $templateVars['schedule'];
         unset($formSchedule->data);
@@ -91,9 +99,11 @@ class HoraroController extends BaseController
     }
 
     /**
-     *@Route("/horaro/schedule/delete/{identSlug}", name="horaro_schedule_delete")
+     * @Route("/horaro/schedule/delete/{identSlug}", name="horaro_schedule_delete")
+     * @param $identSlug
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function scheduleDeleteAction($identSlug)
+    public function scheduleDelete($identSlug)
     {
         $endpoint = $this->apiClientService->endpoint('/plugin/horaro');
         $deleted = $endpoint->deleteSchedule($identSlug);

@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Modules\Twitter\Controller;
 
 use App\Controller\BaseController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,14 +17,15 @@ class TwitterTokenController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("Twitter");
-        $this->breadcrumbs->addItem("Tokens", $this->generateUrl("twitter_token_list"));
+        // Bad "breandcrumb x translator" usage, @see https://github.com/mhujer/BreadcrumbsBundle/issues/26
+        $this->breadcrumbs->addItem($this->translator->trans('title.twitter', [], 'twitter'));
+        $this->breadcrumbs->addItem($this->translator->trans('title.tokens', [], 'twitter'), $this->generateUrl("twitter_token_list"));
     }
 
     /**
      * @Route("/twitter/tokens", name="twitter_token_list")
      */
-    public function listAction()
+    public function list()
     {
         $templateVars = [];
         $endpoint = $this->apiClientService->endpoint('/plugin/twitter');
@@ -35,7 +38,7 @@ class TwitterTokenController extends BaseController
     /**
      * @Route("/twitter/oauth_init", name="twitter_init_oauth")
      */
-    public function initOAuthAction()
+    public function initOAuth()
     {
         $endpoint = $this->apiClientService->endpoint('/plugin/twitter');
         $authorizeUrl = $endpoint->getAuthorizeUrl();
@@ -45,8 +48,10 @@ class TwitterTokenController extends BaseController
 
     /**
      * @Route("/twitter/oauth_redirect", name="twitter_new_token")
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function newTokenAction(Request $request)
+    public function newToken(Request $request)
     {
         $oauthVerifier = $request->query->get('oauth_verifier');
 
@@ -69,8 +74,10 @@ class TwitterTokenController extends BaseController
 
     /**
      * @Route("/twitter/tokens/delete/{account}", name="twitter_token_delete")
+     * @param $account
+     * @return RedirectResponse
      */
-    public function deleteTokenAction($account)
+    public function deleteToken($account)
     {
         $endpoint = $this->apiClientService->endpoint('/plugin/twitter');
         $deleted = $endpoint->deleteAccessToken($account);

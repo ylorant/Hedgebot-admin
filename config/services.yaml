@@ -5,26 +5,28 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.upload_directory: '%kernel.project_dir%/public/upload/'
-
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: false       # Allows optimizing the container by removing unused services; this also means
-                            # fetching services directly from the container via $container->get() won't work.
-                            # The best practice is to be explicit about your dependencies anyway.
+        public: false       # Allows optimizing the container by removing unused services.
         bind:
             $layoutPath: '%kernel.project_dir%/config/layouts.yaml'
             $apiConfigPath: '%kernel.project_dir%/config/hedgebot.yaml'
             $apiBaseUrl: '%env(resolve:HEDGEBOT_API_URI)%'
             $apiAccessToken: '%env(HEDGEBOT_API_TOKEN)%'
 
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
-        exclude: '../src/{DependencyInjection,Entity,Tests,Kernel.php}'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -34,15 +36,16 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
     App\Command\SetupCommand:
         arguments: [ '@kernel', '%env(DATABASE_URL)%' ]
 
     App\Command\CreateUserCommand:
-        arguments: [ '@user']
+        arguments: [ '@user' ]
 
     App\EventListener\LoginListener:
         tags:
-            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
+        - { name: 'kernel.event_listener', event: 'security.interactive_login' }
 
     user:
         class: App\Service\UserService
@@ -79,7 +82,7 @@ services:
 
     dashboard_widgets:
         class: App\Service\DashboardWidgetsManagerService
-        arguments: ['@kernel', '@hedgebot_api', '@file_locator']
+        arguments: [ '@kernel', '@hedgebot_api', '@file_locator' ]
         calls:
             - [ setContainer,[ '@service_container' ] ]
 
@@ -87,10 +90,10 @@ services:
         class: App\Service\TwitchClientService
         arguments: [ '@router', 'twitch_oauth_redirect' ]
         calls:
-            - [ setScope, [ ['channel_editor', 'channel_commercial', 'channel_read', 'user_read', 'user:edit:broadcast'] ] ]
-            - [ initFromHedgebotApiClient, ['@hedgebot_api'] ]
+            - [ setScope, [ [ 'channel_editor', 'channel_commercial', 'channel_read', 'user_read', 'user:edit:broadcast' ] ] ]
+            - [ initFromHedgebotApiClient, [ '@hedgebot_api' ] ]
 
     forwarded_trust:
-        class: App\EventSubscriber\ForwardedTrustSubscriber
-        tags:
+        - class: App\EventSubscriber\ForwardedTrustSubscriber
+        - tags:
             - { name: kernel.event_subscriber }

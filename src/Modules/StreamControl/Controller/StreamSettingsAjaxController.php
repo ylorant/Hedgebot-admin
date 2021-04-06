@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\StreamControl\Controller;
 
 use App\Controller\BaseController;
@@ -13,7 +14,7 @@ class StreamSettingsAjaxController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function updateSettingsAction(Request $request)
+    public function updateSettings(Request $request)
     {
         $requestData = $request->request->all();
         $returnData = [];
@@ -39,7 +40,7 @@ class StreamSettingsAjaxController extends BaseController
      * @param $channel
      * @return JsonResponse
      */
-    public function startCommercialsAction($channel)
+    public function startCommercials($channel)
     {
         $endpoint = $this->apiClientService->endpoint('/plugin/streamcontrol');
         $adsStarted = $endpoint->startAds($channel, 90);
@@ -50,7 +51,7 @@ class StreamSettingsAjaxController extends BaseController
     /**
      * @Route("/streamcontrol/ajax/host/{channel}", options = { "expose" = true }, name="streamcontrol_ajax_host_channel")
      */
-    public function hostChannelAction($channel, Request $request)
+    public function hostChannel($channel, Request $request)
     {
         $requestData = $request->request->all();
 
@@ -66,7 +67,7 @@ class StreamSettingsAjaxController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function raidChannelAction($channel, Request $request)
+    public function raidChannel($channel, Request $request)
     {
         $requestData = $request->request->all();
 

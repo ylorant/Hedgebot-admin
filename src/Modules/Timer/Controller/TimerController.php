@@ -1,11 +1,12 @@
 <?php
+
 namespace App\Modules\Timer\Controller;
 
 use DateTime;
 use App\Controller\BaseController;
 use App\Modules\Timer\Helper\TimerHelper;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class TimerController extends BaseController
 {
@@ -17,13 +18,14 @@ class TimerController extends BaseController
     {
         parent::beforeActionHook();
 
-        $this->breadcrumbs->addItem("Timers", $this->generateUrl("timer_list"));
+        // Bad "breandcrumb x translator" usage, @see https://github.com/mhujer/BreadcrumbsBundle/issues/26
+        $this->breadcrumbs->addItem($this->translator->trans('title.timers', [], 'timer'), $this->generateUrl("timer_list"));
     }
 
     /**
      * @Route("/timer", name="timer_list")
      */
-    public function timerListAction()
+    public function timerList(): Response
     {
         $templateVars = [];
 

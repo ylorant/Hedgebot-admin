@@ -19,7 +19,7 @@ class CustomCallsController extends BaseController
     public function beforeActionHook()
     {
         parent::beforeActionHook();
-        $this->breadcrumbs->addItem("Custom calls", $this->get("router")->generate("custom_calls_index"));
+        $this->breadcrumbs->addItem('title.customcalls', $this->get("router")->generate("custom_calls_index"));
     }
 
     /**
