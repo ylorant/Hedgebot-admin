@@ -30,9 +30,9 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Ident slug</th>
-                                <th>Event ID</th>
-                                <th>Schedule ID</th>
+                                <th>{% trans from 'horaro' %}tab.ident_slug{% endtrans %}</th>
+                                <th>{% trans from 'horaro' %}tab.event_id{% endtrans %}</th>
+                                <th>{% trans from 'horaro' %}tab.schedule_id{% endtrans %}</th>
                                 <th>{% trans %}tab.channel{% endtrans %}</th>
                                 <th>{% trans %}tab.enabled{% endtrans %}</th>
                                 <th class="col-lg-2">{% trans from 'horaro' %}tab.open{% endtrans %}</th>
@@ -45,7 +45,7 @@
                                     <td>{{ slug }}</td>
                                     <td><code>{{ schedule.eventId }}</code></td>
                                     <td><code>{{ schedule.scheduleId }}</code></td>
-                                    <td>{{ schedule.channel }}</td>
+                                    <td>{{ schedule.channel ?: "tab.no_channel"|trans({}, 'horaro') }}</td>
                                     <td><i class="material-icons">{{ schedule.enabled ? "done" : "clear" }}</i></td>
                                     <td class="col-lg-2">
                                             <a class="btn btn-primary m-r-20" target="_blank" title="Go to schedule"
