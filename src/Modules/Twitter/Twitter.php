@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Twitter;
 
 use App\Service\ApiClientService;
@@ -23,12 +24,10 @@ class Twitter implements ModuleInterface, MenuProviderInterface, DashboardWidget
     public function getMenu()
     {
         $baseItem = new MenuItem('title.twitter', null, 'zmdi:twitter');
-
         $baseItem
             ->children()
                 ->item('title.accounts', 'twitter_token_list')->end()
                 ->item('title.scheduledtweets', 'twitter_tweet_list')->end();
-
         return $baseItem;
     }
 

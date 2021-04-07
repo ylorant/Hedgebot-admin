@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Plugin\Menu;
 
 class MenuItem extends AbstractItem
@@ -11,11 +12,9 @@ class MenuItem extends AbstractItem
 
     /** @var MenuItemList Submenu item list */
     protected $submenu;
-
     public function __construct($title, $route = null, $icon = null, $parent = null)
     {
         parent::__construct($title, $parent);
-
         $this->route = $route;
         $this->icon = $icon;
     }

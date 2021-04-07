@@ -3,5 +3,15 @@
 ---
 title:
   horaro: Horaro
-  schedules: Calendriers
+  schedules: Programmes
+tab:
+  ident_slug: Slug identifiant
+  event_id: ID Événement
+  schedule_id: ID Programme
+  schedules: Programmes
+  open: Ouvrir
+  no_channel: -- Aucune chaîne --
+form:
+  new_schedule: Nouveau programme
+  load_new_schedule: Charger un nouveau programme
 ...

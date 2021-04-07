@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Horaro;
 
 use App\Service\ApiClientService;

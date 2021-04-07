@@ -28,6 +28,7 @@ tab:
   last_login: Last login
   name: Name
   description: Description
+  enabled: Enabled
 form:
   start_session: Log in to start your session
   id: Id
@@ -54,6 +55,8 @@ button:
   save: Save
   delete: Delete
   update: Update
+  add: Add
+  cancel: Cancel
   account: Account
   dark_mode: Toggle dark mode
   login: Login

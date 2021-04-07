@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\Announcements;
 
 use App\Service\ApiClientService;

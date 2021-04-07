@@ -4,4 +4,14 @@
 title:
   horaro: Horaro
   schedules: Schedules
+tab:
+  ident_slug: Ident slug
+  event_id: Event ID
+  schedule_id: Schedule ID
+  schedules: Schedules
+  open: Open
+  no_channel: -- No channel --
+form:
+  new_schedule: New schedule
+  load_new_schedule: Load a new schedule
 ...

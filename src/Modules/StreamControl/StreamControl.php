@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Modules\StreamControl;
 
 use App\Interfaces\DashboardWidgetsProviderInterface;
