@@ -29,6 +29,16 @@ $(function()
     $('[data-toggle="tooltip"]').tooltip({
         container: 'body'
     });
+
+    // Display toggle
+    $('[data-toggle="display"]').on('click', function(ev) {
+        var button = $(ev.currentTarget);
+        var target = $(button.data('target'));
+
+        if(target.length) {
+            target.toggleClass('hidden');
+        }
+    });
     
     // Initialize event manager and its relay client
     EventManager.init();

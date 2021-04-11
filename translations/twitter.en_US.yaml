@@ -7,11 +7,51 @@ title:
   scheduledtweets: Scheduled tweets
   tokens: Tokens
   tweets: Tweets
+  edit_tweet: Edit tweet
+  new_tweet: New tweet
 tab:
   account: Account
   token: Token
   secret: Secret
   no_token: No token registered
+  status: Status
+  tweet: Tweet
+  scheduling_settings: Scheduling settings
+  actions: Actions
+  constraints: Constraints
+  filters: Filters
+form:
+  account: Account
+  bound_channel: Bound channel
+  content: Tweet content
+  media: Media
+  sent_at: Sent at
+  sent_at_format: Y-m-d \a\t H:i:s
+  constraints: Sending constraints
+  sending_time: Send date/time
+  event: Triggering event
+  trigger:
+    type: Trigger type
+    datetime: Set date/time
+    event: On a specific event
+  status:
+    label: Status
+    draft: Draft
+    scheduled: Scheduled
+    sent: Sent
+    error: Error
+  constraint:
+    store: Data store value
+    event: Event parameter
+    lval: Var/parameter that is checked
+    rval: Value it should have
+  filter:
+    all_accounts: All accounts
+    all_channels: All channels
 button:
   link_account: Link new account
-...
+  new_tweet: New tweet
+  send_tweet_now: Send tweet now
+  save_tweet: Save tweet
+  filter: Filter
+no_tweet: No tweet match the filter :(

@@ -10,8 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class ConstraintType extends AbstractType
 {
     const CONSTRAINT_TYPES = [
-        'store' => 'Data store value',
-        'event' => 'Event parameter'
+        'store' => 'form.constraint.store',
+        'event' => 'form.constraint.event'
     ];
 
     public function configureOptions(OptionsResolver $resolver)
@@ -30,13 +30,18 @@ class ConstraintType extends AbstractType
             ->add('lval', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Var/parameter that is checked',
+                    'placeholder' => 'form.constraint.lval',
                     'class' => 'constraint-lval store-autocomplete full-token',
                     'data-channel-ref' => 'select.channel-selector',
                     'data-context' => '.tweet-form'
                 ]
             ])
-            ->add('rval', TextType::class, ['label' => false, 'attr' => ['placeholder' => 'Value it should have']])
+            ->add('rval', TextType::class, [
+                'label' => false, 
+                'attr' => [
+                    'placeholder' => 'form.constraint.rval'
+                ]
+            ])
         ;
     }
 }

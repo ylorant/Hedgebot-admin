@@ -7,11 +7,51 @@ title:
   scheduledtweets: Tweets programmés
   tokens: Jetons
   tweets: Tweets
+  edit_tweet: Edition d'un tweet programmé
+  new_tweet: Nouveau tweet
 tab:
   account: Compte
   token: Jeton d'accès
   secret: Jeton d'accès secret
   no_token: Pas de jetons enregistrés
+  status: Statut
+  tweet: Tweet
+  scheduling_settings: Paramètres de planification
+  actions: Actions
+  constraints: Contraintes
+  filters: Filtres
+form:
+  account: Compte
+  bound_channel: Chaîne liée
+  content: Contenu du tweet
+  media: Média
+  sent_at: Envoyé le
+  sent_at_format: d/m/Y \à H:i:s
+  constraints: Conditions d'envoi
+  sending_time: Date d'envoi
+  event: Evénement déclencheur
+  trigger:
+    type: Type de déclencheur
+    datetime: Date/heure spécifique
+    event: Lorsqu'un événement survient
+  status:
+    label: Statut
+    draft: Brouillon
+    scheduled: Planifié
+    sent: Envoyé
+    error: Erreur
+  constraint:
+    store: Valeur de la base de données
+    event: Paramètre de l'événement
+    lval: Variable/paramètre à évaluer
+    rval: Valeur attendue
+  filter:
+    all_accounts: Tous les comptes
+    all_channels: Toutes les chaînes
 button:
   link_account: Lier un nouveau compte
-...
+  new_tweet: Nouveau tweet
+  send_tweet_now: Envoyer immédiatement le tweet
+  save_tweet: Enregistrer le tweet
+  filter: Filtrer
+no_tweet: Aucun tweet ne correspond au filtre :(

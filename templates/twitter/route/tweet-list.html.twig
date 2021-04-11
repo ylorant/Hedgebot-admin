@@ -11,7 +11,7 @@
         <div class="pull-right">
             <a class="btn btn-primary waves-effect" href="{{ path("twitter_tweet_new") }}">
                 <i class="material-icons">add</i>
-                <span>New tweet</span>
+                <span>{% trans from 'twitter' %}button.new_tweet{% endtrans %}</span>
             </a>
         </div>
     </h3>
@@ -19,10 +19,45 @@
 
 {% block content %}
     <div class="row">
+        <div class="card">
+            <div class="header">
+                {% trans from "twitter" %}tab.filters{% endtrans %}
+            </div>
+
+            <div class="body">
+                <div class="row">
+                    {{ form_start(filterForm) }}
+                        <div class="col-lg-3 col-md-6 col-xs-12">
+                            {{ form_row(filterForm.account) }}
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-xs-12">
+                            {{ form_row(filterForm.channel) }}
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-xs-12">
+                            {{ form_row(filterForm.status) }}
+                        </div>
+
+                        <div class="col-lg-2 col-md-6 col-xs-12 p-t-25">
+                            <button type="submit" class="btn btn-primary waves-effect">
+                                <i class="material-icons">filter_list</i>
+                                {% trans from "twitter" %}button.filter{% endtrans %}
+                            </button>
+                        </div>
+                    {{ form_end(filterForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         {% for tweet in tweets %}
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="header">
+                        <div class="pull-right">
+                            <span class="badge {{ statusBadges[tweet.status] }}">{{ statusLabels[tweet.status]|trans({}, 'twitter') }}</span>
+                        </div>
+
                         <h2>{{ tweet.account }}</h2>
                     </div>
 
@@ -62,14 +97,20 @@
                                 </span>
                             {% endfor %}
                         </div>
-                        <a href="{{ path('twitter_tweet_edit', {'tweetId': tweet.id}) }}" class="btn btn-primary"><i class="material-icons">create</i> <span>Edit</span></a>
-                        <a href="{{ path('twitter_tweet_delete', {'tweetId': tweet.id}) }}" class="btn btn-danger"><i class="material-icons">delete</i> <span>Delete</span></a>
+                        <a href="{{ path('twitter_tweet_edit', {'tweetId': tweet.id}) }}" class="btn btn-primary">
+                            <i class="material-icons">create</i> <span>{% trans %}button.edit{% endtrans %}</span>
+                        </a>
+                        <a href="{{ path('twitter_tweet_delete', {'tweetId': tweet.id}) }}" class="btn btn-danger">
+                            <i class="material-icons">delete</i> <span>{% trans %}button.delete{% endtrans %}</span>
+                        </a>
                     </div>
                 </div>
             </div>
         {% else %}
             <div class="col-xs-12 text-center text-embossed">
-                <em>No scheduled tweet yet :(</em>
+                <em>
+                    {% trans from "twitter" %}no_tweet{% endtrans %}
+                </em>
             </div>
         {% endfor %}
     </div>

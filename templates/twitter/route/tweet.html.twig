@@ -1,6 +1,10 @@
 {% extends 'core/base.html.twig' %}
 {% form_theme form with ['twitter/form/tweet_form.html.twig'] %}
-{% block title %}{{ tweet is not empty ? "Edit" : "New" }} tweet - Twitter{% endblock %}
+{% block title %}
+    {{ (tweet is not empty ? "title.edit_tweet" : "title.new_tweet")|trans({}, "twitter") }}
+    -
+    {% trans from "twitter" %}title.twitter{% endtrans %}
+{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/pages/plugin/customcommands.css') }}" rel="stylesheet" />
@@ -16,21 +20,56 @@
 {% block main_title %}
     <div class="form-main-action pull-right">
             <button class="btn btn-primary btn-lg waves-effect" type="submit">
-                Save tweet
+                {% trans from "twitter" %}button.save_tweet{% endtrans %}
             </button>
     </div>
 
     <h3>
-        Twitter - {{ tweet is not empty ? "Edit" : "New" }} scheduled tweet
+        {% trans from "twitter" %}title.twitter{% endtrans %} - 
+        {{ (tweet is not empty ? "title.edit_tweet" : "title.new_tweet")|trans({}, "twitter") }}
     </h3>
 {% endblock %}
 
 {% block content %}
     <div class="row tweet-form">
         <div class="col-md-6 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>{% trans from "twitter" %}tab.status{% endtrans %}</h2>
+                    </div>
+
+                    <div class="body">
+                        {% if tweet is not empty %}
+                            <div>
+                                <label>{% trans from "twitter" %}form.status.label{% endtrans %} :</label>
+                                <span class="badge {{ statusClass }}">
+                                    {{ ("form.status." ~ tweet.status)|trans({}, "twitter") }}
+                                </span>
+                                <a class="btn btn-link col-indigo m-l-10" data-toggle="display" data-target=".status-change">
+                                    {% trans %}button.edit{% endtrans %}
+                                </a>
+                            </div>
+
+                            <div class="status-change hidden">
+                                {{ form_row(form.status) }}
+                            </div>
+
+                            {% if tweet.sentTime is not empty %}
+                                <div>
+                                    <label>{% trans from 'twitter' %}form.sent_at{% endtrans %} </label>
+                                    {{ tweet.sentTime|date("form.sent_at_format"|trans({}, "twitter")) }}
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            {# Default status #}
+                            {{ form_row(form.status) }}
+                        {% endif %}
+                    </div>
+                </div>
+            
             <div class="card">
                 <div class="header">
-                    <h2>Tweet</h2>
+                    <h2>{% trans from "twitter" %}tab.tweet{% endtrans %}</h2>
                 </div>
 
                 <div class="body">
@@ -39,8 +78,6 @@
                     {{ form_row(form.channel) }}
                     {{ form_row(form.content) }}
                     {{ form_row(form.media) }}
-                    {{ form_row(form.sent) }}
-                    {{ form_row(form.sentTime) }}
                 </div>
             </div>
         </div>
@@ -48,7 +85,7 @@
         <div class="col-md-6 col-xs-12">
             <div class="card">
                 <div class="header">
-                    <h2>Scheduling settings</h2>
+                    <h2>{% trans from 'twitter' %}tab.scheduling_settings{% endtrans %}</h2>
                 </div>
 
                 <div class="body trigger-block-container">
@@ -61,7 +98,9 @@
                         {{ form_row(form.event) }}
                     </div>
 
-                    <h3>Constraints</h3>
+                    <h3>
+                        {% trans from "twitter" %}tab.constraints{% endtrans %}
+                    </h3>
 
                     <div class="tweet-constraints">
                         {{ form_widget(form.constraints) }}
@@ -71,11 +110,13 @@
             {% if tweet is not empty %}
                 <div class="card">
                     <div class="header">
-                        <h2>Actions</h2>
+                        <h2>{% trans from "twitter" %}tab.actions{% endtrans %}</h2>
                     </div>
 
                     <div class="body text-center">
-                        <a class="btn btn-primary btn-lg waves-effect" href="{{ path('twitter_tweet_send', {'tweetId': tweet.id}) }}">Send tweet now</a>
+                        <a class="btn btn-primary btn-lg waves-effect" href="{{ path('twitter_tweet_send', {'tweetId': tweet.id}) }}">
+                            {% trans from "twitter" %}button.send_tweet_now{% endtrans %}
+                        </a>
                     </div>
                 </div>
             {% endif %}
