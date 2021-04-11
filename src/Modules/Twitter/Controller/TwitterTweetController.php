@@ -2,6 +2,8 @@
 namespace App\Modules\Twitter\Controller;
 
 use App\Controller\BaseController;
+use App\Modules\Twitter\Enum\StatusEnum;
+use App\Modules\Twitter\Form\TweetFilterType;
 use Exception;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,18 +26,39 @@ class TwitterTweetController extends BaseController
 
         // Bad "breandcrumb x translator" usage, @see https://github.com/mhujer/BreadcrumbsBundle/issues/26
         $this->breadcrumbs->addItem($this->translator->trans('title.twitter', [], 'twitter'));
-        $this->breadcrumbs->addItem($this->translator->trans('title.tweets', [], 'twitter'), $this->generateUrl("twitter_tweet_list"));
     }
 
     /**
      * @Route("/twitter/tweets", name="twitter_tweet_list")
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
+        $this->breadcrumbs->addItem($this->translator->trans('title.tweets', [], 'twitter'));
+
         $endpoint = $this->apiClientService->endpoint('/plugin/twitter');
+        $serverEndpoint = $this->apiClientService->endpoint('/server');
+        $accounts = (array) $endpoint->getAccessTokenAccounts();
+        $channels = $serverEndpoint->getAvailableChannels();
+        $filters = [
+            'status' => [StatusEnum::DRAFT, StatusEnum::SCHEDULED]
+        ];
+
+        $filterForm = $this->createForm(TweetFilterType::class, $filters, [
+            'method' => 'GET', 
+            'accounts' => $accounts, 
+            'channels' => $channels
+        ]);
+        $filterForm->handleRequest($request);
+
+        if($filterForm->isSubmitted() && $filterForm->isValid()) {
+            $filters = array_filter($filterForm->getData());
+        }
 
         $templateVars = [];
-        $templateVars['tweets'] = (array) $endpoint->getScheduledTweets();
+        $templateVars['filterForm'] = $filterForm->createView();
+        $templateVars['tweets'] = (array) $endpoint->getScheduledTweets($filters);
+        $templateVars['statusLabels'] = StatusEnum::getLabels();
+        $templateVars['statusBadges'] = StatusEnum::getBadgeClasses();
 
         return $this->render('twitter/route/tweet-list.html.twig', $templateVars);
     }
@@ -53,9 +76,11 @@ class TwitterTweetController extends BaseController
         $templateVars = [];
         $tweet = null;
         $formTweet = null;
+        $tweetStatusClass = null;
 
         $endpoint = $this->apiClientService->endpoint('/plugin/twitter');
 
+        // Get the scheduled tweet if it's an edition
         if (!empty($tweetId)) {
             $tweet = $endpoint->getScheduledTweet($tweetId);
 
@@ -81,7 +106,12 @@ class TwitterTweetController extends BaseController
                     $constraint = (array) $constraint;
                 }
             }
+
+            $tweetStatusClass = StatusEnum::getBadgeClass($tweet->status);
         }
+
+        $translationSource = !empty($tweetId) ? 'title.edit_tweet' : 'title.new_tweet';
+        $this->breadcrumbs->addItem($this->translator->trans($translationSource, [], 'twitter'));
 
         $serverEndpoint = $this->apiClientService->endpoint('/server');
         $accounts = (array) $endpoint->getAccessTokenAccounts();
@@ -125,10 +155,6 @@ class TwitterTweetController extends BaseController
                     $formTweet->sendTime = $formTweet->sendTime->format('Y-m-d H:i');
                 }
 
-                if (!empty($formTweet->sentTime) && $formTweet->sentTime instanceof DateTime) {
-                    $formTweet->sentTime = $formTweet->sentTime->format('Y-m-d H:i');
-                }
-
                 // Format constraints
                 $formTweet->constraints = array_values($formTweet->constraints);
 
@@ -147,6 +173,7 @@ class TwitterTweetController extends BaseController
 
         $templateVars['form'] = $form->createView();
         $templateVars['tweet'] = $tweet;
+        $templateVars['statusClass'] = $tweetStatusClass;
 
         return $this->render('twitter/route/tweet.html.twig', $templateVars);
     }

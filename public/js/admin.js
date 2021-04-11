@@ -284,6 +284,19 @@ $.AdminBSB.input = {
             }
         });
 
+        //On change
+        $('body').on('change', '.form-control', function () {
+            var $this = $(this);
+
+            if($this.hasClass('datetimepicker')) {
+                if ($this.val() == '' || $this.val() === null) {
+                    $this.parents('.form-line').removeClass('focused');
+                } else {
+                    $this.parents('.form-line').addClass('focused');
+                }
+            }
+        })
+
         //On label click
         $('body').on('click', '.form-float .form-line .form-label', function () {
             $(this).parent().find('input').focus();

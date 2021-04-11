@@ -227,6 +227,23 @@ input.form-control[type="file"]
 }
 
 /* Input tweaks */
+
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type
+{
+    margin-bottom: 0px;
+}
+
 .form-group .form-line.disabled:after
 {
     -moz-transform: scaleX(0);
