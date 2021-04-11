@@ -170,6 +170,11 @@ code
 
 /* BUTTONS */
 
+.btn:hover
+{
+    color: #fff;
+}
+
 .btn-default, .btn-default:hover
 {
     background-color: transparent !important;
@@ -250,6 +255,11 @@ code
 .bg-indigo
 {
     background-color: #283593 !important;
+}
+
+.bg-grey
+{
+    background-color: #43484c !important;
 }
 
 .col-orange

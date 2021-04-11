@@ -53,5 +53,6 @@ button:
   new_tweet: New tweet
   send_tweet_now: Send tweet now
   save_tweet: Save tweet
-  filter: Filter
+  filters: Filters
+  action_filter: Filter
 no_tweet: No tweet match the filter :(

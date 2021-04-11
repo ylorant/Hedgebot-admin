@@ -9,6 +9,11 @@
     <h3>
         {% trans from 'twitter' %}title.twitter{% endtrans %} - {% trans from 'twitter' %}title.tweets{% endtrans %}
         <div class="pull-right">
+            <a class="btn bg-grey waves-effect" data-toggle="display" data-target=".filters-block">
+                <i class="material-icons">filter_list</i>
+                <span>{% trans from 'twitter' %}button.filters{% endtrans %}</span>
+            </a>
+
             <a class="btn btn-primary waves-effect" href="{{ path("twitter_tweet_new") }}">
                 <i class="material-icons">add</i>
                 <span>{% trans from 'twitter' %}button.new_tweet{% endtrans %}</span>
@@ -18,33 +23,33 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="card">
-            <div class="header">
+    <div class="card hidden filters-block">
+        <div class="header">
+            <h2>
                 {% trans from "twitter" %}tab.filters{% endtrans %}
-            </div>
+            </h2>
+        </div>
 
-            <div class="body">
-                <div class="row">
-                    {{ form_start(filterForm) }}
-                        <div class="col-lg-3 col-md-6 col-xs-12">
-                            {{ form_row(filterForm.account) }}
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-xs-12">
-                            {{ form_row(filterForm.channel) }}
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-xs-12">
-                            {{ form_row(filterForm.status) }}
-                        </div>
+        <div class="body">
+            <div class="row">
+                {{ form_start(filterForm) }}
+                    <div class="col-lg-3 col-md-6 col-xs-12">
+                        {{ form_row(filterForm.account) }}
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-xs-12">
+                        {{ form_row(filterForm.channel) }}
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-xs-12">
+                        {{ form_row(filterForm.status) }}
+                    </div>
 
-                        <div class="col-lg-2 col-md-6 col-xs-12 p-t-25">
-                            <button type="submit" class="btn btn-primary waves-effect">
-                                <i class="material-icons">filter_list</i>
-                                {% trans from "twitter" %}button.filter{% endtrans %}
-                            </button>
-                        </div>
-                    {{ form_end(filterForm) }}
-                </div>
+                    <div class="col-lg-2 col-md-6 col-xs-12 p-t-25">
+                        <button type="submit" class="btn btn-primary waves-effect">
+                            <i class="material-icons">filter_list</i>
+                            <span>{% trans from "twitter" %}button.action_filter{% endtrans %}</span>
+                        </button>
+                    </div>
+                {{ form_end(filterForm) }}
             </div>
         </div>
     </div>

@@ -53,5 +53,6 @@ button:
   new_tweet: Nouveau tweet
   send_tweet_now: Envoyer immédiatement le tweet
   save_tweet: Enregistrer le tweet
-  filter: Filtrer
+  filters: Filtres
+  action_filter: Filtrer
 no_tweet: Aucun tweet ne correspond au filtre :(

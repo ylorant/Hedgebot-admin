@@ -263,14 +263,6 @@ input.form-control[type="file"]
     z-index: 0;
 }
 
-/* Button tweak */
-
-button.btn:not(.btn-link):not(.btn-circle) i
-{
-    top: auto;
-    vertical-align: middle;
-}
-
 /* Switch form-line tweaks to trick label to behave like a regular form input */
 
 .switch.form-line {
