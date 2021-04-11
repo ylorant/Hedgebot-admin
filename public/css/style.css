@@ -227,6 +227,23 @@ input.form-control[type="file"]
 }
 
 /* Input tweaks */
+
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type,
+.card .body .form-group:last-of-type
+{
+    margin-bottom: 0px;
+}
+
 .form-group .form-line.disabled:after
 {
     -moz-transform: scaleX(0);
@@ -244,6 +261,14 @@ input.form-control[type="file"]
 .form-float .bootstrap-select > .dropdown-toggle
 {
     z-index: 0;
+}
+
+/* Button tweak */
+
+button.btn:not(.btn-link):not(.btn-circle) i
+{
+    top: auto;
+    vertical-align: middle;
 }
 
 /* Switch form-line tweaks to trick label to behave like a regular form input */
