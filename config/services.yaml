@@ -94,6 +94,6 @@ services:
             - [ initFromHedgebotApiClient, [ '@hedgebot_api' ] ]
 
     forwarded_trust:
-        - class: App\EventSubscriber\ForwardedTrustSubscriber
-        - tags:
+        class: App\EventSubscriber\ForwardedTrustSubscriber
+        tags:
             - { name: kernel.event_subscriber }
