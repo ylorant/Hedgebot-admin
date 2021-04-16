@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class TimerFrontController extends BaseController
 {
     /**
-     * @Route("/timer/{id}/embed", name="timer_front_embed")
+     * @Route("/public/timer/{id}/embed", name="timer_front_embed")
      * @param Request $request
      * @param $id
      * @return Response
