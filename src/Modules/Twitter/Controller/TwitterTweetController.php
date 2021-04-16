@@ -155,6 +155,10 @@ class TwitterTweetController extends BaseController
                     $formTweet->sendTime = $formTweet->sendTime->format('Y-m-d H:i');
                 }
 
+                if (!empty($formTweet->sentTime) && $formTweet->sentTime instanceof DateTime) {
+                    $formTweet->sentTime = $formTweet->sentTime->format('Y-m-d H:i');
+                }
+
                 // Format constraints
                 $formTweet->constraints = array_values($formTweet->constraints);
 
