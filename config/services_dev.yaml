@@ -20,6 +20,7 @@ services:
             $apiConfigPath: '%kernel.project_dir%/config/hedgebot.yaml'
             $apiBaseUrl: '%env(resolve:HEDGEBOT_API_URI)%'
             $apiAccessToken: '%env(HEDGEBOT_API_TOKEN)%'
+            $trustedProxies: '%env(TRUSTED_PROXIES)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

@@ -17,15 +17,15 @@ class ForwardedTrustSubscriber implements EventSubscriberInterface
 {
     protected $trustedProxies = null;
 
-    public function __construct()
+    public function __construct(string $trustedProxies)
     {
-        $this->trustedProxies = Request::getTrustedProxies();
+        $this->trustedProxies = null;
     }
 
     public function onKernelRequest(RequestEvent $event)
     {
         if (!empty($this->trustedProxies)) {
-            Request::setTrustedProxies($this->trustedProxies, Request::HEADER_X_FORWARDED_FOR);
+            Request::setTrustedProxies($this->trustedProxies, Request::HEADER_X_FORWARDED_HOST);
         }
     }
 
