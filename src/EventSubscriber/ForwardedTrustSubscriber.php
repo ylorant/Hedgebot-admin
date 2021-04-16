@@ -19,7 +19,7 @@ class ForwardedTrustSubscriber implements EventSubscriberInterface
 
     public function __construct(string $trustedProxies)
     {
-        $this->trustedProxies = null;
+        $this->trustedProxies = explode(',', $trustedProxies);
     }
 
     public function onKernelRequest(RequestEvent $event)

@@ -47,10 +47,6 @@ services:
         tags:
         - { name: 'kernel.event_listener', event: 'security.interactive_login' }
 
-    App\EventSubscriber\ForwardedTrustSubscriber:
-        arguments:
-            $trustedProxies: '%env(TRUSTED_PROXIES)%'
-
     user:
         class: App\Service\UserService
 
