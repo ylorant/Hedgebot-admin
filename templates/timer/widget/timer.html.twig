@@ -5,7 +5,12 @@
 <div class="card timer-widget" data-id="{{ timer.id }}">
     {% if settings.hide_title_bar is not defined or settings.hide_title_bar != "1" %}
         <div class="header {{ settings.background_color ?? ''}}">
-            <h2>{% trans from 'timer' %}title.timer{% endtrans %} - {{ timer.title }}</h2>
+            <h2>
+                {% if extended_controls is not defined %}
+                    {% trans from 'timer' %}title.timer{% endtrans %} - 
+                {% endif %}
+                {{ timer.title }}
+            </h2>
         </div>
     {% endif %}
 

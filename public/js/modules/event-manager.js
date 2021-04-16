@@ -25,7 +25,6 @@ var EventManager = {
 
     onEventReceived: function(data)
     {
-        console.log("Event received", data);
         var eventName = data.listener + "/" + data.event.name;
         if(eventName in this.boundEvents) {
             for(var i in this.boundEvents[eventName]) {
@@ -37,6 +36,16 @@ var EventManager = {
         if(genericEvent in this.boundEvents) {
             for(var i in this.boundEvents[genericEvent]) {
                 this.boundEvents[genericEvent][i](data.event);
+            }
+        }
+    },
+
+    onEventError: function(e)
+    {
+        var eventName = "error";
+        if(eventName in this.boundEvents) {
+            for(var i in this.boundEvents[eventName]) {
+                this.boundEvents[eventName][i](e);
             }
         }
     }

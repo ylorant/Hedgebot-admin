@@ -11,3 +11,4 @@ twig:
             host: '%env(resolve:EVENTMANAGER_HOST)%'
             hubUrl: '%env(resolve:EVENTMANAGER_HUB_URL)%'
             topic: '%env(EVENTMANAGER_TOPIC)%'
+            jwt: '%env(EVENTMANAGER_JWT)%'
