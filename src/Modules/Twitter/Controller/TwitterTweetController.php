@@ -141,7 +141,7 @@ class TwitterTweetController extends BaseController
 
                     // Generating the HTTP URL from the path
                     $mediaHttpUrl = $newPath["dir"]. $newPath["name"];
-                    $mediaHttpUrl = str_replace($this->get('kernel')->getProjectDir(). "/public", $request->getSchemeAndHttpHost(), $mediaHttpUrl);
+                    $mediaHttpUrl = str_replace($this->get('http_kernel')->getProjectDir(). "/public", $request->getSchemeAndHttpHost(), $mediaHttpUrl);
                     $formTweet->media = [$mediaHttpUrl];
                 } elseif (!empty($tweet->media)) {
                     // If there is no new media uploaded, keep the old one
