@@ -61,6 +61,12 @@ class User implements UserInterface
      */
     private $lastLogin;
 
+    /**
+     * Must be an ICU locale ID format
+     * @ORM\Column(type="string", length=5, nullable=true)
+     */
+    private $locale;
+
     public function __construct()
     {
         $this->settings = new stdClass();
@@ -158,6 +164,22 @@ class User implements UserInterface
     {
         $this->lastLogin = new DateTime();
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param string|null $locale
+     */
+    public function setLocale(?string $locale): void
+    {
+        $this->locale = $locale;
     }
 
     /**

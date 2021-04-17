@@ -33,6 +33,7 @@ form:
   start_session: Se connecter pour démarrer votre session
   id: Id
   username: Identifiant
+  language: Langue
   enabled: Activé
   channel: Chaîne
   channels: Chaînes
