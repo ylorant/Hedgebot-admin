@@ -5,6 +5,7 @@ namespace App\Modules\StreamControl;
 use App\Interfaces\DashboardWidgetsProviderInterface;
 use App\Interfaces\MenuProviderInterface;
 use App\Interfaces\ModuleInterface;
+use App\Modules\StreamControl\Widget\StreamAdsWidget;
 use App\Service\ApiClientService;
 use App\Modules\StreamControl\Widget\StreamSettingsWidget;
 
@@ -34,7 +35,8 @@ class StreamControl implements ModuleInterface, MenuProviderInterface, Dashboard
     public function getDashboardWidgets(ApiClientService $apiClientService): array
     {
         return [
-            new StreamSettingsWidget($apiClientService)
+            new StreamSettingsWidget($apiClientService),
+            new StreamAdsWidget()
         ];
     }
 }

@@ -524,3 +524,8 @@ input.form-control[type="file"]
 {
     max-width: initial !important;
 }
+
+.text-lg
+{
+    font-size: 1.3em !important;
+}
