@@ -5,7 +5,14 @@
                 <div class="input-group">
                     <span class="input-group-addon">!</span>
                     <div class="form-line">
-                        <input type="text" name="name" class="form-control" value="{{ command.name }}" />
+                        <input 
+                            type="text" 
+                            name="name" 
+                            pattern="^[a-zA-Z0-9_-]+$" 
+                            class="form-control" 
+                            value="{{ command.name }}" 
+                            title="{% trans from 'customcommands' %}form.warnings.command_format{% endtrans %}"
+                        />
                         <label class="form-label">{% trans from 'customcommands' %}form.command{% endtrans %}</label>
                     </div>
                 </div>

@@ -9,4 +9,6 @@ button:
 form:
   command: Commande
   reply_text: Réponse
+  warnings:
+    command_format: Les noms de commande peuvent uniquement contenir des lettres, des chiffres, des tirets ou des underscores
 ...

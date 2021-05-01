@@ -140,6 +140,12 @@ var CustomCommands = {
         commandData.text = commandBlock.find('[name="' + this.options.fieldNames.text + '"]').val();
         commandData.channels = commandBlock.find('[name="' + this.options.fieldNames.channels + '"]').val();
         
+        let validName = commandBlock.find('[name="' + this.options.fieldNames.name + '"]')[0].reportValidity();
+
+        if(!validName) {
+            return;
+        }
+
         // If it's a new command, the commandName var will not be filled, so we'll fetch it from the actual input
         if(!commandName)
             commandName = commandData.name;
