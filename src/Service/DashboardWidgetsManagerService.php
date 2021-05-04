@@ -5,6 +5,7 @@ use App\Interfaces\DashboardWidgetsProviderInterface;
 use App\Widget\ChatWidget\ChatWidget;
 use App\Widget\CustomCallWidget\CustomCallWidget;
 use App\Widget\DefaultWidget\DefaultWidget;
+use App\Widget\StreamViewWidget\StreamViewWidget;
 use Exception;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -124,7 +125,8 @@ class DashboardWidgetsManagerService
         return [
             new ChatWidget(),
             new DefaultWidget(),
-            new CustomCallWidget()
+            new CustomCallWidget(),
+            new StreamViewWidget()
         ];
     }
 

@@ -1,0 +1,9 @@
+<div class="card stream-widget">
+    <div class="header">
+        <h2>{% trans %}title.stream_view{% endtrans %} - {{ settings.channel }}</h2>
+    </div>
+
+    <div class="body">
+        <iframe src="https://player.twitch.tv/?channel={{ settings.channel }}&parent={{ app.request.headers.get('host') }}" allowfullscreen="true"></iframe>
+    </div>
+</div>

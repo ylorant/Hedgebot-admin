@@ -13,6 +13,7 @@ title:
   widgets: Widgets
   twitch_chat: Twitch chat
   customcalls: Custom calls
+  stream_view: Stream view
 tab:
   role: Role
   roles: Roles
