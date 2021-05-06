@@ -31,6 +31,10 @@ class TimerWidgetSettingsType extends WidgetSettingsType
             ->add('hide_title_bar', CheckboxType::class, [
                 'label' => "Hide title bar",
                 "required" => false
+            ])
+            ->add('hide_controls', CheckboxType::class, [
+                'label' => "Hide controls",
+                "required" => false
             ]);
     }
 }

@@ -30,3 +30,11 @@
 {
     margin-bottom: 0px !important;
 }
+
+.timer-widget .timer-title
+{
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 42px;
+    margin-bottom: 0px !important;
+}
