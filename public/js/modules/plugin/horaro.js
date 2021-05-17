@@ -99,6 +99,7 @@ var Horaro = {
         this.elements.controlBlock = $(this.options.controlBlockSelector);
         this.elements.scheduleView = $(this.options.scheduleViewSelector);
         this.elements.currentItem = $(this.options.currentItemSelector);
+        this.elements.nextItem = $(this.options.nextItemSelector);
     },
 
     bindRelayEvents: function()
@@ -318,26 +319,45 @@ var Horaro = {
 
             $(this.elements.scheduleView).append(tbody);
         }
+        
+        var individualElements = {
+            currentItem: schedule.currentIndex,
+            nextItem: schedule.currentIndex + 1
+        };
 
-        if(this.elements.currentItem.length > 0) {
-            var columns = Array.from(scheduleData.columns);
-
-            $('[data-column]', this.elements.currentItem).each(function() {
-                var columnIndex = $(this).data('column');
-                var itemData = scheduleData.items[schedule.currentIndex].data[columnIndex];
-
-                // Markdown
-                var mdMatch = itemData.match(/\[(.+?)\]\((.+?)\)/g);
-
-                if(mdMatch != null) {
-                    for(var k = 0; k < mdMatch.length; k++) {
-                        var mdItemMatch = mdMatch[k].match(/\[(.+?)\]\((.+?)\)/);
-                        itemData = itemData.replace(mdMatch[k], mdItemMatch[1]);
+        for(var key in individualElements) {
+            if(this.elements[key].length > 0) {
+                var columns = Array.from(scheduleData.columns);
+    
+                $('[data-column]', this.elements[key]).each((function(index, column) {
+                    var columnIndex = $(column).data('column');
+                    var itemData = scheduleData.items[individualElements[key]];
+    
+                    switch(columnIndex) {
+                        case "estimate":
+                            var time = this.secondsToTime(itemData.length_t);
+                            itemData = time.hr.toString().padStart(2, "0") + ":" + 
+                                time.mn.toString().padStart(2, "0") + ":" + 
+                                time.sec.toString().padStart(2, "0");
+                            break;
+                        
+                        default:
+                            itemData = itemData.data[columnIndex];
                     }
-                }
-
-                $('.item-value', this).html(itemData);
-            });
+    
+                    // Markdown
+                    var mdMatch = itemData.match(/\[(.+?)\]\((.+?)\)/g);
+    
+                    if(mdMatch != null) {
+                        for(var k = 0; k < mdMatch.length; k++) {
+                            var mdItemMatch = mdMatch[k].match(/\[(.+?)\]\((.+?)\)/);
+                            itemData = itemData.replace(mdMatch[k], mdItemMatch[1]);
+                        }
+                    }
+    
+                    $('.item-value', column).html(itemData);
+                }).bind(this));
+            }
         }
     },
 

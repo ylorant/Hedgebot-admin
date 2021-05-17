@@ -10,6 +10,7 @@ $(function()
         actionRoute: 'horaro_ajax_schedule_action',
         getScheduleRoute: 'horaro_ajax_get_schedule',
         currentItemSelector: '#current-item-data',
+        nextItemSelector: '#next-item-data',
         scheduleViewSelector: null
     };
 

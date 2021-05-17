@@ -4,13 +4,22 @@
     </div>
     <div class="body schedule-actions">
         {% if schedule is not empty %}
-            <ul class="list-unstyled">
-                <li>
-                    Schedule: <span id="schedule-current-item">{{ scheduleData.name }}</span>
-                </li>
-                <li>
-                    Current item:
-                    <ul id="current-item-data">
+            <div>
+                Schedule: <span id="schedule-current-item">{{ scheduleData.name }}</span>
+            </div>
+
+            <ul class="nav nav-tabs tab-nav-right text-center schedule-item-tabs" role="tablist">
+                <li class="active schedule-item-tab"><a href="#current-item" data-toggle="tab">Current</a></li>
+                <li class="schedule-item-tab"><a href="#next-item" data-toggle="tab">Next</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="current-item" class="tab-pane fade in active">
+                    <ul id="current-item-data" class="list-unstyled m-b-0">
+                        <li data-column="estimate">
+                            Estimate:
+                            <span class="item-value">{{ scheduleData.items[schedule.currentIndex].length|dateinterval("%H:%I:%S") }}</span>
+                        </li>
                         {% for index, column in scheduleData.columns %}
                             <li data-column="{{ index }}">
                                 {{ column }}: 
@@ -18,7 +27,29 @@
                             </li>
                         {% endfor %}
                     </ul>
-            </p>
+                </div>
+
+                <div id="next-item" class="tab-pane fade in">
+                    {% set nextIndex = schedule.currentIndex + 1 %}
+                    {% if scheduleData.items[nextIndex] is defined %}
+                        <ul id="next-item-data" class="list-unstyled m-b-0">
+                            <li data-column="estimate">
+                                Estimate:
+                                <span class="item-value">{{ scheduleData.items[nextIndex].length|dateinterval("%H:%I:%S") }}</span>
+                            </li>
+                            {% for index, column in scheduleData.columns %}
+                                <li data-column="{{ index }}">
+                                    {{ column }}: 
+                                    <span class="item-value">{{ scheduleData.items[nextIndex].data[index]|markdown|striptags }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        This is the last item.
+                    {% endif %}
+                </div>
+            </div>
+
             <p class="text-center {{ schedule.paused ? "" : "hidden" }}" id="schedule-paused">
                 <span class="col-orange font-bold">Schedule is paused</span>
             </p>

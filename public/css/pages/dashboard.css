@@ -38,3 +38,13 @@
     line-height: 42px;
     margin-bottom: 0px !important;
 }
+
+.schedule-card .schedule-item-tabs
+{
+    display: flex;
+}
+
+.schedule-card .schedule-item-tabs .schedule-item-tab
+{
+    flex: auto;
+}

@@ -2,6 +2,8 @@
 
 namespace App\Twig;
 
+use DateInterval;
+use RuntimeException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigTest;
@@ -27,7 +29,8 @@ class UtilitiesExtension extends AbstractExtension
             new TwigFilter('anonymize', [$this, 'anonymize']),
             new TwigFilter('to_array', [$this, 'toArray']),
             new TwigFilter('iconize', [$this, 'iconize']),
-            new TwigFilter('unique', [$this, 'unique'])
+            new TwigFilter('unique', [$this, 'unique']),
+            new TwigFilter('dateinterval', [$this, 'dateInterval'])
         ];
     }
 
@@ -85,5 +88,23 @@ class UtilitiesExtension extends AbstractExtension
     public function unique($input)
     {
         return array_unique($input);
+    }
+
+    /**
+     * Twig filter: Formats a date interval.
+     * 
+     * @param mixed $input DateInterval or interval string representation.
+     * @param string $format The format
+     * @return string The formatted interval
+     */
+    public function dateInterval($input, $format)
+    {
+        if(is_string($input)) {
+            $input = new DateInterval($input);
+        } elseif(!($input instanceof DateInterval)) {
+            throw new RuntimeException("Input is neither a DateInterval nor an interval string.");
+        }
+
+        return $input->format($format);
     }
 }
