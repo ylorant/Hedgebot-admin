@@ -51,6 +51,11 @@ code
     color: #fdfdfd !important;
 }
 
+.nav-tabs
+{
+    border-bottom-color: #444;
+}
+
 .nav-tabs > li > a::before
 {
     border-bottom-color: #0D47A1;
