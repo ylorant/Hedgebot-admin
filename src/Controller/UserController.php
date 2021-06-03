@@ -158,7 +158,6 @@ class UserController extends BaseController
         return $this->redirect($this->generateUrl('users_index'));
     }
 
-
     /**
      * Permissions index page.
      * This page lists the available roles, Bot roles (everyone) and App roles (if you are admin).

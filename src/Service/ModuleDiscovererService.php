@@ -35,18 +35,21 @@ class ModuleDiscovererService
     public function discoverModules(): bool
     {
         $modulesClasses = [];
+
         // Getting all plugins' bundles
         $finder = new Finder();
         $modulesPath = DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . ModuleRouteLoader::MODULES_NAMESPACE;
         $directory = $this->container->get('kernel')->getProjectDir()
             . $modulesPath . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR;
         $files = $finder->in($directory)->depth('== 0')->files()->name('*.php');
+
         foreach ($files as $file) {
             $filePath = str_replace(DIRECTORY_SEPARATOR, "/", $file->getPath());
             $pathParts = explode("/", trim($filePath, "/"));
             $moduleName = end($pathParts);
             $class = 'App\\' . ModuleRouteLoader::MODULES_NAMESPACE . '\\' . $moduleName . '\\'
                 . $file->getBasename('.php');
+
             if (is_subclass_of($class, ModuleInterface::class)) {
                 $module = $class::getModuleName();
                 $modulesClasses[$module] = $class;
@@ -56,11 +59,13 @@ class ModuleDiscovererService
         // Getting module list from the bot
         $endpoint = $this->apiClient->endpoint('/plugin');
         $loadedModules = $endpoint->getList();
+
         // Filtering module classes to keep only the enabled ones to load
         $filterFunction = function ($module) use ($loadedModules) {
             return in_array($module, $loadedModules);
         };
         $this->modulesToLoad = array_filter($modulesClasses, $filterFunction, ARRAY_FILTER_USE_KEY);
+
         // Updating the config with the new bundles
         if (is_file($this->apiConfigPath)) {
             $config = Yaml::parse(file_get_contents($this->apiConfigPath));
