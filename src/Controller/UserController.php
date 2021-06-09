@@ -157,7 +157,6 @@ class UserController extends BaseController
 
         return $this->redirect($this->generateUrl('users_index'));
     }
-    
 
     /**
      * Permissions index page.

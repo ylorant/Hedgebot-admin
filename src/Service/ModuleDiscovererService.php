@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use Symfony\Component\Config\Resource\FileResource;
@@ -11,12 +12,12 @@ use App\Interfaces\ModuleInterface;
 
 class ModuleDiscovererService
 {
+    use ContainerAwareTrait;
+
     protected $apiClient;
     protected $apiConfigPath;
     protected $clearCache;
     protected $modulesToLoad;
-
-    use ContainerAwareTrait;
 
     public function __construct(ApiClientService $apiClient, $apiConfigPath)
     {
@@ -46,9 +47,9 @@ class ModuleDiscovererService
             $filePath = str_replace(DIRECTORY_SEPARATOR, "/", $file->getPath());
             $pathParts = explode("/", trim($filePath, "/"));
             $moduleName = end($pathParts);
-
             $class = 'App\\' . ModuleRouteLoader::MODULES_NAMESPACE . '\\' . $moduleName . '\\'
                 . $file->getBasename('.php');
+
             if (is_subclass_of($class, ModuleInterface::class)) {
                 $module = $class::getModuleName();
                 $modulesClasses[$module] = $class;
@@ -63,8 +64,6 @@ class ModuleDiscovererService
         $filterFunction = function ($module) use ($loadedModules) {
             return in_array($module, $loadedModules);
         };
-
-
         $this->modulesToLoad = array_filter($modulesClasses, $filterFunction, ARRAY_FILTER_USE_KEY);
 
         // Updating the config with the new bundles
@@ -77,7 +76,6 @@ class ModuleDiscovererService
         $config['modules'] = $this->modulesToLoad;
         $yaml = Yaml::dump($config);
         file_put_contents($this->apiConfigPath, $yaml);
-
         return true;
     }
 

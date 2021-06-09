@@ -33,7 +33,8 @@ tab:
 form:
   start_session: Log in to start your session
   id: Id
-  usernarm: Username
+  username: Username
+  language: Language
   enabled: Enabled
   channel: Channel
   channels: Channels

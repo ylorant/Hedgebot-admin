@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -50,18 +51,18 @@ class UserType extends AbstractType implements DataTransformerInterface
         $builder
             ->add('id', $idType, ['label' => 'form.id', 'disabled' => true])
             ->add('username', TextType::class, ['label' => 'form.username', 'disabled' => !$options['allowAdminEdit']])
-            ->add(
-                'roles',
-                ChoiceType::class,
-                [
+            ->add('roles', ChoiceType::class, [
                     'choices' => $appRolesChoiceList,
                     'label' => false,
                     'required' => true,
                     'expanded' => true,
                     'multiple' => true,
                     'disabled' => !$options['allowAdminEdit']
-                ]
-            )
+            ])
+            ->add('locale', LocaleType::class, [
+                'label' => 'form.language',
+                'required' => false,
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => false,
