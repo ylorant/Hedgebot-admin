@@ -5,7 +5,11 @@
     <div class="body schedule-actions">
         {% if schedule is not empty %}
             <div>
-                Schedule: <span id="schedule-current-item">{{ scheduleData.name }}</span>
+                Schedule:
+                <a target="_blank" href="{{ path('horaro_schedule_edit', {'identSlug': schedule.identSlug }) }}">
+                    <span id="schedule-current-item">{{ scheduleData.name }}</span>
+                    <i class="zmdi zmdi-open-in-new"></i>
+                </a>
             </div>
 
             <ul class="nav nav-tabs tab-nav-right text-center schedule-item-tabs" role="tablist">
