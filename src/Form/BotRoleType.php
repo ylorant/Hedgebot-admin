@@ -32,8 +32,18 @@ class BotRoleType extends AbstractType
         $builder
             ->add('id', TextType::class, ['label' => 'Role ID', 'disabled' => !$options['allowIdEdit']])
             ->add('name', TextType::class, ['label' => 'Role name'])
-            ->add('parent', ChoiceType::class, ['label' => 'Parent role', 'required' => false, 'placeholder' => '--- No parent ---', 'choices' => $rolesChoiceList])
-            ->add('default', CheckboxType::class, ['value' => true, 'required' => false, 'label' => 'Default role', 'attr' => ['class' => 'filled-in']])
+            ->add('parent', ChoiceType::class, [
+                'label' => 'Parent role',
+                'required' => false,
+                'placeholder' => '--- No parent ---',
+                'choices' => $rolesChoiceList
+            ])
+            ->add('default', CheckboxType::class, [
+                'value' => true,
+                'required' => false,
+                'label' => 'Default role',
+                'attr' => ['class' => 'filled-in']
+            ])
             ->add('rights', CollectionType::class, [
                 'entry_type' => RightType::class,
                 'label' => 'Rights',
