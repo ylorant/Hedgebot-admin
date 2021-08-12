@@ -7,7 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ObjectRepository;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 class UserService
@@ -21,34 +21,34 @@ class UserService
     /**
      * @var ValidationService
      */
-    private $validator;
+    private ValidationService $validator;
     /**
      * @var RoleHierarchyInterface
      */
-    private $roleHierarchy;
+    private RoleHierarchyInterface $roleHierarchy;
     /**
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private $passwordEncoder;
+    private UserPasswordHasherInterface $passwordHasher;
     /**
      * @var User
      */
-    private $user;
+    private User $user;
     /**
      * @var array
      */
-    private $errors = [];
+    private array $errors = [];
 
     public function __construct(
         EntityManagerInterface $em,
         ValidationService $validator,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordHasher,
         RoleHierarchyInterface $roleHierarchy
     ) {
         $this->em = $em;
         $this->validator = $validator;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->roleHierarchy = $roleHierarchy;
         $this->repository = $this->em->getRepository(User::class);
     }
@@ -133,7 +133,7 @@ class UserService
     {
         $isValid = $this->validator->validate($user);
         if ($isValid) {
-            $password = $this->passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $password = $this->passwordHasher->hashPassword($user, $user->getPlainPassword());
             $user->setPassword($password);
             $this->repository->save($user);
 
@@ -161,7 +161,7 @@ class UserService
             $isValid = $this->validator->validate($user);
             if ($isValid) {
                 if (!empty($user->getPlainPassword())) {
-                    $password = $this->passwordEncoder->encodePassword($user, $user->getPlainPassword());
+                    $password = $this->passwordHasher->hashPassword($user, $user->getPlainPassword());
                     $user->setPassword($password);
                 }
                 $this->repository->save($user);
