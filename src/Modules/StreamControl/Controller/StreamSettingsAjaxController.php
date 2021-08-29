@@ -58,11 +58,12 @@ class StreamSettingsAjaxController extends BaseController
     public function hostChannel($channel, Request $request): JsonResponse
     {
         $requestData = $request->request->all();
-        $returnData = ['success' => false];
+        $returnData = ['success' => true];
 
         $endpoint = $this->apiClientService->endpoint('/plugin/streamcontrol');
-        $returnData['success'] = $endpoint->hostChannel($channel, $requestData['target']);
+        $endpoint->hostChannel($channel, $requestData['target']);
 
+        // Return always true here since we cannot check that the host command executed correctly
         return new JsonResponse($returnData);
     }
 
@@ -75,11 +76,12 @@ class StreamSettingsAjaxController extends BaseController
     public function raidChannel($channel, Request $request): JsonResponse
     {
         $requestData = $request->request->all();
-        $returnData = ['success' => false];
+        $returnData = ['success' => true];
 
         $endpoint = $this->apiClientService->endpoint('/plugin/streamcontrol');
-        $returnData['success'] = $endpoint->raidChannel($channel, $requestData['target']);
+        $endpoint->raidChannel($channel, $requestData['target']);
 
+        // Return always true here since we cannot check that the raid command executed correctly
         return new JsonResponse($returnData);
     }
 }
