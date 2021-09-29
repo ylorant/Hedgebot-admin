@@ -3,7 +3,6 @@ namespace App\Controller;
 
 use App\Entity\DashboardLayout;
 use App\Service\DashboardWidgetsManagerService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Widget\DefaultWidget\DefaultWidget;
@@ -36,7 +35,6 @@ class DashboardController extends BaseController
      * @throws ClientIdRequiredException
      */
     public function __construct(
-        RouterInterface $router,
         KernelInterface $kernel,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
@@ -45,7 +43,7 @@ class DashboardController extends BaseController
         $apiBaseUrl,
         $apiAccessToken
     ) {
-        parent::__construct($router, $translator, $breadcrumbs, $apiBaseUrl, $apiAccessToken);
+        parent::__construct($translator, $breadcrumbs, $apiBaseUrl, $apiAccessToken);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,

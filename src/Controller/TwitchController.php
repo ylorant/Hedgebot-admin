@@ -28,14 +28,15 @@ class TwitchController extends BaseController
      * Lists the access tokens.
      *
      * @Route("/twitch", name="twitch_index")
+     * @param TwitchClientService $twitchApi
      */
-    public function indexAction()
+    public function indexAction(TwitchClientService $twitchApi)
     {
         $templateVars = [];
         $twitchEndpoint = $this->apiClientService->endpoint('/twitch');
 
         $templateVars['tokens'] = (array) $twitchEndpoint->getAccessTokens();
-        $templateVars['twitch_auth_url'] = $this->twitchClientService->getAuthenticationUrl();
+        $templateVars['twitch_auth_url'] = $twitchApi->getAuthenticationUrl();
 
         return $this->render('core/route/twitch/index.html.twig', $templateVars);
     }
@@ -45,9 +46,10 @@ class TwitchController extends BaseController
      *
      * @Route("/twitch_oauth/redirect", name="twitch_oauth_redirect")
      * @param Request $request
+     * @param TwitchClientService $twitchApi
      * @return RedirectResponse|Response
      */
-    public function newTokenAction(Request $request)
+    public function newTokenAction(Request $request, TwitchClientService $twitchApi)
     {
         $twitchEndpoint = $this->apiClientService->endpoint('/twitch');
 
@@ -71,10 +73,9 @@ class TwitchController extends BaseController
         } else {
             // Get the token from the code given by Twitch
             $accessCode = $request->query->get('code');
-            $twitchApi = $this->twitchClientService;
             $tokenInfo = $twitchApi->getAccessCredentials($accessCode);
-
-            if (!empty($tokenInfo['error'])) {
+            
+            if (isset($tokenInfo['status']) && $tokenInfo['status'] !== 200) {
                 $this->addFlash('danger', 'Failed to fetch token.');
                 return $this->redirectToRoute('twitch_index');
             }

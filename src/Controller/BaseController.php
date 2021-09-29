@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Service\ApiClientService;
-use App\Service\TwitchClientService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -18,8 +17,6 @@ class BaseController extends AbstractController
     public $translator;
     /** @var ApiClientService */
     public $apiClientService;
-    /** @var TwitchClientService */
-    public $twitchClientService;
 
     /**
      * Constructor
@@ -31,7 +28,6 @@ class BaseController extends AbstractController
      * @throws ClientIdRequiredException
      */
     public function __construct(
-        RouterInterface $routerInterface,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
         $apiBaseUrl,
@@ -39,7 +35,6 @@ class BaseController extends AbstractController
     ) {
         $this->breadcrumbs = $breadcrumbs;
         $this->apiClientService = new ApiClientService($apiBaseUrl, $apiAccessToken);
-        $this->twitchClientService = new TwitchClientService($routerInterface);
         $this->translator = $translator;
     }
 
