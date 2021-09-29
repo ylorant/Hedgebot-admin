@@ -78,10 +78,12 @@ class User implements UserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
+     * {@inheritDoc}
      */
+    public function getUserIdentifier(): string {
+        return $this->username;
+    }
+
     public function getUsername(): string
     {
         return (string) $this->username;

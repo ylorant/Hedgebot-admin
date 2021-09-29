@@ -14,21 +14,23 @@ class StreamSettingsAjaxController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function updateSettings(Request $request)
+    public function updateSettings(Request $request): JsonResponse
     {
         $requestData = $request->request->all();
-        $returnData = [];
+        $returnData = ['success' => false];
 
         $endpoint = $this->apiClientService->endpoint('/plugin/streamcontrol');
-        $currentInfo = $endpoint->setChannelInfo($requestData['channel'], $requestData['title'], $requestData['game']);
+        $currentInfo = $endpoint->setChannelInfo(
+            $requestData['channel'],
+            $requestData['title'],
+            $requestData['game']
+        );
 
-        if (!$currentInfo) {
-            $returnData['success'] = false;
-        } else {
+        if ($currentInfo) {
             $returnData['success'] = true;
             $returnData['info'] = [
                 'title' => $currentInfo->status,
-                'game'  => $currentInfo->game
+                'game' => $currentInfo->game
             ];
         }
 
@@ -40,25 +42,29 @@ class StreamSettingsAjaxController extends BaseController
      * @param $channel
      * @return JsonResponse
      */
-    public function startCommercials($channel)
+    public function startCommercials($channel): JsonResponse
     {
-        $endpoint = $this->apiClientService->endpoint('/plugin/streamcontrol');
-        $adsStarted = $endpoint->startAds($channel, 90);
+        $returnData = ['success' => false];
 
-        return new JsonResponse(['success' => $adsStarted]);
+        $endpoint = $this->apiClientService->endpoint('/plugin/streamcontrol');
+        $returnData['success'] = $endpoint->startAds($channel, 90);
+
+        return new JsonResponse($returnData);
     }
 
     /**
      * @Route("/streamcontrol/ajax/host/{channel}", options = { "expose" = true }, name="streamcontrol_ajax_host_channel")
      */
-    public function hostChannel($channel, Request $request)
+    public function hostChannel($channel, Request $request): JsonResponse
     {
         $requestData = $request->request->all();
+        $returnData = ['success' => true];
 
         $endpoint = $this->apiClientService->endpoint('/plugin/streamcontrol');
         $endpoint->hostChannel($channel, $requestData['target']);
 
-        return new JsonResponse(['success' => true]);
+        // Return always true here since we cannot check that the host command executed correctly
+        return new JsonResponse($returnData);
     }
 
     /**
@@ -67,13 +73,15 @@ class StreamSettingsAjaxController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function raidChannel($channel, Request $request)
+    public function raidChannel($channel, Request $request): JsonResponse
     {
         $requestData = $request->request->all();
+        $returnData = ['success' => true];
 
         $endpoint = $this->apiClientService->endpoint('/plugin/streamcontrol');
         $endpoint->raidChannel($channel, $requestData['target']);
 
-        return new JsonResponse(['success' => true]);
+        // Return always true here since we cannot check that the raid command executed correctly
+        return new JsonResponse($returnData);
     }
 }

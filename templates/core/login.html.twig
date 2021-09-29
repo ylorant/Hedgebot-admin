@@ -30,7 +30,7 @@
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" id="inputUsername" name="username" class="form-control" placeholder="{% trans %}form.username{% endtrans %}" required autofocus value="{{ last_username }}" />
+                            <input type="text" id="inputUsername" name="_username" class="form-control" placeholder="{% trans %}form.username{% endtrans %}" required autofocus value="{{ last_username }}" />
                         </div>
                     </div>
                     <div class="input-group">
@@ -38,7 +38,7 @@
                             <i class="material-icons">lock</i>
                         </span>
                         <div class="form-line">
-                            <input type="password" id="inputPassword" name="password" class="form-control" placeholder="{% trans %}form.password{% endtrans %}" required />
+                            <input type="password" id="inputPassword" name="_password" class="form-control" placeholder="{% trans %}form.password{% endtrans %}" required />
                             <input type="hidden" name="_csrf_token"
                                    value="{{ csrf_token('authenticate') }}"
                             >
