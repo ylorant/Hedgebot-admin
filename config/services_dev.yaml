@@ -82,3 +82,9 @@ services:
 
     menu_generator:
         alias: App\Service\MenuGeneratorService
+
+    user:
+        class: App\Service\UserService
+
+    hedgebot_api:
+        class: App\Service\ApiClientService
