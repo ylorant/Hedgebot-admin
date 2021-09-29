@@ -101,6 +101,6 @@ class TwitchClientService
             throw new InvalidTypeException('Scope', 'array', gettype($scope));
         }
 
-        $this->scope = $scope;
+        $this->twitchApiClient->setScope($scope);
     }
 }

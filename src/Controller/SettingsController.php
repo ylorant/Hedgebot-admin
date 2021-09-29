@@ -34,7 +34,6 @@ class SettingsController extends BaseController
      * @throws ClientIdRequiredException
      */
     public function __construct(
-        RouterInterface $router,
         KernelInterface $kernel,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
@@ -43,7 +42,7 @@ class SettingsController extends BaseController
         $apiBaseUrl,
         $apiAccessToken
     ) {
-        parent::__construct($router, $translator, $breadcrumbs, $apiBaseUrl, $apiAccessToken);
+        parent::__construct($translator, $breadcrumbs, $apiBaseUrl, $apiAccessToken);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,
