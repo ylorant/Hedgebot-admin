@@ -45,26 +45,17 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'security.interactive_login' }
 
-    user:
-        class: App\Service\UserService
-
-    hedgebot_api:
-        class: App\Service\ApiClientService
-
-    plugin_routing_loader:
-        class: App\Routing\ModuleRouteLoader
+    App\Routing\ModuleRouteLoader:
         arguments: [ '@kernel', '%kernel.bundles%' ]
         tags:
             - { name: routing.loader }
 
-    plugin_public_routing_loader:
-        class: App\Routing\ModulePublicRouteLoader
+    App\Routing\ModulePublicRouteLoader:
         arguments: [ '@kernel', '%kernel.bundles%' ]
         tags:
             - { name: routing.loader }
 
-    plugin_discoverer:
-        class: App\Service\ModuleDiscovererService
+    App\Service\ModuleDiscovererService:
         arguments: [ '@hedgebot_api' ]
         calls:
             - [ setContainer,[ '@service_container' ] ]
@@ -72,14 +63,13 @@ services:
             - { name: kernel.event_listener, event: security.interactive_login, method: onLoginSuccess }
             - { name: kernel.event_listener, event: kernel.terminate, method: onKernelTerminate }
 
-    menu_generator:
-        class: App\Service\MenuGeneratorService
+    App\Service\MenuGeneratorService:
+        class: 
         arguments: [ '@kernel', '@security.helper', '@translator' ]
         calls:
             - [ setContainer,[ '@service_container' ] ]
 
-    dashboard_widgets:
-        class: App\Service\DashboardWidgetsManagerService
+    App\Service\DashboardWidgetsManagerService:
         arguments: ['@kernel', '@hedgebot_api']
         calls:
             - [ setContainer,[ '@service_container' ] ]
@@ -89,3 +79,6 @@ services:
         calls:
             - [ setScope, [ [ 'channel_editor', 'channel_commercial', 'channel_read', 'user_read', 'user:edit:broadcast' ] ] ]
             - [ initFromHedgebotApiClient, [ '@hedgebot_api' ] ]
+
+    menu_generator:
+        alias: App\Service\MenuGeneratorService

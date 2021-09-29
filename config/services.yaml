@@ -46,12 +46,6 @@ services:
         tags:
         - { name: 'kernel.event_listener', event: 'security.interactive_login' }
 
-    user:
-        class: App\Service\UserService
-
-    hedgebot_api:
-        class: App\Service\ApiClientService
-
     App\Routing\ModuleRouteLoader:
         arguments: [ '@kernel', '%kernel.bundles%' ]
         tags:
@@ -85,3 +79,6 @@ services:
         calls:
             - [ setScope, [ [ 'channel_editor', 'channel_commercial', 'channel_read', 'user_read', 'user:edit:broadcast' ] ] ]
             - [ initFromHedgebotApiClient, [ '@hedgebot_api' ] ]
+
+    menu_generator:
+        alias: App\Service\MenuGeneratorService
