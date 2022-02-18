@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
@@ -35,13 +36,14 @@ class DashboardController extends BaseController
      */
     public function __construct(
         KernelInterface $kernel,
+        RouterInterface $router,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
         ApiClientService $apiClientService,
         string $layoutPath
     ) {
-        parent::__construct($translator, $breadcrumbs, $apiClientService);
+        parent::__construct($router, $translator, $breadcrumbs, $apiClientService);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,

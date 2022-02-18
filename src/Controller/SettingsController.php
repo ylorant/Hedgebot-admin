@@ -13,15 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use TwitchApi\Exceptions\ClientIdRequiredException;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class SettingsController extends BaseController
 {
-    /**
-     * @var DashboardWidgetsManagerService
-     */
-    private $dashboardWidgetMS;
+    private DashboardWidgetsManagerService $dashboardWidgetMS;
 
     /**
      * Constructor
@@ -65,9 +61,7 @@ class SettingsController extends BaseController
      */
     public function widgetSettingsAction(): Response
     {
-        $router = $this->get("router");
-
-        $this->breadcrumbs->addItem("Widgets", $router->generate("settings_widgets"));
+        $this->breadcrumbs->addItem("Widgets", $this->router->generate("settings_widgets"));
 
         $templateVars = [];
         $templateVars['widgets'] = $this->dashboardWidgetMS->getAvailableWidgets();
@@ -122,7 +116,7 @@ class SettingsController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function widgetSettingsSaveAction(Request $request)
+    public function widgetSettingsSaveAction(Request $request): JsonResponse
     {
         $success = false;
 

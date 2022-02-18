@@ -43,6 +43,9 @@ services:
         tags:
         - { name: 'kernel.event_listener', event: 'security.interactive_login' }
 
+    App\EventSubscriber\LocaleSubscriber:
+        arguments: [ '%kernel.default_locale%' ]
+
     App\Routing\ModuleRouteLoader:
         arguments: [ '@kernel', '%kernel.bundles%' ]
         tags:
