@@ -13,19 +13,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use TwitchApi\Exceptions\ClientIdRequiredException;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class SettingsController extends BaseController
 {
-    /**
-     * @var DashboardWidgetsManagerService
-     */
-    private $dashboardWidgetMS;
+    private DashboardWidgetsManagerService $dashboardWidgetMS;
 
     /**
      * Constructor
      * @param KernelInterface $kernel
+     * @param RouterInterface $router
      * @param FileLocator $fileLocator
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
@@ -34,13 +31,14 @@ class SettingsController extends BaseController
      */
     public function __construct(
         KernelInterface $kernel,
+        RouterInterface $router,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
         ApiClientService $apiClientService,
         $layoutPath
     ) {
-        parent::__construct($translator, $breadcrumbs, $apiClientService);
+        parent::__construct($router, $translator, $breadcrumbs, $apiClientService);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,
@@ -63,11 +61,9 @@ class SettingsController extends BaseController
     /** Widget settings page.
      * @Route("/settings/widgets", name="settings_widgets")
      */
-    public function widgetSettingsAction(): Response
+    public function widgetSettings(): Response
     {
-        $router = $this->get("router");
-
-        $this->breadcrumbs->addItem("Widgets", $router->generate("settings_widgets"));
+        $this->breadcrumbs->addItem("Widgets", $this->router->generate("settings_widgets"));
 
         $templateVars = [];
         $templateVars['widgets'] = $this->dashboardWidgetMS->getAvailableWidgets();
@@ -90,7 +86,7 @@ class SettingsController extends BaseController
      * @param $widgetName
      * @return Response
      */
-    public function widgetSettingsGetWidgetParamsFormAction($widgetName): Response
+    public function widgetSettingsGetWidgetParamsForm($widgetName): Response
     {
         $viewParams = [];
 
@@ -122,7 +118,7 @@ class SettingsController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function widgetSettingsSaveAction(Request $request)
+    public function widgetSettingsSave(Request $request): JsonResponse
     {
         $success = false;
 

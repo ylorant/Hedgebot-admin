@@ -27,7 +27,7 @@ class PermissionsController extends BaseController
         parent::beforeActionHook();
         $this->breadcrumbs->addItem(
             'title.bot_permissions',
-            $this->get("router")->generate("permissions_index")
+            $this->router->generate("permissions_index")
         );
     }
 
@@ -70,11 +70,10 @@ class PermissionsController extends BaseController
         $rights = (array) $securityEndpoint->getRights();
 
         // Add breadcrumb
-        $router = $this->get('router');
         if (!empty($roleId)) {
-            $this->breadcrumbs->addItem($role->name, $router->generate("permissions_role_edit", ['roleId' => $roleId]));
+            $this->breadcrumbs->addItem($role->name, $this->router->generate("permissions_role_edit", ['roleId' => $roleId]));
         } else {
-            $this->breadcrumbs->addItem("New role", $router->generate("permissions_role_new"));
+            $this->breadcrumbs->addItem("New role", $this->router->generate("permissions_role_new"));
         }
 
         // Filter the role rights to make them as an array of the actually defined rights.
@@ -101,7 +100,7 @@ class PermissionsController extends BaseController
                 $roleCreated = $securityEndpoint->createRole($roleData->id);
                 if (!$roleCreated) {
                     $this->addFlash('danger', 'Role cannot be created.');
-                    return $this->redirect($router->generate('permissions_index'));
+                    return $this->redirect($this->router->generate('permissions_index'));
                 }
 
                 $roleId = $roleData->id;
@@ -116,7 +115,7 @@ class PermissionsController extends BaseController
                 }
             }
 
-            return $this->redirect($router->generate("permissions_role_edit", ['roleId' => $roleId]));
+            return $this->redirect($this->router->generate("permissions_role_edit", ['roleId' => $roleId]));
         }
 
         // Fill template vars
@@ -138,7 +137,6 @@ class PermissionsController extends BaseController
      */
     public function deleteRole($roleId): RedirectResponse
     {
-        $router = $this->get("router");
         $securityEndpoint = $this->apiClientService->endpoint('/security');
         $roleDeleted = $securityEndpoint->deleteRole($roleId);
         if ($roleDeleted) {
@@ -147,6 +145,6 @@ class PermissionsController extends BaseController
             $this->addFlash('danger', 'Failed to delete role.');
         }
 
-        return $this->redirect($router->generate("permissions_index"));
+        return $this->redirect($this->router->generate("permissions_index"));
     }
 }

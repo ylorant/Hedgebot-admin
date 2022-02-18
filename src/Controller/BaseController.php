@@ -4,25 +4,29 @@ namespace App\Controller;
 
 use App\Service\ApiClientService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class BaseController extends AbstractController
 {
-    /** @var Breadcrumbs */
-    public $breadcrumbs;
-    /** @var TranslatorInterface */
-    public $translator;
-    /** @var ApiClientService */
-    public $apiClientService;
+    protected RouterInterface $router;
+
+    public Breadcrumbs $breadcrumbs;
+
+    public TranslatorInterface $translator;
+
+    public ApiClientService $apiClientService;
 
     /**
      * Constructor
+     * @param RouterInterface $router
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
      * @param ApiClientService $apiClientService
      */
     public function __construct(
+        RouterInterface $router,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
         ApiClientService $apiClientService
@@ -30,6 +34,7 @@ class BaseController extends AbstractController
         $this->breadcrumbs = $breadcrumbs;
         $this->apiClientService = $apiClientService;
         $this->translator = $translator;
+        $this->router = $router;
     }
 
     /**
