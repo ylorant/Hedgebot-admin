@@ -4,9 +4,7 @@ namespace App\Controller;
 
 use App\Service\ApiClientService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use TwitchApi\Exceptions\ClientIdRequiredException;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class BaseController extends AbstractController
@@ -20,21 +18,17 @@ class BaseController extends AbstractController
 
     /**
      * Constructor
-     * @param RouterInterface $routerInterface
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
-     * @param $apiBaseUrl
-     * @param $apiAccessToken
-     * @throws ClientIdRequiredException
+     * @param ApiClientService $apiClientService
      */
     public function __construct(
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
-        $apiBaseUrl,
-        $apiAccessToken
+        ApiClientService $apiClientService
     ) {
         $this->breadcrumbs = $breadcrumbs;
-        $this->apiClientService = new ApiClientService($apiBaseUrl, $apiAccessToken);
+        $this->apiClientService = $apiClientService;
         $this->translator = $translator;
     }
 
@@ -48,7 +42,7 @@ class BaseController extends AbstractController
     {
         $this->breadcrumbs->addItem(
             'title.dashboard',
-            $this->get('router')->generate("dashboard")
+            $this->generateUrl("dashboard")
         );
     }
 }

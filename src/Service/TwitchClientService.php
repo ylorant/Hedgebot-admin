@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service;
 
 use Symfony\Component\Routing\RouterInterface;
@@ -10,17 +11,13 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 class TwitchClientService
 {
     /** @var TwitchApi The API client */
-    protected $twitchApiClient;
-    /** @var string The client ID to access the Twitch API for general requests. */
-    protected $clientID;
-    /** @var string[] The client token to use for user authenticated requests. */
-    protected $clientToken;
+    protected TwitchApi $twitchApiClient;
     /** @var RouterInterface The Twitch router, to be able to pull the auth redirect Uri */
-    protected $router;
+    protected RouterInterface $router;
     /** @var string The route name that should be given as redirect Uri */
-    protected $redirectRoute;
+    protected string $redirectRoute;
 
-    const TWITCH_SCOPE = ['channel_editor'];
+    private const TWITCH_SCOPE = ['channel_editor'];
 
     /**
      * Constructor.
@@ -44,7 +41,7 @@ class TwitchClientService
      *
      * @param ApiClientService $hedgebotClient The Hedgebot API client.
      */
-    public function initFromHedgebotApiClient($hedgebotClient)
+    public function initFromHedgebotApiClient(ApiClientService $hedgebotClient)
     {
         $twitchEndpoint = $hedgebotClient->endpoint('/twitch');
         $clientID = $twitchEndpoint->getClientID();
@@ -58,10 +55,9 @@ class TwitchClientService
      * Fills the URL template that is stored as a constant with the given data to generate a valid
      * Twitch OAuth URL.
      *
-     * @param array $data The data to fill the array with.
      * @return string
      */
-    public function getAuthenticationUrl()
+    public function getAuthenticationUrl(): string
     {
         return $this->twitchApiClient->getAuthenticationUrl();
     }
@@ -71,7 +67,7 @@ class TwitchClientService
      *
      * @return TwitchApi The Twitch API client.
      */
-    public function getAPIClient()
+    public function getAPIClient(): TwitchApi
     {
         return $this->twitchApiClient;
     }
@@ -84,7 +80,7 @@ class TwitchClientService
      *
      * @return mixed The proxified call result.
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         return $this->twitchApiClient->$name(...$arguments);
     }
@@ -95,12 +91,8 @@ class TwitchClientService
      * @param array $scope
      * @throws InvalidTypeException
      */
-    public function setScope($scope)
+    public function setScope(array $scope)
     {
-        if (!is_array($scope)) {
-            throw new InvalidTypeException('Scope', 'array', gettype($scope));
-        }
-
         $this->twitchApiClient->setScope($scope);
     }
 }

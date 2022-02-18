@@ -1,12 +1,20 @@
 <?php
+
 namespace App\Service;
 
 use HedgebotApi\Client as HedgebotApiClient;
 
 class ApiClientService extends HedgebotApiClient
 {
-    public function __construct($apiBaseUrl, $apiAccessToken)
+    private $apiBaseUrl;
+
+    private $apiAccessToken;
+
+    public function __construct(string $apiBaseUrl, string $apiAccessToken)
     {
-        parent::__construct($apiBaseUrl, $apiAccessToken);
+        $this->apiBaseUrl = $apiBaseUrl;
+        $this->apiAccessToken = $apiAccessToken;
+
+        parent::__construct($this->apiBaseUrl, $this->apiAccessToken);
     }
 }

@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 class UserService
 {
     /** @var EntityManagerInterface */
-    private $em;
+    private EntityManagerInterface $em;
     /**
      * @var UserRepository|ObjectRepository
      */

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DashboardLayout;
+use App\Service\ApiClientService;
 use App\Service\DashboardWidgetsManagerService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Config\FileLocator;
@@ -24,25 +25,22 @@ class SettingsController extends BaseController
 
     /**
      * Constructor
-     * @param RouterInterface $router
      * @param KernelInterface $kernel
      * @param FileLocator $fileLocator
      * @param TranslatorInterface $translator
+     * @param Breadcrumbs $breadcrumbs
+     * @param ApiClientService $apiClientService
      * @param $layoutPath
-     * @param $apiBaseUrl
-     * @param $apiAccessToken
-     * @throws ClientIdRequiredException
      */
     public function __construct(
         KernelInterface $kernel,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
-        $layoutPath,
-        $apiBaseUrl,
-        $apiAccessToken
+        ApiClientService $apiClientService,
+        $layoutPath
     ) {
-        parent::__construct($translator, $breadcrumbs, $apiBaseUrl, $apiAccessToken);
+        parent::__construct($translator, $breadcrumbs, $apiClientService);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,
