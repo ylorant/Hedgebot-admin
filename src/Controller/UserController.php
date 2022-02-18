@@ -38,7 +38,7 @@ class UserController extends BaseController
     {
         $this->breadcrumbs->addItem(
             $this->translator->trans('title.users'),
-            $this->router->generate("users_index")
+            $this->generateUrl('users_index')
         );
 
         $users = $userService->findAll();
@@ -61,10 +61,10 @@ class UserController extends BaseController
     {
         // Add breadcrumb + allow "new user" only for admins
         if (!empty($userId)) {
-            $this->breadcrumbs->addItem("form.edit_user", $this->router->generate("user_edit", ['userId' => $userId]));
+            $this->breadcrumbs->addItem("form.edit_user", $this->generateUrl('user_edit', ['userId' => $userId]));
         } else {
             $this->denyAccessUnlessGranted(User::ROLE_ADMIN);
-            $this->breadcrumbs->addItem("form.new_user", $this->router->generate("user_new"));
+            $this->breadcrumbs->addItem("form.new_user", $this->generateUrl('user_new'));
         }
 
         $user = new User();
@@ -106,7 +106,7 @@ class UserController extends BaseController
                         $errors .= $error . ', ';
                     }
                     $this->addFlash('danger', 'User cannot be created. Reasons: ' . substr($errors, 0, -2));
-                    return $this->redirect($this->router->generate('users_index'));
+                    return $this->redirect($this->generateUrl('users_index'));
                 }
             } else {
                 $userSaved = $userService->update($userData);
@@ -121,7 +121,7 @@ class UserController extends BaseController
                 }
             }
 
-            return $this->redirect($this->router->generate("user_edit", ['userId' => $userId]));
+            return $this->redirect($this->generateUrl('user_edit', ['userId' => $userId]));
         }
 
         // Fill template vars
@@ -169,7 +169,7 @@ class UserController extends BaseController
     {
         $this->breadcrumbs->addItem(
             $this->translator->trans('title.roles'),
-            $this->router->generate("users_roles")
+            $this->generateUrl('users_roles')
         );
 
         $templateVars = [];

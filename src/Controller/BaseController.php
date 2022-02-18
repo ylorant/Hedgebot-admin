@@ -10,8 +10,6 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class BaseController extends AbstractController
 {
-    protected RouterInterface $router;
-
     public Breadcrumbs $breadcrumbs;
 
     public TranslatorInterface $translator;
@@ -20,13 +18,11 @@ class BaseController extends AbstractController
 
     /**
      * Constructor
-     * @param RouterInterface $router
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
      * @param ApiClientService $apiClientService
      */
     public function __construct(
-        RouterInterface $router,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
         ApiClientService $apiClientService
@@ -34,7 +30,6 @@ class BaseController extends AbstractController
         $this->breadcrumbs = $breadcrumbs;
         $this->apiClientService = $apiClientService;
         $this->translator = $translator;
-        $this->router = $router;
     }
 
     /**

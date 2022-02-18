@@ -27,7 +27,7 @@ class PermissionsController extends BaseController
         parent::beforeActionHook();
         $this->breadcrumbs->addItem(
             'title.bot_permissions',
-            $this->router->generate("permissions_index")
+            $this->generateUrl('permissions_index')
         );
     }
 

@@ -22,7 +22,6 @@ class SettingsController extends BaseController
     /**
      * Constructor
      * @param KernelInterface $kernel
-     * @param RouterInterface $router
      * @param FileLocator $fileLocator
      * @param TranslatorInterface $translator
      * @param Breadcrumbs $breadcrumbs
@@ -31,14 +30,13 @@ class SettingsController extends BaseController
      */
     public function __construct(
         KernelInterface $kernel,
-        RouterInterface $router,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
         ApiClientService $apiClientService,
         $layoutPath
     ) {
-        parent::__construct($router, $translator, $breadcrumbs, $apiClientService);
+        parent::__construct($translator, $breadcrumbs, $apiClientService);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,
@@ -63,7 +61,7 @@ class SettingsController extends BaseController
      */
     public function widgetSettings(): Response
     {
-        $this->breadcrumbs->addItem("Widgets", $this->router->generate("settings_widgets"));
+        $this->breadcrumbs->addItem("Widgets", $this->generateUrl('settings_widgets'));
 
         $templateVars = [];
         $templateVars['widgets'] = $this->dashboardWidgetMS->getAvailableWidgets();

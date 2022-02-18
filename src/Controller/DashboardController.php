@@ -36,14 +36,13 @@ class DashboardController extends BaseController
      */
     public function __construct(
         KernelInterface $kernel,
-        RouterInterface $router,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
         ApiClientService $apiClientService,
         string $layoutPath
     ) {
-        parent::__construct($router, $translator, $breadcrumbs, $apiClientService);
+        parent::__construct($translator, $breadcrumbs, $apiClientService);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,

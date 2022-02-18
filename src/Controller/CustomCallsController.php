@@ -19,7 +19,7 @@ class CustomCallsController extends BaseController
     public function beforeActionHook()
     {
         parent::beforeActionHook();
-        $this->breadcrumbs->addItem('title.customcalls', $this->get("router")->generate("custom_calls_index"));
+        $this->breadcrumbs->addItem('title.customcalls', $this->generateUrl('custom_calls_index'));
     }
 
     /**
@@ -27,7 +27,7 @@ class CustomCallsController extends BaseController
      *
      * @Route("/custom-calls", name="custom_calls_index")
      */
-    public function indexAction(): Response
+    public function index(): Response
     {
         $repo = $this->get('doctrine')->getRepository(CustomCall::class);
         $callList = $repo->findAll();
@@ -45,14 +45,13 @@ class CustomCallsController extends BaseController
      * @param null $id
      * @return RedirectResponse|Response
      */
-    public function editCallAction(Request $request, $id = null)
+    public function editCall(Request $request, $id = null)
     {
         // Add breadcrumb
-        $router = $this->get("router");
         if (!empty($id)) {
-            $this->breadcrumbs->addItem("Edit call", $router->generate("custom_calls_edit", ['id' => $id]));
+            $this->breadcrumbs->addItem("Edit call", $this->generateUrl('custom_calls_edit', ['id' => $id]));
         } else {
-            $this->breadcrumbs->addItem("New call", $router->generate("custom_calls_new"));
+            $this->breadcrumbs->addItem("New call", $this->generateUrl('custom_calls_new'));
         }
 
         $repo = $this->get('doctrine')->getRepository(CustomCall::class);
@@ -98,7 +97,7 @@ class CustomCallsController extends BaseController
      * @param $id
      * @return RedirectResponse
      */
-    public function deleteCallAction($id): RedirectResponse
+    public function deleteCall($id): RedirectResponse
     {
         $repository = $this->getDoctrine()->getRepository(CustomCall::class);
         $call = $repository->find($id);

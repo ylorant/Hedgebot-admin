@@ -2,11 +2,11 @@
 
 namespace App\Service;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use TwitchApi\Exceptions\ClientIdRequiredException;
 use TwitchApi\Exceptions\InvalidTypeException;
 use TwitchApi\TwitchApi;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class TwitchClientService
 {
@@ -32,7 +32,7 @@ class TwitchClientService
         $this->redirectRoute = $redirectRoute;
         $this->twitchApiClient = new TwitchApi(['client_id' => '', 'scope' => self::TWITCH_SCOPE]);
 
-        $redirectUri = $this->router->generate($this->redirectRoute, [], UrlGenerator::ABSOLUTE_URL);
+        $redirectUri = $this->router->generate($this->redirectRoute, [], UrlGeneratorInterface::ABSOLUTE_URL);
         $this->twitchApiClient->setRedirectUri($redirectUri);
     }
 
