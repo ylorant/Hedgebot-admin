@@ -29,8 +29,9 @@ class TwitchController extends BaseController
      *
      * @Route("/twitch", name="twitch_index")
      * @param TwitchClientService $twitchApi
+     * @return Response
      */
-    public function indexAction(TwitchClientService $twitchApi)
+    public function index(TwitchClientService $twitchApi)
     {
         $templateVars = [];
         $twitchEndpoint = $this->apiClientService->endpoint('/twitch');
@@ -49,7 +50,7 @@ class TwitchController extends BaseController
      * @param TwitchClientService $twitchApi
      * @return RedirectResponse|Response
      */
-    public function newTokenAction(Request $request, TwitchClientService $twitchApi)
+    public function newToken(Request $request, TwitchClientService $twitchApi)
     {
         $twitchEndpoint = $this->apiClientService->endpoint('/twitch');
 
@@ -60,21 +61,29 @@ class TwitchController extends BaseController
         if ($newTokenForm->isSubmitted()) {
             if ($newTokenForm->isValid()) {
                 $formData = $newTokenForm->getData();
-                $result = $twitchEndpoint->addAccessToken($formData['channel'], $formData['access_token'], $formData['refresh_token']);
+                $result = $twitchEndpoint->addAccessToken(
+                    $formData['channel'],
+                    $formData['access_token'],
+                    $formData['refresh_token']
+                );
 
                 if ($result) {
                     $this->addFlash('success', 'Successfully saved token.');
                     return $this->redirectToRoute('twitch_index');
-                } else { // Failure to create the token is surely because there is already one for the channel in the database
-                    $this->addFlash('danger', 'Cannot save token: another token already exists for this channel.'.
-                                              'If you want to change the token for the channel, delete it then create another one.');
+                } else {
+                    // Failure to create the token is surely because there is already one for the channel in the database
+                    $this->addFlash(
+                        'danger',
+                        'Cannot save token: another token already exists for this channel.' .
+                        'If you want to change the token for the channel, delete it then create another one.'
+                    );
                 }
             }
         } else {
             // Get the token from the code given by Twitch
             $accessCode = $request->query->get('code');
             $tokenInfo = $twitchApi->getAccessCredentials($accessCode);
-            
+
             if (isset($tokenInfo['status']) && $tokenInfo['status'] !== 200) {
                 $this->addFlash('danger', 'Failed to fetch token.');
                 return $this->redirectToRoute('twitch_index');
@@ -101,7 +110,7 @@ class TwitchController extends BaseController
      * @param $channel
      * @return RedirectResponse
      */
-    public function revokeTokenAction($channel)
+    public function revokeToken($channel)
     {
         $twitchEndpoint = $this->apiClientService->endpoint('/twitch');
         $token = $twitchEndpoint->getAccessToken($channel);
