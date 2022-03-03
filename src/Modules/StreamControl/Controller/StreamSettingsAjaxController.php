@@ -29,8 +29,8 @@ class StreamSettingsAjaxController extends BaseController
         if ($currentInfo) {
             $returnData['success'] = true;
             $returnData['info'] = [
-                'title' => $currentInfo->status,
-                'game' => $currentInfo->game
+                'title' => $currentInfo->title,
+                'game' => $currentInfo->game_name
             ];
         }
 
