@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\DashboardLayout;
+use App\Service\ApiClientService;
 use App\Service\DashboardWidgetsManagerService;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Widget\DefaultWidget\DefaultWidget;
@@ -13,7 +16,6 @@ use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use TwitchApi\Exceptions\ClientIdRequiredException;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class DashboardController extends BaseController
@@ -25,25 +27,22 @@ class DashboardController extends BaseController
 
     /**
      * Constructor
-     * @param RouterInterface $router
      * @param KernelInterface $kernel
      * @param FileLocator $fileLocator
      * @param TranslatorInterface $translator
-     * @param $layoutPath
-     * @param $apiBaseUrl
-     * @param $apiAccessToken
-     * @throws ClientIdRequiredException
+     * @param Breadcrumbs $breadcrumbs
+     * @param ApiClientService $apiClientService
+     * @param string $layoutPath
      */
     public function __construct(
         KernelInterface $kernel,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
-        $layoutPath,
-        $apiBaseUrl,
-        $apiAccessToken
+        ApiClientService $apiClientService,
+        string $layoutPath
     ) {
-        parent::__construct($translator, $breadcrumbs, $apiBaseUrl, $apiAccessToken);
+        parent::__construct($translator, $breadcrumbs, $apiClientService);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,
@@ -57,7 +56,7 @@ class DashboardController extends BaseController
      *
      * @return Response
      */
-    public function dashboardAction()
+    public function dashboard(): Response
     {
         $widgetList = $this->dashboardWidgetMS->getAvailableWidgets();
         $layouts = $this->dashboardWidgetMS->getLayouts();
@@ -96,7 +95,7 @@ class DashboardController extends BaseController
     /**
      * @Route("/widget/{widgetType}/{widgetId}", name="widget_update")
      */
-    public function updateWidget($widgetType, $widgetId)
+    public function updateWidget($widgetType, $widgetId): JsonResponse
     {
         // Getting the widget type class from the manager
         $widget = $this->dashboardWidgetMS->getWidgetByName($widgetType);
@@ -121,7 +120,7 @@ class DashboardController extends BaseController
      *
      * @Route("/gotta-go-fast", name="gotta-go-fast")
      */
-    public function gottaGoFastAction()
+    public function gottaGoFast(): Response
     {
         return $this->render("core/route/gotta-go-fast.html.twig");
     }
@@ -131,7 +130,7 @@ class DashboardController extends BaseController
      *
      * @Route("/dark-mode", name="toggle-dark-mode")
      */
-    public function toggleDarkMode(Request $request)
+    public function toggleDarkMode(Request $request): RedirectResponse
     {
         $darkModeCookie = $request->cookies->get('dark-mode');
 

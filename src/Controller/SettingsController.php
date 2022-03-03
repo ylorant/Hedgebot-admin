@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DashboardLayout;
+use App\Service\ApiClientService;
 use App\Service\DashboardWidgetsManagerService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Config\FileLocator;
@@ -10,39 +11,31 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use TwitchApi\Exceptions\ClientIdRequiredException;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class SettingsController extends BaseController
 {
-    /**
-     * @var DashboardWidgetsManagerService
-     */
-    private $dashboardWidgetMS;
+    private DashboardWidgetsManagerService $dashboardWidgetMS;
 
     /**
      * Constructor
-     * @param RouterInterface $router
      * @param KernelInterface $kernel
      * @param FileLocator $fileLocator
      * @param TranslatorInterface $translator
+     * @param Breadcrumbs $breadcrumbs
+     * @param ApiClientService $apiClientService
      * @param $layoutPath
-     * @param $apiBaseUrl
-     * @param $apiAccessToken
-     * @throws ClientIdRequiredException
      */
     public function __construct(
         KernelInterface $kernel,
         FileLocator $fileLocator,
         TranslatorInterface $translator,
         Breadcrumbs $breadcrumbs,
-        $layoutPath,
-        $apiBaseUrl,
-        $apiAccessToken
+        ApiClientService $apiClientService,
+        $layoutPath
     ) {
-        parent::__construct($translator, $breadcrumbs, $apiBaseUrl, $apiAccessToken);
+        parent::__construct($translator, $breadcrumbs, $apiClientService);
         $this->dashboardWidgetMS = new DashboardWidgetsManagerService(
             $kernel,
             $this->apiClientService,
@@ -65,11 +58,9 @@ class SettingsController extends BaseController
     /** Widget settings page.
      * @Route("/settings/widgets", name="settings_widgets")
      */
-    public function widgetSettingsAction(): Response
+    public function widgetSettings(): Response
     {
-        $router = $this->get("router");
-
-        $this->breadcrumbs->addItem("Widgets", $router->generate("settings_widgets"));
+        $this->breadcrumbs->addItem("Widgets", $this->generateUrl('settings_widgets'));
 
         $templateVars = [];
         $templateVars['widgets'] = $this->dashboardWidgetMS->getAvailableWidgets();
@@ -92,7 +83,7 @@ class SettingsController extends BaseController
      * @param $widgetName
      * @return Response
      */
-    public function widgetSettingsGetWidgetParamsFormAction($widgetName): Response
+    public function widgetSettingsGetWidgetParamsForm($widgetName): Response
     {
         $viewParams = [];
 
@@ -124,7 +115,7 @@ class SettingsController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function widgetSettingsSaveAction(Request $request)
+    public function widgetSettingsSave(Request $request): JsonResponse
     {
         $success = false;
 

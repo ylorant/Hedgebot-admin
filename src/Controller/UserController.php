@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Service\UserService;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +38,7 @@ class UserController extends BaseController
     {
         $this->breadcrumbs->addItem(
             $this->translator->trans('title.users'),
-            $this->get('router')->generate("users_index")
+            $this->generateUrl('users_index')
         );
 
         $users = $userService->findAll();
@@ -60,12 +60,11 @@ class UserController extends BaseController
     public function setUser(Request $request, UserService $userService, int $userId = null): Response
     {
         // Add breadcrumb + allow "new user" only for admins
-        $router = $this->get('router');
         if (!empty($userId)) {
-            $this->breadcrumbs->addItem("form.edit_user", $router->generate("user_edit", ['userId' => $userId]));
+            $this->breadcrumbs->addItem("form.edit_user", $this->generateUrl('user_edit', ['userId' => $userId]));
         } else {
             $this->denyAccessUnlessGranted(User::ROLE_ADMIN);
-            $this->breadcrumbs->addItem("form.new_user", $router->generate("user_new"));
+            $this->breadcrumbs->addItem("form.new_user", $this->generateUrl('user_new'));
         }
 
         $user = new User();
@@ -107,7 +106,7 @@ class UserController extends BaseController
                         $errors .= $error . ', ';
                     }
                     $this->addFlash('danger', 'User cannot be created. Reasons: ' . substr($errors, 0, -2));
-                    return $this->redirect($router->generate('users_index'));
+                    return $this->redirect($this->generateUrl('users_index'));
                 }
             } else {
                 $userSaved = $userService->update($userData);
@@ -122,7 +121,7 @@ class UserController extends BaseController
                 }
             }
 
-            return $this->redirect($router->generate("user_edit", ['userId' => $userId]));
+            return $this->redirect($this->generateUrl('user_edit', ['userId' => $userId]));
         }
 
         // Fill template vars
@@ -170,7 +169,7 @@ class UserController extends BaseController
     {
         $this->breadcrumbs->addItem(
             $this->translator->trans('title.roles'),
-            $this->get("router")->generate("users_roles")
+            $this->generateUrl('users_roles')
         );
 
         $templateVars = [];
