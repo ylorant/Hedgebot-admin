@@ -23,14 +23,14 @@ class StreamSettingsAjaxController extends BaseController
         $currentInfo = $endpoint->setChannelInfo(
             $requestData['channel'],
             $requestData['title'],
-            $requestData['game']
+            $requestData['game_name']
         );
 
         if ($currentInfo) {
             $returnData['success'] = true;
             $returnData['info'] = [
-                'title' => $currentInfo->status,
-                'game' => $currentInfo->game
+                'title' => $currentInfo->title,
+                'game_name' => $currentInfo->game_name
             ];
         }
 
