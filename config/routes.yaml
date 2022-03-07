@@ -19,11 +19,6 @@ plugins_public_routes:
     resource: .
     type: plugin_public_routes
 
-login:
-    path:       /login
-    controller: App\Controller\SecurityController::login
-    methods: GET|POST
-
 logout:
     path: /logout
 
