@@ -10,7 +10,7 @@ class ApiClientService extends HedgebotApiClient
 
     private $apiAccessToken;
 
-    public function __construct(string $apiBaseUrl, string $apiAccessToken)
+    public function __construct(string $apiBaseUrl, ?string $apiAccessToken)
     {
         $this->apiBaseUrl = $apiBaseUrl;
         $this->apiAccessToken = $apiAccessToken;
