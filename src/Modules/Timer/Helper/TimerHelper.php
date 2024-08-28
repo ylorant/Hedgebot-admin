@@ -94,7 +94,7 @@ class TimerHelper
         $components = array_map(function ($el) {
             return str_pad($el, 2, "0", STR_PAD_LEFT);
         }, $components);
-        $output = join($components, ':');
+        $output = join(':', $components);
 
         if ($milliseconds) {
             $ms = round($elapsed - $totalSeconds, 3);
