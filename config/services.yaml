@@ -75,7 +75,7 @@ services:
             - [ setContainer,[ '@service_container' ] ]
 
     App\Service\TwitchClientService:
-        arguments: [ '@router', 'twitch_oauth_redirect' ]
+        arguments: [ '@router', '@logger', 'twitch_oauth_redirect' ]
         calls:
             - [ setScope, [ [ 'channel_editor', 'channel_commercial', 'channel_read', 'user_read', 'user:edit:broadcast' ] ] ]
             - [ initFromHedgebotApiClient, [ '@hedgebot_api' ] ]

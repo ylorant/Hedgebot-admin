@@ -47,10 +47,10 @@ class TwitchController extends BaseController
      *
      * @Route("/twitch_oauth/redirect", name="twitch_oauth_redirect")
      * @param Request $request
-     * @param TwitchClientService $twitchApi
+     * @param TwitchClientService $twitchService
      * @return RedirectResponse|Response
      */
-    public function newToken(Request $request, TwitchClientService $twitchApi)
+    public function newToken(Request $request, TwitchClientService $twitchService)
     {
         $twitchEndpoint = $this->apiClientService->endpoint('/twitch');
 
@@ -82,20 +82,20 @@ class TwitchController extends BaseController
         } else {
             // Get the token from the code given by Twitch
             $accessCode = $request->query->get('code');
-            $tokenInfo = $twitchApi->getAccessCredentials($accessCode);
+            $tokenInfo = $twitchService->getAccessToken($accessCode, true);
 
-            if (isset($tokenInfo['status']) && $tokenInfo['status'] !== 200) {
+            if (!$tokenInfo) {
                 $this->addFlash('danger', 'Failed to fetch token.');
                 return $this->redirectToRoute('twitch_index');
             }
 
             // Get the channel name to use for the channel field's default value
-            $channelInfo = $twitchApi->getAuthenticatedChannel($tokenInfo['access_token']);
+            $channelName = $twitchService->getUsername();
 
             $newTokenForm->setData([
-                'access_token' => $tokenInfo['access_token'],
-                'refresh_token' => $tokenInfo['refresh_token'],
-                'channel' => $channelInfo['name']
+                'access_token' => $tokenInfo['token'],
+                'refresh_token' => $tokenInfo['refresh'],
+                'channel' => $channelName
             ]);
         }
 
