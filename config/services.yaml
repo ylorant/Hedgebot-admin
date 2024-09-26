@@ -77,7 +77,7 @@ services:
     App\Service\TwitchClientService:
         arguments: [ '@router', '@logger', 'twitch_oauth_redirect' ]
         calls:
-            - [ setScope, [ [ 'channel_editor', 'channel_commercial', 'channel_read', 'user_read', 'user:edit:broadcast' ] ] ]
+            - [ setScope, [ [ 'channel:manage:broadcast', 'user:edit:broadcast', 'moderator:manage:shoutouts' ] ] ]
             - [ initFromHedgebotApiClient, [ '@hedgebot_api' ] ]
 
     menu_generator:
