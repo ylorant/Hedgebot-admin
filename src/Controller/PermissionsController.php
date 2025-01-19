@@ -71,9 +71,9 @@ class PermissionsController extends BaseController
 
         // Add breadcrumb
         if (!empty($roleId)) {
-            $this->breadcrumbs->addItem($role->name, $this->router->generate("permissions_role_edit", ['roleId' => $roleId]));
+            $this->breadcrumbs->addItem($role->name, $this->generateUrl("permissions_role_edit", ['roleId' => $roleId]));
         } else {
-            $this->breadcrumbs->addItem("New role", $this->router->generate("permissions_role_new"));
+            $this->breadcrumbs->addItem("New role", $this->generateUrl("permissions_role_new"));
         }
 
         // Filter the role rights to make them as an array of the actually defined rights.
