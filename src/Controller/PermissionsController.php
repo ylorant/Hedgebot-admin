@@ -100,7 +100,7 @@ class PermissionsController extends BaseController
                 $roleCreated = $securityEndpoint->createRole($roleData->id);
                 if (!$roleCreated) {
                     $this->addFlash('danger', 'Role cannot be created.');
-                    return $this->redirect($this->router->generate('permissions_index'));
+                    return $this->redirect($this->generateUrl('permissions_index'));
                 }
 
                 $roleId = $roleData->id;
@@ -115,7 +115,7 @@ class PermissionsController extends BaseController
                 }
             }
 
-            return $this->redirect($this->router->generate("permissions_role_edit", ['roleId' => $roleId]));
+            return $this->redirect($this->generateUrl("permissions_role_edit", ['roleId' => $roleId]));
         }
 
         // Fill template vars
@@ -145,6 +145,6 @@ class PermissionsController extends BaseController
             $this->addFlash('danger', 'Failed to delete role.');
         }
 
-        return $this->redirect($this->router->generate("permissions_index"));
+        return $this->redirect($this->generateUrl("permissions_index"));
     }
 }
